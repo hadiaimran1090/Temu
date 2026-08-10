@@ -14,16 +14,19 @@ export function Card({ id, title, price, oldPrice, sold, badge, palette, image, 
       </div>
       <div className="product-body">
         <h3>{title}</h3>
+        <p className="product-category">{category}</p>
         <div className="product-meta">
           <strong>{price}</strong>
           <span>{oldPrice}</span>
         </div>
-        <p className="product-sold">{sold}</p>
-        <Button
-          label="Add to cart"
-          variant="secondary"
-          onClick={() => onAddToCart?.({ id, title, price, oldPrice, sold, badge, palette, image, category })}
-        />
+        <div className="product-card-footer">
+          <p className="product-sold">{sold}</p>
+          <Button
+            label="Add to cart"
+            variant="secondary"
+            onClick={() => onAddToCart?.({ id, title, price, oldPrice, sold, badge, palette, image, category })}
+          />
+        </div>
       </div>
     </article>
   )
