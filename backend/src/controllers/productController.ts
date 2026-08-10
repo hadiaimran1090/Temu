@@ -1,0 +1,16 @@
+import type { Request, Response } from 'express'
+import { products } from '../data/products'
+
+export function getProducts(request: Request, response: Response) {
+  const category = typeof request.query.category === 'string' ? request.query.category.trim() : ''
+  const search = typeof request.query.search === 'string' ? request.query.search.trim().toLocaleLowerCase() : ''
+
+  const filteredProducts = products.filter((product) => {
+    const matchesCategory = !category || category === 'All' || product.category === category
+    const matchesSearch = !search || product.title.toLocaleLowerCase().includes(search)
+
+    return matchesCategory && matchesSearch
+  })
+
+  response.json(filteredProducts)
+}

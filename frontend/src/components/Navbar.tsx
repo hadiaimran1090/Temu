@@ -9,9 +9,11 @@ import {
 
 interface NavbarProps {
   navLinks: readonly string[]
+  searchQuery: string
+  onSearchChange: (query: string) => void
 }
 
-export function Navbar({ navLinks }: NavbarProps) {
+export function Navbar({ navLinks, searchQuery, onSearchChange }: NavbarProps) {
   return (
     <header className="navbar">
       <div className="brand-mark">TEMU</div>
@@ -25,7 +27,7 @@ export function Navbar({ navLinks }: NavbarProps) {
       </nav>
 
       <label className="search-bar" htmlFor="site-search">
-        <input id="site-search" name="site-search" type="search" placeholder="cheap men stuff" />
+        <input id="site-search" name="site-search" type="search" placeholder="cheap men stuff" value={searchQuery} onChange={(event) => onSearchChange(event.target.value)} />
         <span className="search-icon">
           <FaMagnifyingGlass aria-hidden="true" />
         </span>

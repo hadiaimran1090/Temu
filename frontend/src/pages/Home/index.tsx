@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaFacebookF, FaInstagram, FaPinterestP, FaTiktok, FaYoutube } from 'react-icons/fa6'
 import { FaXTwitter } from 'react-icons/fa6'
 import {
@@ -11,31 +11,16 @@ import {
   SiVisa,
 } from 'react-icons/si'
 import { Button } from '../../components/Button'
-import { Card } from '../../components/Card'
+import { CategoryFilter } from '../../components/CategoryFilter'
 import { Navbar } from '../../components/Navbar'
-import { products as initialProducts } from '../../data/products'
-import type { Product, ProductImageKey } from '../../types/product'
-import chairImage from '../../assets/images/chair.jpg'
-import hairclipperImage from '../../assets/images/hairclipper.jpg'
-import lampImage from '../../assets/images/lamp.jpg'
-import phoneImage from '../../assets/images/phone.jpg'
-import shoesImage from '../../assets/images/shoes.jpg'
-import smartwatchImage from '../../assets/images/smartwatch.jpg'
-import stickerImage from '../../assets/images/sticker.jpg'
-import toolkitImage from '../../assets/images/toolkit.jpg'
-import walletImage from '../../assets/images/wallet.jpg'
+import { ProductSection } from '../../components/ProductSection'
+import { getProducts, getProductsByCategory } from '../../services/productService'
+import type { Product } from '../../../../shared/types/product'
 
 const navLinks = ['Best-Selling Items', '5-Star Rated', 'New In', 'Categories']
 
-const interestChips = [
-  'Recommended',
-  'Beauty & Personal Care',
-  'Women\'s Clothing',
-  'Home & Kitchen',
-  'Men\'s Clothing',
-  'Women\'s Shoes',
-  'Men\'s Underwear & Sleepwear',
-  'Sports & Outdoors',
+const categories = [
+  'All', "Women's Clothing", "Men's Clothing", 'Electronics', 'Home & Kitchen', 'Beauty', 'Jewelry', 'Shoes', 'Accessories',
 ]
 
 const footerGroups = [
@@ -72,23 +57,12 @@ const paymentIcons = [
   { id: 'google-pay', icon: SiGooglepay },
 ]
 
-const productImages: Record<ProductImageKey, string> = {
-  wallet: walletImage,
-  smartwatch: smartwatchImage,
-  phone: phoneImage,
-  chair: chairImage,
-  lamp: lampImage,
-  toolkit: toolkitImage,
-  shoes: shoesImage,
-  hairclipper: hairclipperImage,
-  sticker: stickerImage,
-}
-
 export function Home() {
-  const interestScrollerRef = useRef<HTMLDivElement | null>(null)
   const [showHeader, setShowHeader] = useState(true)
-  const [products, setProducts] = useState<Product[]>(initialProducts)
-  const [apiStatus, setApiStatus] = useState<'loading' | 'ready' | 'offline'>('loading')
+  const [products, setProducts] = useState<Product[]>([])
+  const [apiStatus, setApiStatus] = useState<'loading' | 'success' | 'error'>('loading')
+  const [selectedCategory, setSelectedCategory] = useState('All')
+  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     let isMounted = true
@@ -96,21 +70,16 @@ export function Home() {
 
     async function loadProducts() {
       try {
-        const response = await fetch('/api/products', { signal: abortController.signal })
-
-        if (!response.ok) {
-          throw new Error('Products request failed')
-        }
-
-        const data = (await response.json()) as Product[]
+        const requestOptions = { signal: abortController.signal, search: searchQuery }
+        const data = selectedCategory === 'All' ? await getProducts(requestOptions) : await getProductsByCategory(selectedCategory, requestOptions)
 
         if (isMounted) {
           setProducts(data)
-          setApiStatus('ready')
+          setApiStatus('success')
         }
       } catch {
         if (isMounted && !abortController.signal.aborted) {
-          setApiStatus('offline')
+          setApiStatus('error')
         }
       }
     }
@@ -121,7 +90,7 @@ export function Home() {
       isMounted = false
       abortController.abort()
     }
-  }, [])
+  }, [selectedCategory, searchQuery])
 
   useEffect(() => {
     let lastScrollY = window.scrollY
@@ -141,18 +110,6 @@ export function Home() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const scrollInterests = (direction: number) => {
-    interestScrollerRef.current?.scrollBy({
-      left: direction * 280,
-      behavior: 'smooth',
-    })
-  }
-
-  const productCards = products.map((product) => ({
-    ...product,
-    image: productImages[product.imageKey],
-  }))
-
   return (
     <div className="landing-page">
       <header className={`site-header ${showHeader ? 'site-header-visible' : 'site-header-hidden'}`}>
@@ -171,7 +128,7 @@ export function Home() {
           </div>
         </div>
 
-        <Navbar navLinks={navLinks} />
+        <Navbar navLinks={navLinks} searchQuery={searchQuery} onSearchChange={setSearchQuery} />
       </header>
 
       <main className="page-content">
@@ -201,8 +158,8 @@ export function Home() {
 
             <div className={`api-status api-status-${apiStatus}`} aria-live="polite">
               {apiStatus === 'loading' && 'Syncing with Express API...'}
-              {apiStatus === 'ready' && 'Express API connected'}
-              {apiStatus === 'offline' && 'Express API offline, local data active'}
+              {apiStatus === 'success' && 'Express API connected'}
+              {apiStatus === 'error' && 'Express API offline'}
             </div>
 
             <div className="hero-actions">
@@ -241,53 +198,8 @@ export function Home() {
           <div className="tax-copy">Hassle-free tax service</div>
         </section>
 
-        <section className="interest-section" aria-label="Interest categories">
-          <div className="interest-carousel">
-            <button type="button" className="interest-arrow" aria-label="Scroll interests left" onClick={() => scrollInterests(-1)}>
-              ‹
-            </button>
-
-            <div className="interest-chips" ref={interestScrollerRef}>
-              {interestChips.map((chip) => (
-                <button key={chip} type="button" className="interest-chip">
-                  {chip}
-                </button>
-              ))}
-            </div>
-
-            <button type="button" className="interest-arrow" aria-label="Scroll interests right" onClick={() => scrollInterests(1)}>
-              ›
-            </button>
-          </div>
-        </section>
-
-        <section className="section-block" id="products">
-          <div className="section-heading">
-            <div>
-              <h2>Lightning deals and clearance deals</h2>
-            </div>
-          </div>
-
-          <div className="card-grid">
-            {productCards.map((product) => (
-              <Card
-                key={product.id}
-                id={product.id}
-                title={product.title}
-                price={product.price}
-                oldPrice={product.oldPrice}
-                sold={product.sold}
-                badge={product.badge}
-                palette={product.palette}
-                imageKey={product.imageKey}
-                image={product.image}
-                onAddToCart={(selectedProduct) => {
-                  window.console.info('Added to cart', selectedProduct.title)
-                }}
-              />
-            ))}
-          </div>
-        </section>
+        <CategoryFilter categories={categories} selectedCategory={selectedCategory} onSelectCategory={setSelectedCategory} />
+        <ProductSection products={products} status={apiStatus} />
       </main>
 
       <footer className="footer" id="footer">
