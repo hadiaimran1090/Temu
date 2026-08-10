@@ -1,6 +1,12 @@
+import type { Product } from '../types/product'
 import { Button } from './Button'
 
-export function Card({ title, price, oldPrice, sold, badge, palette, image }) {
+interface CardProps extends Product {
+  image: string
+  onAddToCart?: (product: Product) => void
+}
+
+export function Card({ id, title, price, oldPrice, sold, badge, palette, image, imageKey, onAddToCart }: CardProps) {
   return (
     <article className={`product-card product-card-${palette}`}>
       <div className="product-art">
@@ -14,7 +20,11 @@ export function Card({ title, price, oldPrice, sold, badge, palette, image }) {
           <span>{oldPrice}</span>
         </div>
         <p className="product-sold">{sold}</p>
-        <Button label="Add to cart" variant="secondary" onClick={() => window.console.log(title)} />
+        <Button
+          label="Add to cart"
+          variant="secondary"
+          onClick={() => onAddToCart?.({ id, title, price, oldPrice, sold, badge, palette, imageKey })}
+        />
       </div>
     </article>
   )

@@ -1,112 +1,29 @@
 import { useEffect, useRef, useState } from 'react'
-import { Button } from './components/Button'
-import { Card } from './components/Card'
-import { Navbar } from './components/Navbar'
 import { FaFacebookF, FaInstagram, FaPinterestP, FaTiktok, FaYoutube } from 'react-icons/fa6'
 import { FaXTwitter } from 'react-icons/fa6'
-import { SiApplepay, SiAmericanexpress, SiDiscover, SiGooglepay, SiJcb, SiMastercard, SiVisa } from 'react-icons/si'
-import walletImage from './assets/images/wallet.jpg'
-import smartwatchImage from './assets/images/smartwatch.jpg'
-import phoneImage from './assets/images/phone.jpg'
-import chairImage from './assets/images/chair.jpg'
-import lampImage from './assets/images/lamp.jpg'
-import toolkitImage from './assets/images/toolkit.jpg'
-import shoesImage from './assets/images/shoes.jpg'
-import hairclipperImage from './assets/images/hairclipper.jpg'
-import stickerImage from './assets/images/sticker.jpg'
-
-const products = [
-  {
-    id: 1,
-    title: 'Compact Travel Wallet',
-    price: 'Rs. 531',
-    oldPrice: 'Rs. 899',
-    sold: '3.4K+ sold',
-    badge: 'Last day',
-    palette: 'sunset',
-    image: walletImage,
-  },
-  {
-    id: 2,
-    title: 'Floral Smart Watch',
-    price: 'Rs. 1,566',
-    oldPrice: 'Rs. 2,884',
-    sold: '1 sold',
-    badge: 'Only 14 left',
-    palette: 'night',
-    image: smartwatchImage,
-  },
-  {
-    id: 3,
-    title: 'Minimal Phone Case',
-    price: 'Rs. 898',
-    oldPrice: 'Rs. 1,575',
-    sold: '3.4K+ sold',
-    badge: 'SAVINGS',
-    palette: 'amber',
-    image: phoneImage,
-  },
-  {
-    id: 4,
-    title: 'Chair Tai Chi Guide',
-    price: 'Rs. 1,924',
-    oldPrice: 'Rs. 3,904',
-    sold: '1 sold',
-    badge: 'Only 16 left',
-    palette: 'mint',
-    image: chairImage,
-  },
-  {
-    id: 5,
-    title: 'Wireless Focus Lamp',
-    price: 'Rs. 1,177',
-    oldPrice: 'Rs. 2,240',
-    sold: '1.9K+ sold',
-    badge: 'Best-selling',
-    palette: 'ocean',
-    image: lampImage,
-  },
-  {
-    id: 6,
-    title: 'Precision Tool Kit',
-    price: 'Rs. 1,078',
-    oldPrice: 'Rs. 1,887',
-    sold: '166 sold',
-    badge: 'Quick look',
-    palette: 'graphite',
-    image: toolkitImage,
-  },
-  {
-    id: 7,
-    title: 'Elegant Women Shoes',
-    price: 'Rs. 4,408',
-    oldPrice: 'Rs. 5,260',
-    sold: '1.2K+ sold',
-    badge: 'Last 3 days',
-    palette: 'amber',
-    image: shoesImage,
-  },
-  {
-    id: 8,
-    title: 'Men Hair Clipper Set',
-    price: 'Rs. 1,929',
-    oldPrice: 'Rs. 3,330',
-    sold: '1.4K+ sold',
-    badge: 'SAVINGS',
-    palette: 'graphite',
-    image: hairclipperImage,
-  },
-  {
-    id: 9,
-    title: '1pc Custom Sticker Pack',
-    price: 'Rs. 1,106',
-    oldPrice: 'Rs. 2,325',
-    sold: '2.3K+ sold',
-    badge: 'Only 3 left',
-    palette: 'sunset',
-    image: stickerImage,
-  },
-]
+import {
+  SiAmericanexpress,
+  SiApplepay,
+  SiDiscover,
+  SiGooglepay,
+  SiJcb,
+  SiMastercard,
+  SiVisa,
+} from 'react-icons/si'
+import { Button } from '../../components/Button'
+import { Card } from '../../components/Card'
+import { Navbar } from '../../components/Navbar'
+import { products as initialProducts } from '../../data/products'
+import type { Product, ProductImageKey } from '../../types/product'
+import chairImage from '../../assets/images/chair.jpg'
+import hairclipperImage from '../../assets/images/hairclipper.jpg'
+import lampImage from '../../assets/images/lamp.jpg'
+import phoneImage from '../../assets/images/phone.jpg'
+import shoesImage from '../../assets/images/shoes.jpg'
+import smartwatchImage from '../../assets/images/smartwatch.jpg'
+import stickerImage from '../../assets/images/sticker.jpg'
+import toolkitImage from '../../assets/images/toolkit.jpg'
+import walletImage from '../../assets/images/wallet.jpg'
 
 const navLinks = ['Best-Selling Items', '5-Star Rated', 'New In', 'Categories']
 
@@ -155,9 +72,56 @@ const paymentIcons = [
   { id: 'google-pay', icon: SiGooglepay },
 ]
 
-function App() {
-  const interestScrollerRef = useRef(null)
+const productImages: Record<ProductImageKey, string> = {
+  wallet: walletImage,
+  smartwatch: smartwatchImage,
+  phone: phoneImage,
+  chair: chairImage,
+  lamp: lampImage,
+  toolkit: toolkitImage,
+  shoes: shoesImage,
+  hairclipper: hairclipperImage,
+  sticker: stickerImage,
+}
+
+export function Home() {
+  const interestScrollerRef = useRef<HTMLDivElement | null>(null)
   const [showHeader, setShowHeader] = useState(true)
+  const [products, setProducts] = useState<Product[]>(initialProducts)
+  const [apiStatus, setApiStatus] = useState<'loading' | 'ready' | 'offline'>('loading')
+
+  useEffect(() => {
+    let isMounted = true
+    const abortController = new AbortController()
+
+    async function loadProducts() {
+      try {
+        const response = await fetch('/api/products', { signal: abortController.signal })
+
+        if (!response.ok) {
+          throw new Error('Products request failed')
+        }
+
+        const data = (await response.json()) as Product[]
+
+        if (isMounted) {
+          setProducts(data)
+          setApiStatus('ready')
+        }
+      } catch {
+        if (isMounted && !abortController.signal.aborted) {
+          setApiStatus('offline')
+        }
+      }
+    }
+
+    loadProducts()
+
+    return () => {
+      isMounted = false
+      abortController.abort()
+    }
+  }, [])
 
   useEffect(() => {
     let lastScrollY = window.scrollY
@@ -177,12 +141,17 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const scrollInterests = (direction) => {
+  const scrollInterests = (direction: number) => {
     interestScrollerRef.current?.scrollBy({
       left: direction * 280,
       behavior: 'smooth',
     })
   }
+
+  const productCards = products.map((product) => ({
+    ...product,
+    image: productImages[product.imageKey],
+  }))
 
   return (
     <div className="landing-page">
@@ -218,9 +187,7 @@ function App() {
 
           <div className="trust-card-reminder">
             <strong>Security reminder:</strong>
-            <span>
-              Please be wary of scam messages and links. Temu won\'t ask for extra fees via SMS or email.
-            </span>
+            <span>Please be wary of scam messages and links. Temu won\'t ask for extra fees via SMS or email.</span>
             <a href="#footer">View</a>
           </div>
         </section>
@@ -229,13 +196,20 @@ function App() {
           <div className="hero-copy">
             <h1>Explore your interests with fast deals and clean shopping.</h1>
             <p className="hero-text">
-              Same-page Temu-style layout with a blue navbar, green trust strip, product cards, and
-              footer sections.
+              Frontend page Vite se run hoti hai aur Express backend se live product data sync karti hai.
             </p>
+
+            <div className={`api-status api-status-${apiStatus}`} aria-live="polite">
+              {apiStatus === 'loading' && 'Syncing with Express API...'}
+              {apiStatus === 'ready' && 'Express API connected'}
+              {apiStatus === 'offline' && 'Express API offline, local data active'}
+            </div>
+
             <div className="hero-actions">
               <Button label="Shop deals" variant="primary" />
               <Button label="Explore interest" variant="secondary" />
             </div>
+
             <div className="hero-stats">
               <div>
                 <strong>1.2M+</strong>
@@ -269,29 +243,19 @@ function App() {
 
         <section className="interest-section" aria-label="Interest categories">
           <div className="interest-carousel">
-            <button
-              type="button"
-              className="interest-arrow"
-              aria-label="Scroll interests left"
-              onClick={() => scrollInterests(-1)}
-            >
+            <button type="button" className="interest-arrow" aria-label="Scroll interests left" onClick={() => scrollInterests(-1)}>
               ‹
             </button>
 
             <div className="interest-chips" ref={interestScrollerRef}>
-            {interestChips.map((chip) => (
-              <button key={chip} type="button" className="interest-chip">
-                {chip}
-              </button>
-            ))}
+              {interestChips.map((chip) => (
+                <button key={chip} type="button" className="interest-chip">
+                  {chip}
+                </button>
+              ))}
             </div>
 
-            <button
-              type="button"
-              className="interest-arrow"
-              aria-label="Scroll interests right"
-              onClick={() => scrollInterests(1)}
-            >
+            <button type="button" className="interest-arrow" aria-label="Scroll interests right" onClick={() => scrollInterests(1)}>
               ›
             </button>
           </div>
@@ -305,16 +269,21 @@ function App() {
           </div>
 
           <div className="card-grid">
-            {products.map((product) => (
+            {productCards.map((product) => (
               <Card
                 key={product.id}
+                id={product.id}
                 title={product.title}
                 price={product.price}
                 oldPrice={product.oldPrice}
                 sold={product.sold}
                 badge={product.badge}
                 palette={product.palette}
+                imageKey={product.imageKey}
                 image={product.image}
+                onAddToCart={(selectedProduct) => {
+                  window.console.info('Added to cart', selectedProduct.title)
+                }}
               />
             ))}
           </div>
@@ -349,7 +318,6 @@ function App() {
               <span>Google Play</span>
             </div>
           </section>
-
         </div>
 
         <div className="footer-certifications-row">
@@ -388,4 +356,4 @@ function App() {
   )
 }
 
-export default App
+export default Home
