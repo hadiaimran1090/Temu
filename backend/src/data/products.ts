@@ -29,7 +29,7 @@ export const products: Product[] = [
     price: 'Rs. 898',
     oldPrice: 'Rs. 1,575',
     image: '/products/phone.jpg',
-    category: 'Electronics',
+    category: 'Accessories',
     sold: '3.4K+ sold',
     badge: 'SAVINGS',
     palette: 'amber',
