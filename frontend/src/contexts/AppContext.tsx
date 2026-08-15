@@ -1,9 +1,91 @@
-import { createContext, useContext, useEffect, useState } from 'react'
-import type { ReactNode } from 'react'
-import type { Product } from '../../../shared/types/product'
-import { useLocalStorage } from '../hooks/useLocalStorage'
-export interface CartItem extends Product { quantity: number }
-interface ContextValue { cart: CartItem[]; addToCart: (product: Product) => void; removeFromCart: (id: number) => void; clearCart: () => void; showNotice: (message: string) => void; theme: 'light' | 'dark'; toggleTheme: () => void; token: string | null; userEmail: string | null; login: (email: string) => void; logout: () => void; notice: string | null }
-const Context = createContext<ContextValue | undefined>(undefined)
-export function AppProvider({ children }: { children: ReactNode }) { const [userEmail, setUserEmail] = useLocalStorage<string | null>('temu-user', null); const [cart, setCart] = useLocalStorage<CartItem[]>(`temu-cart-${userEmail ?? 'guest'}`, []); const [theme, setTheme] = useLocalStorage<'light' | 'dark'>('temu-theme', 'light'); const [token, setToken] = useLocalStorage<string | null>('temu-token', null); const [notice, setNotice] = useState<string | null>(null); useEffect(() => { document.documentElement.dataset.theme = theme }, [theme]); const showNotice = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(null), 2600) }; const addToCart = (product: Product) => { setCart((items) => { const item = items.find((entry) => entry.id === product.id); return item ? items.map((entry) => entry.id === product.id ? { ...entry, quantity: entry.quantity + 1 } : entry) : [...items, { ...product, quantity: 1 }] }); showNotice(`${product.title} added to cart`) }; return <Context.Provider value={{ cart, addToCart, removeFromCart: (id) => setCart((items) => items.filter((item) => item.id !== id)), clearCart: () => setCart([]), showNotice, theme, toggleTheme: () => setTheme((value) => value === 'light' ? 'dark' : 'light'), token, userEmail, notice, login: (email) => { setUserEmail(email); setToken(`mock-token-${email}`) }, logout: () => { setToken(null); setUserEmail(null) } }}>{children}</Context.Provider> }
-export function useAppContext() { const context = useContext(Context); if (!context) throw new Error('Context missing'); return context }
+import { createContext, useContext, useEffect, useState } from "react";
+import type { ReactNode } from "react";
+import type { Product } from "../../../shared/types/product";
+import { useLocalStorage } from "../hooks/useLocalStorage";
+export interface CartItem extends Product {
+  quantity: number;
+}
+interface ContextValue {
+  cart: CartItem[];
+  addToCart: (product: Product) => void;
+  removeFromCart: (id: number) => void;
+  clearCart: () => void;
+  showNotice: (message: string) => void;
+  theme: "light" | "dark";
+  toggleTheme: () => void;
+  token: string | null;
+  userEmail: string | null;
+  login: (email: string) => void;
+  logout: () => void;
+  notice: string | null;
+}
+const Context = createContext<ContextValue | undefined>(undefined);
+export function AppProvider({ children }: { children: ReactNode }) {
+  const [userEmail, setUserEmail] = useLocalStorage<string | null>(
+    "temu-user",
+    null,
+  );
+  const [cart, setCart] = useLocalStorage<CartItem[]>(
+    `temu-cart-${userEmail ?? "guest"}`,
+    [],
+  );
+  const [theme, setTheme] = useLocalStorage<"light" | "dark">(
+    "temu-theme",
+    "light",
+  );
+  const [token, setToken] = useLocalStorage<string | null>("temu-token", null);
+  const [notice, setNotice] = useState<string | null>(null);
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
+  const showNotice = (message: string) => {
+    setNotice(message);
+    window.setTimeout(() => setNotice(null), 2600);
+  };
+  const addToCart = (product: Product) => {
+    setCart((items) => {
+      const item = items.find((entry) => entry.id === product.id);
+      return item
+        ? items.map((entry) =>
+            entry.id === product.id
+              ? { ...entry, quantity: entry.quantity + 1 }
+              : entry,
+          )
+        : [...items, { ...product, quantity: 1 }];
+    });
+    showNotice(`${product.title} added to cart`);
+  };
+  return (
+    <Context.Provider
+      value={{
+        cart,
+        addToCart,
+        removeFromCart: (id) =>
+          setCart((items) => items.filter((item) => item.id !== id)),
+        clearCart: () => setCart([]),
+        showNotice,
+        theme,
+        toggleTheme: () =>
+          setTheme((value) => (value === "light" ? "dark" : "light")),
+        token,
+        userEmail,
+        notice,
+        login: (email) => {
+          setUserEmail(email);
+          setToken(`mock-token-${email}`);
+        },
+        logout: () => {
+          setToken(null);
+          setUserEmail(null);
+        },
+      }}
+    >
+      {children}
+    </Context.Provider>
+  );
+}
+export function useAppContext() {
+  const context = useContext(Context);
+  if (!context) throw new Error("Context missing");
+  return context;
+}

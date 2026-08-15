@@ -1,10 +1,20 @@
-import type { Product } from '../../../shared/types/product'
-import { Link } from 'react-router-dom'
-import { useAppContext } from '../contexts/AppContext'
-import { Button } from './Button'
+import type { Product } from "../../../shared/types/product";
+import { Link } from "react-router-dom";
+import { useAppContext } from "../contexts/AppContext";
+import { Button } from "./Button";
 
-export function Card({ id, title, price, oldPrice, sold, badge, palette, image, category }: Product) {
-  const { addToCart } = useAppContext()
+export function Card({
+  id,
+  title,
+  price,
+  oldPrice,
+  sold,
+  badge,
+  palette,
+  image,
+  category,
+}: Product) {
+  const { addToCart } = useAppContext();
   return (
     <article className={`product-card product-card-${palette}`}>
       <Link className="product-art" to={`/products/${id}`}>
@@ -23,10 +33,22 @@ export function Card({ id, title, price, oldPrice, sold, badge, palette, image, 
           <Button
             label="Add to cart"
             variant="secondary"
-            onClick={() => addToCart({ id, title, price, oldPrice, sold, badge, palette, image, category })}
+            onClick={() =>
+              addToCart({
+                id,
+                title,
+                price,
+                oldPrice,
+                sold,
+                badge,
+                palette,
+                image,
+                category,
+              })
+            }
           />
         </div>
       </div>
     </article>
-  )
+  );
 }
