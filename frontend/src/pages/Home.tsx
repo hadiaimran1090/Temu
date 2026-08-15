@@ -8,8 +8,8 @@ export function Home() {
           <p className="eyebrow">Everything you love, for less</p>
           <h1>Discover fresh deals every day.</h1>
           <p className="hero-text">
-            Products are loaded from the Express backend and carts persist
-            across refreshes.
+            Shop our wide selection of products and enjoy exclusive discounts on
+            your favorite items. Don't miss out on the best deals!
           </p>
           <Link className="action-button action-button-primary" to="/products">
             Shop products
