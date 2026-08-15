@@ -1,17 +1,16 @@
 import type { Product } from '../../../shared/types/product'
+import { Link } from 'react-router-dom'
+import { useAppContext } from '../contexts/AppContext'
 import { Button } from './Button'
 
-interface CardProps extends Product {
-  onAddToCart?: (product: Product) => void
-}
-
-export function Card({ id, title, price, oldPrice, sold, badge, palette, image, category, onAddToCart }: CardProps) {
+export function Card({ id, title, price, oldPrice, sold, badge, palette, image, category }: Product) {
+  const { addToCart } = useAppContext()
   return (
     <article className={`product-card product-card-${palette}`}>
-      <div className="product-art">
+      <Link className="product-art" to={`/products/${id}`}>
         <img className="product-image" src={image} alt={title} />
         <span>{badge}</span>
-      </div>
+      </Link>
       <div className="product-body">
         <h3>{title}</h3>
         <p className="product-category">{category}</p>
@@ -24,7 +23,7 @@ export function Card({ id, title, price, oldPrice, sold, badge, palette, image, 
           <Button
             label="Add to cart"
             variant="secondary"
-            onClick={() => onAddToCart?.({ id, title, price, oldPrice, sold, badge, palette, image, category })}
+            onClick={() => addToCart({ id, title, price, oldPrice, sold, badge, palette, image, category })}
           />
         </div>
       </div>

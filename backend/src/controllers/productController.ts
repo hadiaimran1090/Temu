@@ -14,3 +14,9 @@ export function getProducts(request: Request, response: Response) {
 
   response.json(filteredProducts)
 }
+
+export function getProduct(request: Request, response: Response) {
+  const product = products.find((item) => item.id === Number(request.params.id))
+  if (!product) return response.status(404).json({ message: 'Product not found' })
+  response.json(product)
+}
