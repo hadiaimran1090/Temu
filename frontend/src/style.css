@@ -999,6 +999,28 @@ input {
 .footer-bottom span {
   color: #d1d5db;
 }
+.footer-link,
+.nav-action-button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+.footer-link {
+  color: #d1d5db;
+}
+.footer-link:hover {
+  color: #fff;
+}
+.nav-action-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+}
 
 .footer-column {
   display: flex;
@@ -1601,6 +1623,7 @@ input {
     justify-content: flex-end;
   }
   .nav-actions a:not(.cart-icon),
+  .nav-action-button,
   .profile-menu,
   .icon-button {
     display: none;
@@ -1952,5 +1975,163 @@ input {
   }
   .modal {
     padding: 24px 18px;
+  }
+}
+
+/* Compact storefront scale */
+:root {
+  font-size: 15px;
+}
+.landing-page {
+  width: 100%;
+  max-width: none;
+}
+.page-content {
+  padding: 14px 20px 24px;
+}
+.top-bar div {
+  padding: 6px 14px;
+}
+.top-bar strong {
+  font-size: 0.84rem;
+}
+.navbar {
+  min-height: 54px;
+  gap: 16px;
+}
+.brand-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+}
+.nav-links {
+  gap: 14px;
+}
+.nav-links a,
+.nav-links .category-trigger,
+.nav-actions {
+  font-size: 0.84rem;
+}
+.search-bar {
+  min-height: 38px;
+}
+.search-icon {
+  width: 28px;
+  height: 28px;
+}
+.hero-panel {
+  gap: 20px;
+  padding: 22px;
+  border-radius: 22px;
+}
+.hero-copy h1 {
+  font-size: clamp(1.9rem, 3vw, 3.25rem);
+}
+.hero-visual {
+  min-height: 290px;
+  border-radius: 22px;
+}
+.interest-heading {
+  margin: 42px 0 12px;
+}
+.interest-heading span {
+  font-size: 1rem;
+}
+.interest-heading h1 {
+  font-size: clamp(1.25rem, 1.8vw, 1.7rem);
+}
+.interest-carousel {
+  margin-top: 12px;
+}
+.interest-chip {
+  min-width: 138px;
+  min-height: 52px;
+  padding: 9px 14px;
+  font-size: 0.88rem;
+}
+.interest-arrow {
+  width: 36px;
+  height: 36px;
+  font-size: 1.3rem;
+}
+.section-block {
+  margin-top: 22px;
+}
+.section-heading {
+  margin-bottom: 12px;
+}
+.section-heading h2 {
+  font-size: clamp(1.35rem, 2vw, 1.8rem);
+}
+.card-grid {
+  gap: 12px;
+}
+.product-body {
+  padding: 11px 10px 12px;
+}
+.product-meta strong {
+  font-size: 1.12rem;
+}
+.cart-unit-price {
+  display: block;
+  margin-top: 3px;
+  color: #64748b;
+  font-size: 0.78rem;
+}
+.about-hero {
+  padding: clamp(26px, 5vw, 58px);
+}
+.about-hero h1 {
+  font-size: clamp(1.9rem, 4vw, 3.5rem);
+}
+.auth-page {
+  min-height: 540px;
+}
+.auth-promo {
+  padding: 40px;
+}
+.auth-promo h1 {
+  font-size: 2.45rem;
+}
+
+@media (max-width: 720px) {
+  :root {
+    font-size: 14px;
+  }
+  .page-content {
+    padding: 12px;
+  }
+  .landing-page {
+    padding-top: 174px;
+  }
+  .top-bar div {
+    padding: 6px 3px;
+  }
+  .navbar {
+    min-height: 0;
+    padding: 7px 12px;
+  }
+  .brand-mark {
+    width: 40px;
+    height: 40px;
+  }
+  .hero-panel {
+    padding: 16px;
+  }
+  .hero-visual {
+    min-height: 220px;
+  }
+  .interest-heading {
+    margin-top: 28px;
+  }
+  .interest-chip {
+    min-width: 118px;
+    min-height: 46px;
+    font-size: 0.8rem;
+  }
+  .interest-arrow {
+    width: 32px;
+    height: 32px;
   }
 }

@@ -114,16 +114,16 @@ export function Navbar() {
               </div>
             )}
           </div>
-          <a href="#footer">
+          <button className="nav-action-button" type="button">
             <FaWhatsapp />
             Support
-          </a>
+          </button>
           <button className="icon-button" onClick={toggleTheme}>
             {theme === "light" ? <FaMoon /> : <FaSun />}
           </button>
-          <a href="#footer">
+          <button className="nav-action-button" type="button">
             <FaGlobe /> English
-          </a>
+          </button>
           <NavLink className="cart-icon" to="/cart">
             <FaCartShopping /> <b>{count}</b>
           </NavLink>

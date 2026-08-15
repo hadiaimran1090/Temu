@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ConfirmModal } from "../components/ConfirmModal";
 import { useAppContext } from "../contexts/AppContext";
 const price = (value: string) => Number(value.replace(/[^\d]/g, ""));
+const formatPrice = (amount: number) => `Rs. ${amount.toLocaleString()}`;
 export function Cart() {
   const { cart, removeFromCart, token } = useAppContext();
   const [selected, setSelected] = useState<number | null>(null);
@@ -26,7 +27,11 @@ export function Cart() {
                 <div>
                   <strong>{item.title}</strong>
                   <p>{item.category}</p>
-                  <b>{item.price}</b> <del>{item.oldPrice}</del>
+                  <b>{formatPrice(price(item.price) * item.quantity)}</b>{" "}
+                  <del>{formatPrice(price(item.oldPrice) * item.quantity)}</del>
+                  {item.quantity > 1 && (
+                    <small className="cart-unit-price">{item.price} each</small>
+                  )}
                 </div>
                 <span className="cart-quantity">Qty {item.quantity}</span>
                 <button

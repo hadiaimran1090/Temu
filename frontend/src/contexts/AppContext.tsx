@@ -7,7 +7,7 @@ export interface CartItem extends Product {
 }
 interface ContextValue {
   cart: CartItem[];
-  addToCart: (product: Product) => void;
+  addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (id: number) => void;
   clearCart: () => void;
   showNotice: (message: string) => void;
@@ -42,18 +42,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setNotice(message);
     window.setTimeout(() => setNotice(null), 2600);
   };
-  const addToCart = (product: Product) => {
+  const addToCart = (product: Product, quantity = 1) => {
+    const quantityToAdd = Math.max(1, Math.floor(quantity));
     setCart((items) => {
       const item = items.find((entry) => entry.id === product.id);
       return item
         ? items.map((entry) =>
             entry.id === product.id
-              ? { ...entry, quantity: entry.quantity + 1 }
+              ? { ...entry, quantity: entry.quantity + quantityToAdd }
               : entry,
           )
-        : [...items, { ...product, quantity: 1 }];
+        : [...items, { ...product, quantity: quantityToAdd }];
     });
-    showNotice(`${product.title} added to cart`);
+    showNotice(`${quantityToAdd} × ${product.title} added to cart`);
   };
   return (
     <Context.Provider

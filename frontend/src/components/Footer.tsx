@@ -46,9 +46,9 @@ export function Footer() {
           <section className="footer-column" key={group.title}>
             <h3>{group.title}</h3>
             {group.links.map((link) => (
-              <a href="#footer" key={link}>
+              <button className="footer-link" type="button" key={link}>
                 {link}
-              </a>
+              </button>
             ))}
           </section>
         ))}
@@ -101,8 +101,12 @@ export function Footer() {
       </div>
       <div className="footer-bottom">
         <span>© 2022–2026 Whaleco Inc.</span>
-        <a href="#footer">Terms of use</a>
-        <a href="#footer">Privacy policy</a>
+        <button className="footer-link" type="button">
+          Terms of use
+        </button>
+        <button className="footer-link" type="button">
+          Privacy policy
+        </button>
       </div>
     </footer>
   );

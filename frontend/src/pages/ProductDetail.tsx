@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
 import { useFetch } from "../hooks/useFetch";
@@ -5,6 +6,7 @@ import { fetchProduct } from "../services/api";
 export function ProductDetail() {
   const { id = "" } = useParams();
   const { addToCart } = useAppContext();
+  const [quantity, setQuantity] = useState(1);
   const {
     data: product,
     loading,
@@ -43,15 +45,18 @@ export function ProductDetail() {
         </p>
         <label>
           <b>Qty</b>{" "}
-          <select>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
+          <select
+            value={quantity}
+            onChange={(event) => setQuantity(Number(event.target.value))}
+          >
+            <option value={1}>1</option>
+            <option value={2}>2</option>
+            <option value={3}>3</option>
           </select>
         </label>
         <button
           className="detail-cart-button"
-          onClick={() => addToCart(product)}
+          onClick={() => addToCart(product, quantity)}
         >
           Add to cart
         </button>
