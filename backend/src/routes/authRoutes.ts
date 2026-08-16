@@ -3,7 +3,7 @@ import { login, register } from "../controllers/authController";
 
 const authRoutes = Router();
 
-authRoutes.post("/auth/register", register);
+authRoutes.post("/auth/register", register); //http://localhost:3001/api/auth/login
 authRoutes.post("/auth/login", login);
 
 export default authRoutes;
