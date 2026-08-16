@@ -1,6 +1,7 @@
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useAppContext } from "../contexts/AppContext";
+import { placeOrderApi } from "../services/api";
 
 const textWithLetters = (message: string) =>
   Yup.string()
@@ -101,15 +102,31 @@ export function Checkout() {
             postalCode: "",
           }}
           validationSchema={schema}
-          onSubmit={() => {
+          onSubmit={async (values, { setSubmitting }) => {
             if (!cart.length) {
               showNotice(
                 "Your cart is empty. Add an item before placing an order.",
               );
               return;
             }
-            clearCart();
-            showNotice("Checkout successful — your order has been placed.");
+            try {
+              await placeOrderApi({
+                name: values.name,
+                email: values.email,
+                phone: values.phone,
+                address: values.address,
+                city: values.city,
+                postalCode: values.postalCode,
+              });
+              clearCart();
+              showNotice("Checkout successful — your order has been placed.");
+            } catch (err: any) {
+              console.error(err);
+              const errMsg = err.response?.data?.message || "Failed to place order. Please try again.";
+              showNotice(errMsg);
+            } finally {
+              setSubmitting(false);
+            }
           }}
         >
           {({
