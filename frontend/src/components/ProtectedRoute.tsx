@@ -7,7 +7,6 @@ export function ProtectedRoute() {
     <Navigate
       to="/login"
       replace
-      state={{ message: "Please sign in to continue to checkout." }}
     />
   );
 }

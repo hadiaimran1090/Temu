@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { ReactNode } from "react";
 import type { Product } from "../../../shared/types/product";
 import type { CartItem } from "../../../shared/types/cart";
@@ -29,6 +30,7 @@ interface ContextValue {
 const Context = createContext<ContextValue | undefined>(undefined);
 
 export function AppProvider({ children }: { children: ReactNode }) {
+  const navigate = useNavigate();
   const [userEmail, setUserEmail] = useLocalStorage<string | null>(
     "temu-user",
     null,

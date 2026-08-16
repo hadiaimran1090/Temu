@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
 import { loginUser, registerUser } from "../services/api";
 
@@ -18,29 +18,12 @@ const validation = Yup.object({
 export function Auth({ register = false }: { register?: boolean }) {
   const { token, login } = useAppContext();
   const navigate = useNavigate();
-  const location = useLocation();
 
   if (token) return <Navigate to="/cart" replace />;
 
   const complete = (email: string, tokenVal: string) => {
     login(email, tokenVal);
-    navigate("/checkout");
-  };
-
-  const handleGoogleAuth = async () => {
-    const email = "google.user@temu.demo";
-    const password = "GooglePassword12345";
-    try {
-      try {
-        const data = await loginUser({ email, password });
-        complete(data.email, data.token);
-      } catch (loginErr) {
-        const data = await registerUser({ email, password });
-        complete(data.email, data.token);
-      }
-    } catch (err) {
-      console.error("Google auth failed:", err);
-    }
+    navigate("/");
   };
 
   return (
@@ -61,11 +44,6 @@ export function Auth({ register = false }: { register?: boolean }) {
       <div className="content-card form-card">
         <p className="eyebrow">WELCOME TO TEMU</p>
         <h1>{register ? "Create your account" : "Welcome back"}</h1>
-        {location.state && (
-          <p className="login-note">
-            {(location.state as { message: string }).message}
-          </p>
-        )}
         <Formik
           initialValues={{ email: "", password: "" }}
           validationSchema={validation}
@@ -143,15 +121,6 @@ export function Auth({ register = false }: { register?: boolean }) {
             </form>
           )}
         </Formik>
-        <div className="or-divider">
-          <span>or</span>
-        </div>
-        <button
-          className="google-button"
-          onClick={handleGoogleAuth}
-        >
-          <b>G</b> Continue with Google
-        </button>
         <p>
           {register ? "Already have an account?" : "New to Temu?"}{" "}
           <Link to={register ? "/login" : "/register"}>

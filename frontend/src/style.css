@@ -1731,20 +1731,6 @@ input {
   height: 1px;
   background: #e2e8f0;
 }
-.google-button {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #d1d5db;
-  background: #fff;
-  border-radius: 999px;
-  cursor: pointer;
-  font-weight: 700;
-}
-.google-button b {
-  color: #4285f4;
-  font-size: 1.1rem;
-  margin-right: 8px;
-}
 .login-note {
   padding: 10px;
   color: #9a3412;
@@ -1924,6 +1910,29 @@ input {
   opacity: 0.55;
   box-shadow: none;
 }
+
+.orders-page {
+  max-width: 980px;
+  margin: 42px auto;
+  padding: 0 20px;
+}
+
+.empty-orders { text-align: center; padding: 72px 20px; }
+.empty-orders .action-button { display: inline-block; margin-top: 12px; }
+.orders-heading { display: flex; align-items: end; justify-content: space-between; gap: 18px; margin-bottom: 24px; }
+.orders-heading h1 { margin: 4px 0; }
+.orders-heading span { color: #64748b; }
+.orders-heading > a { color: #e85d04; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.order-card { background: var(--surface, #fff); border: 1px solid var(--border, #e5e5e5); border-radius: 14px; margin: 18px 0; overflow: hidden; box-shadow: 0 5px 18px rgba(15, 23, 42, .06); }
+.order-card header, .order-card footer { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; }
+.order-card header span, .order-product small { display: block; color: #707070; font-size: .88rem; margin-top: 4px; }
+.order-card header strong { color: #087443; background: #e9f8ef; border-radius: 999px; padding: 6px 10px; font-size: .84rem; }
+.order-card footer { border-top: 1px solid var(--border, #e5e5e5); }
+.order-products { padding: 0 20px; }
+.order-product { display: flex; gap: 14px; align-items: center; padding: 12px 0; }
+.order-product img { width: 54px; height: 54px; object-fit: cover; border-radius: 6px; }
+.order-product span { flex: 1; }
+@media (max-width: 560px) { .orders-heading { align-items: flex-start; flex-direction: column; } .order-card header, .order-card footer { padding: 14px; } .order-products { padding: 0 14px; } }
 @media (max-width: 720px) {
   .cart-page,
   .checkout-page {

@@ -73,4 +73,17 @@ export async function placeOrderApi(orderDetails: any) {
   return data;
 }
 
+export interface OrderResponse {
+  id: number;
+  totalPrice: number;
+  status: string;
+  createdAt: string;
+  items: { id: number; productId: number; quantity: number; price: string; title: string; image?: string }[];
+}
+
+export async function fetchOrders() {
+  const { data } = await api.get<OrderResponse[]>("/orders");
+  return data;
+}
+
 export default api;

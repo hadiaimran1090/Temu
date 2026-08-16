@@ -2,6 +2,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useAppContext } from "../contexts/AppContext";
 import { placeOrderApi } from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 const textWithLetters = (message: string) =>
   Yup.string()
@@ -79,6 +80,7 @@ const fields = [
 const price = (value: string) => Number(value.replace(/[^\d]/g, ""));
 
 export function Checkout() {
+  const navigate = useNavigate();
   const { cart, userEmail, clearCart, showNotice } = useAppContext();
   const total = cart.reduce(
     (sum, item) => sum + price(item.price) * item.quantity,
@@ -119,6 +121,7 @@ export function Checkout() {
                 postalCode: values.postalCode,
               });
               clearCart();
+              window.setTimeout(() => navigate("/orders"), 1100);
               showNotice("Checkout successful — your order has been placed.");
             } catch (err: any) {
               console.error(err);

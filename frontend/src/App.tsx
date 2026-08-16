@@ -10,10 +10,11 @@ import { Home } from "./pages/Home";
 import { NotFound } from "./pages/NotFound";
 import { ProductDetail } from "./pages/ProductDetail";
 import { Products } from "./pages/Products";
+import { Orders } from "./pages/Orders";
 export default function App() {
   return (
-    <AppProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AppProvider>
         <Routes>
           <Route element={<Layout />}>
             <Route index element={<Home />} />
@@ -24,12 +25,15 @@ export default function App() {
             <Route path="checkout" element={<ProtectedRoute />}>
               <Route index element={<Checkout />} />
             </Route>
+            <Route path="orders" element={<ProtectedRoute />}>
+              <Route index element={<Orders />} />
+            </Route>
             <Route path="login" element={<Auth />} />
             <Route path="register" element={<Auth register />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
-      </BrowserRouter>
-    </AppProvider>
+      </AppProvider>
+    </BrowserRouter>
   );
 }

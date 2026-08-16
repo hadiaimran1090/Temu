@@ -4,25 +4,15 @@ import { products } from "../data/products";
 export async function initDb() {
   console.log("Initializing database tables...");
 
-  // 1. Create users table (password_hash is nullable for Google-only users)
+  // 1. Create users table
   await query(`
     CREATE TABLE IF NOT EXISTS users (
       id SERIAL PRIMARY KEY,
       email VARCHAR(255) UNIQUE NOT NULL,
-      password_hash VARCHAR(255),
-      google_id VARCHAR(255) UNIQUE,
+      password_hash VARCHAR(255) NOT NULL,
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     );
   `);
-
-  // Migrate existing users table: make password_hash nullable, add google_id
-  await query(`
-    ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL;
-  `).catch(() => { /* column already nullable */ });
-
-  await query(`
-    ALTER TABLE users ADD COLUMN IF NOT EXISTS google_id VARCHAR(255) UNIQUE;
-  `).catch(() => { /* column already exists */ });
 
   // 2. Create products table
   await query(`

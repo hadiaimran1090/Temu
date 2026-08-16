@@ -103,6 +103,7 @@ export function Navbar() {
               <div className="profile-dropdown">
                 <b>{userEmail}</b>
                 <NavLink to="/cart">My cart</NavLink>
+                <NavLink to="/orders">My orders</NavLink>
                 <button
                   onClick={() => {
                     logout();
