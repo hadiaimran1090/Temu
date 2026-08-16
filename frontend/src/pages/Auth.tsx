@@ -19,7 +19,7 @@ export function Auth({ register = false }: { register?: boolean }) {
   const { token, login } = useAppContext();
   const navigate = useNavigate();
 
-  if (token) return <Navigate to="/cart" replace />;
+  if (token) return <Navigate to="/" replace />;
 
   const complete = (email: string, tokenVal: string) => {
     login(email, tokenVal);
