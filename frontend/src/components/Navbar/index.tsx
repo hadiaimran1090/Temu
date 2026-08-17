@@ -108,7 +108,7 @@ export function Navbar() {
         <NavLink className="w-[50px] h-[50px] rounded-[14px] bg-gradient-to-br from-[#ff8c1a] to-[#ff5f28] grid place-items-center font-black tracking-[0.08em] shadow-[0_12px_24px_rgba(255,111,31,0.35)] text-white no-underline max-[720px]:w-[46px] max-[720px]:h-[46px] max-[720px]:text-[0.7rem]" to="/">
           {t("brand")}
         </NavLink>
-        <nav className="flex flex-wrap gap-3 font-semibold max-[1100px]:justify-center max-[720px]:order-3 max-[720px]:col-span-full max-[720px]:justify-start max-[720px]:gap-3 max-[720px]:overflow-x-auto max-[720px]:flex-nowrap max-[720px]:pb-[2px]">
+        <nav className="flex items-center flex-wrap gap-3 font-semibold max-[1100px]:justify-center max-[720px]:order-3 max-[720px]:col-span-full max-[720px]:justify-start max-[720px]:gap-3 max-[720px]:overflow-x-auto max-[720px]:flex-nowrap max-[720px]:pb-[2px]">
           <NavLink className="text-white no-underline text-[0.86rem] whitespace-nowrap active:underline active:text-[#fff3c4] [&.active]:text-[#fff3c4] [&.active]:underline [&.active]:underline-offset-[5px] max-[720px]:text-[0.72rem]" to="/products">{t("bestSelling")}</NavLink>
           <NavLink className="text-white no-underline text-[0.86rem] whitespace-nowrap active:underline active:text-[#fff3c4] [&.active]:text-[#fff3c4] [&.active]:underline [&.active]:underline-offset-[5px] max-[720px]:text-[0.72rem]" to="/about">{t("about")}</NavLink>
           <NavLink className="text-white no-underline text-[0.86rem] whitespace-nowrap active:underline active:text-[#fff3c4] [&.active]:text-[#fff3c4] [&.active]:underline [&.active]:underline-offset-[5px] max-[720px]:text-[0.72rem]" to="/products">{t("newIn")}</NavLink>
