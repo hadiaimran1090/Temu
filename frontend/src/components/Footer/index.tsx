@@ -6,6 +6,7 @@ import {
   FaYoutube,
 } from "react-icons/fa6";
 import { FaXTwitter } from "react-icons/fa6";
+import { useTranslation } from "../../hooks/useTranslation";
 import "./Footer.css";
 
 const groups = [
@@ -41,33 +42,65 @@ const groups = [
   },
 ];
 
+const getGroupTitleKey = (title: string) => {
+  const map: Record<string, string> = {
+    "Company info": "footerCompanyInfo",
+    "Customer service": "footerCustomerService",
+    "Help": "footerHelp",
+  };
+  return (map[title] || title) as any;
+};
+
+const getLinkKey = (link: string) => {
+  const map: Record<string, string> = {
+    "About Temu": "link_AboutTemu",
+    "Affiliate & Influencer Program": "link_Affiliate",
+    "Contact us": "link_Contact",
+    "Careers": "link_Careers",
+    "Press": "link_Press",
+    "Temu's Tree Planting Program": "link_Tree",
+    "Return and refund policy": "link_Return",
+    "Intellectual property policy": "link_IP",
+    "Shipping info": "link_Shipping",
+    "Report suspicious activity": "link_Report",
+    "Support center & FAQ": "link_Support",
+    "Safety center": "link_Safety",
+    "Temu purchase protection": "link_Protection",
+    "Sitemap": "link_Sitemap",
+    "Partner with Temu": "link_Partner",
+  };
+  return (map[link] || link) as any;
+};
+
 export function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer className="footer">
       <div className="footer-columns">
         {groups.map((group) => (
           <section className="footer-column" key={group.title}>
-            <h3>{group.title}</h3>
+            <h3>{t(getGroupTitleKey(group.title))}</h3>
             {group.links.map((link) => (
               <button className="footer-link" type="button" key={link}>
-                {link}
+                {t(getLinkKey(link))}
               </button>
             ))}
           </section>
         ))}
         <section className="footer-column footer-downloads">
-          <h3>Download the Temu App</h3>
+          <h3>{t("footerDownloadApp")}</h3>
           <div className="download-perks">
-            <span>◉ Price-drop alerts</span>
-            <span>▣ Track orders any time</span>
-            <span>◆ Exclusive offers</span>
-            <span>◇ Coupons & offers alerts</span>
+            <span>{t("footerPriceDrop")}</span>
+            <span>{t("footerTrackOrders")}</span>
+            <span>{t("footerExclusiveOffers")}</span>
+            <span>{t("footerCouponsAlerts")}</span>
           </div>
           <div className="app-badges">
             <span>&nbsp; App Store</span>
             <span>▶ Google Play</span>
           </div>
-          <h3>Connect with Temu</h3>
+          <h3>{t("footerConnect")}</h3>
           <div className="social-row">
             <FaInstagram />
             <FaFacebookF />
@@ -80,7 +113,7 @@ export function Footer() {
       </div>
       <div className="footer-certifications-row">
         <section className="footer-certifications-group">
-          <h3>Security certification</h3>
+          <h3>{t("footerSecurityCert")}</h3>
           <div className="payment-pills">
             <span>PCI DSS</span>
             <span>VISA Secure</span>
@@ -90,7 +123,7 @@ export function Footer() {
           </div>
         </section>
         <section className="footer-certifications-group">
-          <h3>We accept</h3>
+          <h3>{t("footerWeAccept")}</h3>
           <div className="payment-pills">
             <span>JazzCash</span>
             <span>easypaisa</span>
@@ -105,10 +138,10 @@ export function Footer() {
       <div className="footer-bottom">
         <span>© 2022–2026 Whaleco Inc.</span>
         <button className="footer-link" type="button">
-          Terms of use
+          {t("footerTerms")}
         </button>
         <button className="footer-link" type="button">
-          Privacy policy
+          {t("footerPrivacy")}
         </button>
       </div>
     </footer>
