@@ -1,7 +1,9 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAppContext } from "../contexts/AppContext";
+import { useAppSelector } from "../../store";
+
 export function ProtectedRoute() {
-  return useAppContext().token ? (
+  const token = useAppSelector((state) => state.auth.token);
+  return token ? (
     <Outlet />
   ) : (
     <Navigate

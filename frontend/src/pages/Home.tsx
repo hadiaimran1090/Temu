@@ -1,24 +1,27 @@
 import { Link } from "react-router-dom";
 import { Products } from "./Products";
+import { useTranslation } from "../hooks/useTranslation";
+
 export function Home() {
+  const { t } = useTranslation();
+
   return (
     <>
       <section className="hero-panel">
         <div className="hero-copy">
-          <p className="eyebrow">Everything you love, for less</p>
-          <h1>Discover fresh deals every day.</h1>
+          <p className="eyebrow">{t("heroEyebrow")}</p>
+          <h1>{t("heroHeading")}</h1>
           <p className="hero-text">
-            Shop our wide selection of products and enjoy exclusive discounts on
-            your favorite items. Don't miss out on the best deals!
+            {t("heroText")}
           </p>
           <Link className="action-button action-button-primary" to="/products">
-            Shop products
+            {t("heroButton")}
           </Link>
         </div>
         <div className="hero-visual">
           <div className="floating-card floating-card-large">
-            <span>Live shopping</span>
-            <strong>New deals are waiting</strong>
+            <span>{t("taxStripCopy")}</span>
+            <strong>{t("lightningDeals")}</strong>
           </div>
         </div>
       </section>

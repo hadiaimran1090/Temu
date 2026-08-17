@@ -1,3 +1,5 @@
+import "./ConfirmModal.css";
+
 export function ConfirmModal({
   onConfirm,
   onCancel,

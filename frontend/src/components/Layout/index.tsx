@@ -1,17 +1,22 @@
 import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import { Navbar } from "./Navbar";
-import { Footer } from "./Footer";
-import { useAppContext } from "../contexts/AppContext";
+import { Navbar } from "../Navbar";
+import { Footer } from "../Footer";
+import { useAppSelector } from "../../store";
+import { useTranslation } from "../../hooks/useTranslation";
+import "./Layout.css";
+
 export function Layout() {
-  const { notice } = useAppContext();
+  const notice = useAppSelector((state) => state.notice.message);
+  const { isRtl } = useTranslation();
   const { pathname } = useLocation();
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [pathname]);
+
   return (
-    <div className="landing-page">
+    <div className="landing-page" dir={isRtl ? "rtl" : "ltr"}>
       <Navbar />
       <main className="page-content">
         <Outlet />

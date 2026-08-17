@@ -1,19 +1,26 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useAppContext } from "../contexts/AppContext";
+import { useAppDispatch } from "../store";
+import { addToCart } from "../store/slices/cartSlice";
+import { useTranslation } from "../hooks/useTranslation";
 import { useFetch } from "../hooks/useFetch";
 import { fetchProduct } from "../services/api";
+
 export function ProductDetail() {
   const { id = "" } = useParams();
-  const { addToCart } = useAppContext();
+  const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const [quantity, setQuantity] = useState(1);
+
   const {
     data: product,
     loading,
     error,
   } = useFetch((signal) => fetchProduct(id, signal), [id]);
-  if (loading) return <p>Loading product...</p>;
-  if (error || !product) return <p>Product not found.</p>;
+
+  if (loading) return <p>{t("loadingProduct")}</p>;
+  if (error || !product) return <p>{t("productNotFound")}</p>;
+
   return (
     <article className="detail">
       <aside className="detail-thumbs">
@@ -28,23 +35,23 @@ export function ProductDetail() {
       />
       <div className="detail-info">
         <p className="detail-title">
-          {product.title} – Simple, elegant, perfect for everyday wear
+          {product.title} – {t("simpleElegant")}
         </p>
         <p>
-          {product.sold} | Sold by Temu <b className="rating">4.8 ★★★★★</b>
+          {product.sold} | {t("soldByTemu")} <b className="rating">4.8 ★★★★★</b>
         </p>
-        <span className="detail-tag">#6 Top Rated</span>
+        <span className="detail-tag">#6 {t("topRated")}</span>
         <h1>
           {product.price} <del>{product.oldPrice}</del>
         </h1>
         <div className="shipping-note">
-          ✓ Free shipping &nbsp; | &nbsp; ✓ Rs.280 credit for delay
+          ✓ {t("freeShipping")} &nbsp; | &nbsp; ✓ {t("creditDelay")}
         </div>
         <p>
-          <b>Color:</b> 🔥 {product.palette}
+          <b>{t("color")}:</b> 🔥 {product.palette}
         </p>
         <label>
-          <b>Qty</b>{" "}
+          <b>{t("qty")}</b>{" "}
           <select
             value={quantity}
             onChange={(event) => setQuantity(Number(event.target.value))}
@@ -56,17 +63,17 @@ export function ProductDetail() {
         </label>
         <button
           className="detail-cart-button"
-          onClick={() => addToCart(product, quantity)}
+          onClick={() => dispatch(addToCart({ product, quantity }))}
         >
-          Add to cart
+          {t("addToCart")}
         </button>
         <div className="delivery-info">
-          <b>🚚 Free shipping on all orders ›</b>
-          <p>Delivery: Aug 23–Sep 4</p>
-          <b>🛡 Why choose Temu? ›</b>
+          <b>🚚 {t("deliveryInfo")}</b>
+          <p>{t("deliveryDate")}</p>
+          <b>🛡 {t("whyChooseTemu")}</b>
         </div>
         <p>
-          <Link to="/products">← Back to products</Link>
+          <Link to="/products">{t("backToProducts")}</Link>
         </p>
       </div>
     </article>

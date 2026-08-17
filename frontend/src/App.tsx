@@ -1,7 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import { AppProvider } from "./contexts/AppContext";
+import { Provider } from "react-redux";
+import { store } from "./store";
 import { About } from "./pages/About";
 import { Auth } from "./pages/Auth";
 import { Cart } from "./pages/Cart";
@@ -11,10 +12,11 @@ import { NotFound } from "./pages/NotFound";
 import { ProductDetail } from "./pages/ProductDetail";
 import { Products } from "./pages/Products";
 import { Orders } from "./pages/Orders";
+
 export default function App() {
   return (
-    <BrowserRouter>
-      <AppProvider>
+    <Provider store={store}>
+      <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
             <Route index element={<Home />} />
@@ -33,7 +35,7 @@ export default function App() {
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
-      </AppProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </Provider>
   );
 }

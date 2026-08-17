@@ -1,26 +1,27 @@
+import { useTranslation } from "../hooks/useTranslation";
+
 export function About() {
+  const { t } = useTranslation();
+
   return (
     <section className="about-page">
       <div className="about-hero">
-        <p>SHOP SMARTER, LIVE BRIGHTER</p>
-        <h1>Big value. Small prices. Everyday joy.</h1>
-        <span>
-          We help people discover practical products and delightful deals
-          without the usual shopping stress.
-        </span>
+        <p>{t("aboutHeroText")}</p>
+        <h1>{t("aboutHeroTitle")}</h1>
+        <span>{t("aboutHeroDesc")}</span>
       </div>
       <div className="about-grid">
         <article>
-          <b>Millions of finds</b>
-          <p>Fresh picks across home, style, tech and more.</p>
+          <b>{t("aboutMillionsTitle")}</b>
+          <p>{t("aboutMillionsDesc")}</p>
         </article>
         <article>
-          <b>Secure shopping</b>
-          <p>Clear prices, protected payments and helpful support.</p>
+          <b>{t("aboutSecureTitle")}</b>
+          <p>{t("aboutSecureDesc")}</p>
         </article>
         <article>
-          <b>Delivered with care</b>
-          <p>Easy ordering from discovery through delivery.</p>
+          <b>{t("aboutDeliveredTitle")}</b>
+          <p>{t("aboutDeliveredDesc")}</p>
         </article>
       </div>
     </section>

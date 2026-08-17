@@ -11,7 +11,14 @@ import {
 } from "react-icons/fa6";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useAppContext } from "../contexts/AppContext";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { clearAuth } from "../../store/slices/authSlice";
+import { syncCart } from "../../store/slices/cartSlice";
+import { toggleTheme } from "../../store/slices/themeSlice";
+import { setLanguage } from "../../store/slices/languageSlice";
+import { useTranslation } from "../../hooks/useTranslation";
+import "./Navbar.css";
+
 const menu = [
   { name: "Featured", image: "/products/wallet.jpg" },
   { name: "Home & Kitchen", image: "/products/organizer.jpg" },
@@ -26,59 +33,98 @@ const menu = [
   { name: "Accessories", image: "/products/earbuds.jpg" },
   { name: "Cases, Holsters & Sleeves", image: "/products/phone.jpg" },
 ];
+
+const getCategoryKey = (category: string) => {
+  const map: Record<string, string> = {
+    "Featured": "cat_Featured",
+    "Home & Kitchen": "cat_HomeKitchen",
+    "Women's Clothing": "cat_WomensClothing",
+    "Women's Shoes": "cat_WomensShoes",
+    "Men's Clothing": "cat_MensClothing",
+    "Men's Underwear & Sleepwear": "cat_MensUnderwearSleepwear",
+    "Sports & Outdoors": "cat_SportsOutdoors",
+    "Women's Jewelry": "cat_WomensJewelry",
+    "Beauty & Personal Care": "cat_BeautyPersonalCare",
+    "Toys & Games": "cat_ToysGames",
+    "Accessories": "cat_Accessories",
+    "Cases, Holsters & Sleeves": "cat_CasesHolstersSleeves",
+    "Office & School Supplies": "cat_OfficeSchoolSupplies",
+    "All": "cat_All",
+  };
+  return (map[category] || "cat_All") as any;
+};
+
 export function Navbar() {
-  const { cart, theme, toggleTheme, token, userEmail, logout } =
-    useAppContext();
+  const cart = useAppSelector((state) => state.cart.items);
+  const theme = useAppSelector((state) => state.theme.theme);
+  const token = useAppSelector((state) => state.auth.token);
+  const userEmail = useAppSelector((state) => state.auth.userEmail);
+  const dispatch = useAppDispatch();
+  const { t, language } = useTranslation();
+
   const [profileOpen, setProfileOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const count = cart.reduce((total, item) => total + item.quantity, 0);
+
   const submitSearch = (event: React.FormEvent) => {
     event.preventDefault();
     navigate(`/products?search=${encodeURIComponent(search)}`);
   };
+
   const selectCategory = (category: string) => {
     setCategoryOpen(false);
     navigate(`/products?category=${encodeURIComponent(category)}`);
   };
+
+  const handleLogout = () => {
+    dispatch(clearAuth());
+    dispatch(syncCart());
+    setProfileOpen(false);
+  };
+
+  const handleLanguageToggle = () => {
+    dispatch(setLanguage(language === "en" ? "ur" : "en"));
+  };
+
   return (
     <header className="site-header site-header-visible">
       <div className="top-bar top-bar-main">
         <div>
           <FaTruck />
-          <strong>Free shipping on all orders</strong>
-          <span>Limited-time offer</span>
+          <strong>{t("freeShippingOrders")}</strong>
+          <span>{t("limitedTimeOffer")}</span>
         </div>
         <div>
-          <strong>Free returns</strong>
-          <span>Up to 90 days*</span>
+          <strong>{t("freeReturns")}</strong>
+          <span>{t("upTo90Days")}</span>
         </div>
         <div>
-          <strong>Get the Temu App</strong>
-          <span>Track orders any time</span>
+          <strong>{t("getTemuApp")}</strong>
+          <span>{t("trackOrdersTime")}</span>
         </div>
       </div>
       <div className="navbar">
         <NavLink className="brand-mark" to="/">
-          TEMU
+          {t("brand")}
         </NavLink>
         <nav className="nav-links">
-          <NavLink to="/products">Best-Selling Items</NavLink>
-          <NavLink to="/about">About</NavLink>
-          <NavLink to="/products">New In</NavLink>
+          <NavLink to="/products">{t("bestSelling")}</NavLink>
+          <NavLink to="/about">{t("about")}</NavLink>
+          <NavLink to="/products">{t("newIn")}</NavLink>
           <button
             className="category-trigger"
             onClick={() => setCategoryOpen(!categoryOpen)}
           >
-            Categories <FaChevronDown />
+            {t("categories")} <FaChevronDown />
           </button>
         </nav>
         <form className="search-bar" onSubmit={submitSearch}>
           <input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search our products"
+            placeholder={t("searchPlaceholder")}
           />
           <button className="search-icon" aria-label="Search">
             <FaMagnifyingGlass />
@@ -96,34 +142,29 @@ export function Navbar() {
             ) : (
               <NavLink to="/login">
                 <FaRegUser />
-                Orders & Account
+                {t("ordersAccount")}
               </NavLink>
             )}
             {profileOpen && (
               <div className="profile-dropdown">
                 <b>{userEmail}</b>
-                <NavLink to="/cart">My cart</NavLink>
-                <NavLink to="/orders">My orders</NavLink>
-                <button
-                  onClick={() => {
-                    logout();
-                    setProfileOpen(false);
-                  }}
-                >
-                  Logout
+                <NavLink to="/cart">{t("myCart")}</NavLink>
+                <NavLink to="/orders">{t("myOrders")}</NavLink>
+                <button onClick={handleLogout}>
+                  {t("logout")}
                 </button>
               </div>
             )}
           </div>
           <button className="nav-action-button" type="button">
             <FaWhatsapp />
-            Support
+            {t("support")}
           </button>
-          <button className="icon-button" onClick={toggleTheme}>
+          <button className="icon-button" onClick={() => dispatch(toggleTheme())}>
             {theme === "light" ? <FaMoon /> : <FaSun />}
           </button>
-          <button className="nav-action-button" type="button">
-            <FaGlobe /> English
+          <button className="nav-action-button" type="button" onClick={handleLanguageToggle}>
+            <FaGlobe /> {language === "en" ? "English" : "اردو"}
           </button>
           <NavLink className="cart-icon" to="/cart">
             <FaCartShopping /> <b>{count}</b>
@@ -146,7 +187,7 @@ export function Navbar() {
               "Toys & Games",
             ].map((category) => (
               <button key={category} onClick={() => selectCategory(category)}>
-                {category} ›
+                {t(getCategoryKey(category))} ›
               </button>
             ))}
           </aside>
@@ -154,7 +195,7 @@ export function Navbar() {
             {menu.map((item) => (
               <button key={item.name} onClick={() => selectCategory(item.name)}>
                 <img src={item.image} alt="" />
-                <span>{item.name}</span>
+                <span>{t(getCategoryKey(item.name))}</span>
               </button>
             ))}
           </div>

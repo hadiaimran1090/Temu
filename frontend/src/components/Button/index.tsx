@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
+import "./Button.css";
 
 type ButtonVariant = "primary" | "secondary" | "ghost";
 
@@ -12,11 +13,12 @@ export function Button({
   label,
   variant = "primary",
   type = "button",
+  className = "",
   ...buttonProps
 }: ButtonProps) {
   return (
     <button
-      className={`action-button action-button-${variant}`}
+      className={`action-button action-button-${variant} ${className}`}
       type={type}
       {...buttonProps}
     >

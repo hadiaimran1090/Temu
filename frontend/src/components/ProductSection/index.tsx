@@ -1,5 +1,6 @@
-import type { Product } from "../../../shared/types/product";
-import { Card } from "./Card";
+import type { Product } from "../../../../shared/types/product";
+import { Card } from "../Card";
+import "./ProductSection.css";
 
 interface ProductSectionProps {
   products: Product[];

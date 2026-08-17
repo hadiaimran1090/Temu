@@ -5,6 +5,8 @@ import { ProductSection } from "../components/ProductSection";
 import { useDebounce } from "../hooks/useDebounce";
 import { useFetch } from "../hooks/useFetch";
 import { fetchProducts } from "../services/api";
+import { useTranslation } from "../hooks/useTranslation";
+
 export const categories = [
   "All",
   "Featured",
@@ -21,28 +23,33 @@ export const categories = [
   "Cases, Holsters & Sleeves",
   "Office & School Supplies",
 ];
+
 export function Products() {
   const [params] = useSearchParams();
   const requestedCategory = params.get("category") ?? "All";
   const [category, setCategory] = useState(requestedCategory);
   const search = params.get("search") ?? "";
+  const { t } = useTranslation();
+
   useEffect(() => setCategory(requestedCategory), [requestedCategory]);
   const debounced = useDebounce(search);
   const apiCategory = category === "Featured" ? "All" : category;
+
   const { data, loading, error } = useFetch(
     (signal) =>
       fetchProducts({ category: apiCategory, search: debounced }, signal),
     [apiCategory, debounced],
   );
+
   return (
     <section>
       <div className="tax-strip">
-        <div className="tax-badge">Tax & Customs Policy</div>
-        <div className="tax-copy">Hassle-free tax service</div>
+        <div className="tax-badge">{t("taxStripBadge")}</div>
+        <div className="tax-copy">{t("taxStripCopy")}</div>
       </div>
       <div className="interest-heading">
-        <span>SUMMER SALE</span>
-        <h1>EXPLORE YOUR INTERESTS</h1>
+        <span>{t("summerSale")}</span>
+        <h1>{t("exploreInterests")}</h1>
       </div>
       <CategoryFilter
         categories={categories}

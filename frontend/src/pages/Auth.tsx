@@ -1,52 +1,57 @@
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { useAppContext } from "../contexts/AppContext";
+import { useAppDispatch, useAppSelector } from "../store";
+import { setAuth } from "../store/slices/authSlice";
+import { mergeGuestCart, syncCart } from "../store/slices/cartSlice";
+import { useTranslation } from "../hooks/useTranslation";
 import { loginUser, registerUser } from "../services/api";
 
-const validation = Yup.object({
-  email: Yup.string()
-    .email("Enter a valid email address")
-    .required("Email is required"),
-  password: Yup.string()
-    .min(8, "Password must be at least 8 characters")
-    .matches(/[A-Z]/, "Use at least one capital letter")
-    .matches(/[0-9]/, "Use at least one number")
-    .required("Password is required"),
-});
-
 export function Auth({ register = false }: { register?: boolean }) {
-  const { token, login } = useAppContext();
+  const token = useAppSelector((state) => state.auth.token);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   if (token) return <Navigate to="/" replace />;
 
-  const complete = (email: string, tokenVal: string) => {
-    login(email, tokenVal);
+  const complete = async (email: string, tokenVal: string) => {
+    dispatch(setAuth({ email, token: tokenVal }));
+    await dispatch(mergeGuestCart());
+    await dispatch(syncCart());
     navigate("/");
   };
+
+  const getValidationSchema = () =>
+    Yup.object({
+      email: Yup.string()
+        .email(t("emailInvalid"))
+        .required(t("emailRequired")),
+      password: Yup.string()
+        .min(8, t("passwordTooShort"))
+        .matches(/[A-Z]/, t("passwordCapital"))
+        .matches(/[0-9]/, t("passwordNumber"))
+        .required(t("passwordRequired")),
+    });
 
   return (
     <section className="auth-page">
       <div className="auth-promo">
-        <strong>TEMU</strong>
-        <h1>Find your next favorite thing.</h1>
-        <p>
-          Sign in to save your personal cart, track orders and unlock more
-          deals.
-        </p>
+        <strong>{t("brand")}</strong>
+        <h1>{t("findNextFavorite")}</h1>
+        <p>{t("authPromoSub")}</p>
         <div>
-          ✓ Free shipping
-          <br />✓ Secure checkout
-          <br />✓ Easy returns
+          ✓ {t("freeShipping")}
+          <br />✓ {t("secureCheckout")}
+          <br />✓ {t("easyReturns")}
         </div>
       </div>
       <div className="content-card form-card">
-        <p className="eyebrow">WELCOME TO TEMU</p>
-        <h1>{register ? "Create your account" : "Welcome back"}</h1>
+        <p className="eyebrow">{t("welcomeToTemu")}</p>
+        <h1>{register ? t("createAccount") : t("welcomeBack")}</h1>
         <Formik
           initialValues={{ email: "", password: "" }}
-          validationSchema={validation}
+          validationSchema={getValidationSchema()}
           onSubmit={async (values, { setSubmitting, setFieldError }) => {
             try {
               if (register) {
@@ -54,13 +59,13 @@ export function Auth({ register = false }: { register?: boolean }) {
                   email: values.email,
                   password: values.password,
                 });
-                complete(data.email, data.token);
+                await complete(data.email, data.token);
               } else {
                 const data = await loginUser({
                   email: values.email,
                   password: values.password,
                 });
-                complete(data.email, data.token);
+                await complete(data.email, data.token);
               }
             } catch (err: any) {
               console.error(err);
@@ -84,7 +89,7 @@ export function Auth({ register = false }: { register?: boolean }) {
           }) => (
             <form onSubmit={handleSubmit} noValidate>
               <label>
-                Email address
+                {t("emailAddress")}
                 <input
                   name="email"
                   type="email"
@@ -98,14 +103,14 @@ export function Auth({ register = false }: { register?: boolean }) {
                 )}
               </label>
               <label>
-                Password
+                {t("password")}
                 <input
                   name="password"
                   type="password"
                   value={values.password}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  placeholder="At least 8 characters"
+                  placeholder={t("passwordTooShort")}
                 />
                 {touched.password && errors.password && (
                   <small className="field-error">{errors.password}</small>
@@ -116,15 +121,15 @@ export function Auth({ register = false }: { register?: boolean }) {
                 type="submit"
                 disabled={isSubmitting}
               >
-                {register ? "Create account" : "Login"}
+                {register ? t("createAccountBtn") : t("loginBtn")}
               </button>
             </form>
           )}
         </Formik>
         <p>
-          {register ? "Already have an account?" : "New to Temu?"}{" "}
+          {register ? t("alreadyHaveAccount") : t("newToTemu")}{" "}
           <Link to={register ? "/login" : "/register"}>
-            {register ? "Login" : "Create an account"}
+            {register ? t("loginBtn") : t("createAnAccount")}
           </Link>
         </p>
       </div>
