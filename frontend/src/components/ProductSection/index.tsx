@@ -16,16 +16,16 @@ export function ProductSection({
   const { t } = useTranslation();
 
   return (
-    <section className="section-block" id="products">
-      <div className="section-heading">
+    <section className="mt-[28px]" id="products">
+      <div className="flex items-end justify-between gap-[18px] mb-[18px] max-[1100px]:flex-col max-[1100px]:items-start">
         <div>
-          <h2>{t("lightningDeals")}</h2>
+          <h2 className="m-0 text-[1.6rem] text-[#10233b] font-bold">{t("lightningDeals")}</h2>
         </div>
       </div>
       {loading && (
-        <div className="card-grid">
+        <div className="grid gap-4 grid-cols-5 max-[1100px]:grid-cols-3 max-[720px]:grid-cols-2 max-[720px]:gap-3">
           {Array.from({ length: 5 }, (_, index) => (
-            <div className="skeleton-card" key={index} />
+            <div className="animate-pulse bg-slate-200 aspect-[1/1.35] rounded-[14px]" key={index} />
           ))}
         </div>
       )}
@@ -34,7 +34,7 @@ export function ProductSection({
         <p className="api-status">{t("noProducts")}</p>
       )}
       {!loading && !error && products.length > 0 && (
-        <div className="card-grid">
+        <div className="grid gap-4 grid-cols-5 max-[1100px]:grid-cols-3 max-[720px]:grid-cols-2 max-[720px]:gap-3">
           {products.map((product) => (
             <Card key={product.id} {...product} />
           ))}

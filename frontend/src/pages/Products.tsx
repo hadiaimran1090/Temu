@@ -42,14 +42,14 @@ export function Products() {
   );
 
   return (
-    <section>
-      <div className="tax-strip">
-        <div className="tax-badge">{t("taxStripBadge")}</div>
-        <div className="tax-copy">{t("taxStripCopy")}</div>
+    <>
+      <div className="grid grid-cols-2 bg-[#14910a] text-white rounded-none overflow-hidden min-h-[68px] max-[1100px]:grid-cols-1 max-[720px]:min-h-[48px]">
+        <div className="flex items-center justify-center gap-2.5 font-extrabold border-r border-white/20 max-[1100px]:justify-center max-[1100px]:p-[8px_12px] max-[1100px]:border-r-0 max-[1100px]:border-b max-[1100px]:border-white/15 max-[720px]:text-[0.75rem]">{t("taxStripBadge")}</div>
+        <div className="flex items-center justify-center gap-2.5 font-extrabold max-[1100px]:justify-center max-[1100px]:p-[8px_12px] max-[720px]:text-[0.75rem]">{t("taxStripCopy")}</div>
       </div>
-      <div className="interest-heading">
-        <span>{t("summerSale")}</span>
-        <h1>{t("exploreInterests")}</h1>
+      <div className="text-center mt-20 mb-[18px] max-[720px]:mt-9">
+        <span className="text-[#ff6538] font-black text-[1.25rem] block">{t("summerSale")}</span>
+        <h1 className="m-0 text-[clamp(1.4rem,2vw,2rem)] text-[#050505] font-bold">{t("exploreInterests")}</h1>
       </div>
       <CategoryFilter
         categories={categories}
@@ -57,6 +57,6 @@ export function Products() {
         onSelectCategory={setCategory}
       />
       <ProductSection products={data ?? []} loading={loading} error={error} />
-    </section>
+    </>
   );
 }

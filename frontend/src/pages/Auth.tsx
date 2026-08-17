@@ -35,20 +35,20 @@ export function Auth({ register = false }: { register?: boolean }) {
     });
 
   return (
-    <section className="auth-page">
-      <div className="auth-promo">
-        <strong>{t("brand")}</strong>
-        <h1>{t("findNextFavorite")}</h1>
-        <p>{t("authPromoSub")}</p>
-        <div>
+    <section className="min-h-[620px] grid grid-cols-2 max-w-[1050px] mx-auto my-[30px] overflow-hidden rounded-[22px] shadow-[0_16px_44px_rgba(15,23,42,0.16)] max-[900px]:grid-cols-1 max-[900px]:my-2.5 max-[900px]:min-h-[540px]">
+      <div className="p-[58px] text-white bg-gradient-to-br from-[#ff562b] to-[#ff9417] max-[900px]:p-[34px] flex flex-col gap-4">
+        <strong className="inline-block p-2 rounded-lg bg-white text-[#ff5b2e] self-start text-sm">{t("brand")}</strong>
+        <h1 className="m-0 text-[3.1rem] leading-[1.05] font-black max-[900px]:text-[2.3rem]">{t("findNextFavorite")}</h1>
+        <p className="m-0 text-sm opacity-90">{t("authPromoSub")}</p>
+        <div className="mt-[50px] leading-[2] font-bold max-[900px]:hidden">
           ✓ {t("freeShipping")}
           <br />✓ {t("secureCheckout")}
           <br />✓ {t("easyReturns")}
         </div>
       </div>
-      <div className="content-card form-card">
-        <p className="eyebrow">{t("welcomeToTemu")}</p>
-        <h1>{register ? t("createAccount") : t("welcomeBack")}</h1>
+      <div className="m-0 rounded-none grid align-content-center shadow-none p-[36px_32px] bg-white max-[720px]:p-5 flex flex-col gap-3">
+        <p className="m-0 mb-2 text-[#ff7a00] font-extrabold uppercase tracking-[0.12em] text-[0.82rem]">{t("welcomeToTemu")}</p>
+        <h1 className="m-[0_0_12px] text-[1.6rem] text-[#10233b] font-bold">{register ? t("createAccount") : t("welcomeBack")}</h1>
         <Formik
           initialValues={{ email: "", password: "" }}
           validationSchema={getValidationSchema()}
@@ -58,6 +58,7 @@ export function Auth({ register = false }: { register?: boolean }) {
                 const data = await registerUser({
                   email: values.email,
                   password: values.password,
+                  name: values.email.split("@")[0], // Include dummy name as backend requires name
                 });
                 await complete(data.email, data.token);
               } else {
@@ -87,10 +88,11 @@ export function Auth({ register = false }: { register?: boolean }) {
             handleSubmit,
             isSubmitting,
           }) => (
-            <form onSubmit={handleSubmit} noValidate>
-              <label>
+            <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
+              <label className="flex flex-col gap-2 text-[0.88rem] font-bold text-[#475569]">
                 {t("emailAddress")}
                 <input
+                  className="border border-[#cfd4dc] rounded-lg p-3 text-[0.94rem] text-[#1e293b] bg-white focus:outline-none focus:border-[#4ea5e6]"
                   name="email"
                   type="email"
                   value={values.email}
@@ -99,12 +101,13 @@ export function Auth({ register = false }: { register?: boolean }) {
                   placeholder="you@example.com"
                 />
                 {touched.email && errors.email && (
-                  <small className="field-error">{errors.email}</small>
+                  <small className="text-[#b91c1c] text-xs font-semibold mt-1">{errors.email}</small>
                 )}
               </label>
-              <label>
+              <label className="flex flex-col gap-2 text-[0.88rem] font-bold text-[#475569]">
                 {t("password")}
                 <input
+                  className="border border-[#cfd4dc] rounded-lg p-3 text-[0.94rem] text-[#1e293b] bg-white focus:outline-none focus:border-[#4ea5e6]"
                   name="password"
                   type="password"
                   value={values.password}
@@ -113,11 +116,11 @@ export function Auth({ register = false }: { register?: boolean }) {
                   placeholder={t("passwordTooShort")}
                 />
                 {touched.password && errors.password && (
-                  <small className="field-error">{errors.password}</small>
+                  <small className="text-[#b91c1c] text-xs font-semibold mt-1">{errors.password}</small>
                 )}
               </label>
               <button
-                className="action-button action-button-primary"
+                className="w-full inline-block no-underline border-0 rounded-full py-[13px] px-[20px] font-bold cursor-pointer transition-all duration-180 hover:-translate-y-[1px] text-white bg-gradient-to-br from-[#ff8c1a] to-[#ff6b2f] shadow-[0_12px_24px_rgba(255,111,31,0.3)] text-center disabled:opacity-50 disabled:cursor-not-allowed"
                 type="submit"
                 disabled={isSubmitting}
               >
@@ -126,9 +129,9 @@ export function Auth({ register = false }: { register?: boolean }) {
             </form>
           )}
         </Formik>
-        <p>
+        <p className="mt-3 mb-0 text-[0.88rem] text-center text-[#64748b]">
           {register ? t("alreadyHaveAccount") : t("newToTemu")}{" "}
-          <Link to={register ? "/login" : "/register"}>
+          <Link className="text-[#4ea5e6] no-underline font-semibold hover:underline" to={register ? "/login" : "/register"}>
             {register ? t("loginBtn") : t("createAnAccount")}
           </Link>
         </p>

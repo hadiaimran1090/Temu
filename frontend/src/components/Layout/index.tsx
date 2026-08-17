@@ -15,13 +15,20 @@ export function Layout() {
   }, [pathname]);
 
   return (
-    <div className="landing-page" dir={isRtl ? "rtl" : "ltr"}>
+    <div 
+      className="min-h-screen bg-white shadow-[0_24px_60px_rgba(15,23,42,0.08)] pt-[102px] max-[1100px]:pt-[136px] max-[900px]:pt-[182px] max-[720px]:pt-[215px]" 
+      dir={isRtl ? "rtl" : "ltr"}
+    >
       <Navbar />
-      <main className="page-content">
+      <main className="p-[20px_28px_28px] max-[1100px]:p-4 max-[720px]:p-3">
         <Outlet />
       </main>
       <Footer />
-      {notice && <div className="toast">✓ {notice}</div>}
+      {notice && (
+        <div className="fixed right-5 bottom-5 z-[100] p-[14px_18px] bg-[#166534] text-white rounded-lg shadow-[0_8px_22px_rgba(0,0,0,0.2)]">
+          ✓ {notice}
+        </div>
+      )}
     </div>
   );
 }
