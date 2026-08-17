@@ -1,6 +1,6 @@
 import type { Product } from "../../../../shared/types/product";
 import { Card } from "../Card";
-import "./ProductSection.css";
+import { useTranslation } from "../../hooks/useTranslation";
 
 interface ProductSectionProps {
   products: Product[];
@@ -13,11 +13,13 @@ export function ProductSection({
   loading,
   error,
 }: ProductSectionProps) {
+  const { t } = useTranslation();
+
   return (
     <section className="section-block" id="products">
       <div className="section-heading">
         <div>
-          <h2>Lightning deals and clearance deals</h2>
+          <h2>{t("lightningDeals")}</h2>
         </div>
       </div>
       {loading && (
@@ -29,7 +31,7 @@ export function ProductSection({
       )}
       {error && <p className="api-status api-status-offline">{error}</p>}
       {!loading && !error && products.length === 0 && (
-        <p className="api-status">No products found in this category.</p>
+        <p className="api-status">{t("noProducts")}</p>
       )}
       {!loading && !error && products.length > 0 && (
         <div className="card-grid">

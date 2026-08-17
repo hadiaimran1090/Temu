@@ -1,4 +1,4 @@
-import "./ConfirmModal.css";
+import { useTranslation } from "../../hooks/useTranslation";
 
 export function ConfirmModal({
   onConfirm,
@@ -7,6 +7,8 @@ export function ConfirmModal({
   onConfirm: () => void;
   onCancel: () => void;
 }) {
+  const { t } = useTranslation();
+
   return (
     <div className="modal-backdrop" role="presentation" onClick={onCancel}>
       <div
@@ -19,14 +21,14 @@ export function ConfirmModal({
         <span className="modal-icon" aria-hidden="true">
           !
         </span>
-        <h2 id="remove-item-title">Remove this item?</h2>
-        <p>It will be removed from your cart. You can add it again anytime.</p>
+        <h2 id="remove-item-title">{t("removeItemTitle")}</h2>
+        <p>{t("removeItemBody")}</p>
         <div className="modal-actions">
           <button className="modal-cancel" onClick={onCancel}>
-            Keep item
+            {t("keepItem")}
           </button>
           <button className="modal-remove" onClick={onConfirm}>
-            Remove
+            {t("remove")}
           </button>
         </div>
       </div>

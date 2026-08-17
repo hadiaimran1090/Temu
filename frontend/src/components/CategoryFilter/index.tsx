@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { useTranslation } from "../../hooks/useTranslation";
-import "./CategoryFilter.css";
 
 interface CategoryFilterProps {
   categories: readonly string[];

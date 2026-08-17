@@ -17,7 +17,6 @@ import { syncCart } from "../../store/slices/cartSlice";
 import { toggleTheme } from "../../store/slices/themeSlice";
 import { setLanguage } from "../../store/slices/languageSlice";
 import { useTranslation } from "../../hooks/useTranslation";
-import "./Navbar.css";
 
 const menu = [
   { name: "Featured", image: "/products/wallet.jpg" },

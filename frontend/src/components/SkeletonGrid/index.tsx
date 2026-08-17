@@ -1,5 +1,3 @@
-import "./SkeletonGrid.css";
-
 export function SkeletonGrid() {
   return (
     <div className="card-grid">
