@@ -1,5 +1,5 @@
-import { query } from "../db";
-import { products } from "../data/products";
+import { query } from "../db.js";
+import { products } from "../data/products.js";
 
 export async function initDb() {
   console.log("Initializing database tables...");

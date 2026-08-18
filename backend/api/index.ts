@@ -1,6 +1,6 @@
-import "../src/config";
-import app from "../src/app";
-import { initDb } from "../src/db/init";
+import "../src/config.js";
+import app from "../src/app.js";
+import { initDb } from "../src/db/init.js";
 
 let isDbInitialized = false;
 
