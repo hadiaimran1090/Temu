@@ -114,3 +114,21 @@ export async function initDb() {
     console.log("Products table already seeded.");
   }
 }
+
+let isInitialized = false;
+let initPromise: Promise<void> | null = null;
+
+export async function ensureDbInitialized() {
+  if (isInitialized) return;
+  if (!initPromise) {
+    initPromise = initDb().then(() => {
+      isInitialized = true;
+    }).catch(err => {
+      initPromise = null;
+      console.error("Failed to initialize database:", err);
+      throw err;
+    });
+  }
+  return initPromise;
+}
+

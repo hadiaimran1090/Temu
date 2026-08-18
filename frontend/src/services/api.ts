@@ -2,7 +2,10 @@ import axios from "axios";
 import type { Product } from "../../../shared/types/product";
 import type { CartItem } from "../../../shared/types/cart";
 
-const api = axios.create({ baseURL: "/api", timeout: 8000 });
+const api = axios.create({
+  baseURL: (import.meta.env.VITE_API_URL as string) || "/api",
+  timeout: 8000,
+});
 
 api.interceptors.request.use((config) => {
   const tokenVal = localStorage.getItem("temu-token");
