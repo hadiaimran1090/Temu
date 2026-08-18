@@ -7,7 +7,7 @@ export function Home() {
 
   return (
     <>
-      <section className="grid grid-cols-[1.2fr_0.8fr] gap-12 p-12 rounded-[40px] border border-orange-500/10 bg-gradient-to-tr from-[#fffbf5] via-[#f7f9fc] to-[#e8f5ff] shadow-[0_20px_50px_rgba(255,91,46,0.06)] relative overflow-hidden max-[1100px]:grid-cols-1 max-[1100px]:p-8 max-[1100px]:gap-8">
+      <section className="grid grid-cols-[1.2fr_0.8fr] gap-12 p-12 rounded-[40px] border border-orange-500/10 bg-gradient-to-tr from-[#fffbf5] via-[#f7f9fc] to-[#e8f5ff] shadow-[0_20px_50px_rgba(255,91,46,0.06)] relative overflow-hidden max-[1100px]:grid-cols-1 max-[1100px]:p-8 max-[1100px]:gap-8 mb-10">
         <div className="absolute -top-24 -left-24 w-48 h-48 bg-orange-400/15 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-blue-400/15 rounded-full blur-3xl pointer-events-none" />
         <div className="flex flex-col justify-center relative z-10">
@@ -24,15 +24,15 @@ export function Home() {
           <div className="w-[260px] bg-white rounded-3xl p-5 shadow-[0_20px_40px_rgba(15,23,42,0.1)] border border-slate-100 transform -rotate-2 hover:rotate-0 transition-transform duration-300 relative z-20">
             <div className="w-full h-[180px] rounded-2xl bg-gradient-to-br from-orange-100 to-amber-50 flex items-center justify-center mb-4 overflow-hidden relative group">
               <div className="absolute top-3 left-3 bg-[#ff5b2e] text-white text-[0.7rem] font-bold px-2.5 py-1 rounded-full shadow-sm">
-                70% OFF
+                {t("offPercent")}
               </div>
               <span className="text-5xl select-none">🎁</span>
             </div>
-            <span className="text-[0.68rem] text-orange-600 font-bold tracking-wider uppercase">TRENDING NOW</span>
-            <strong className="block text-slate-800 text-base font-extrabold mt-1 truncate">Wireless Smart Earbuds</strong>
+            <span className="text-[0.68rem] text-orange-600 font-bold tracking-wider uppercase">{t("trendingNow")}</span>
+            <strong className="block text-slate-800 text-base font-extrabold mt-1 truncate">{t("earbudsTitle")}</strong>
             <div className="flex items-center justify-between mt-3">
-              <span className="text-[#10233b] font-black text-lg">Rs. 2,499</span>
-              <span className="text-slate-400 text-xs line-through">Rs. 7,999</span>
+              <span className="text-[#10233b] font-black text-lg">{t("earbudsPrice")}</span>
+              <span className="text-slate-400 text-xs line-through">{t("earbudsOldPrice")}</span>
             </div>
           </div>
           <div className="absolute -top-4 -right-4 bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-[0_12px_28px_rgba(15,23,42,0.08)] border border-white/80 flex items-center gap-3 z-30 transform hover:scale-105 transition-transform duration-300">
@@ -45,11 +45,11 @@ export function Home() {
             </div>
           </div>
           <div className="absolute -bottom-4 -left-4 bg-[#10233b] text-white rounded-2xl p-4 shadow-[0_16px_32px_rgba(16,35,59,0.15)] flex flex-col gap-1 z-30 transform hover:scale-105 transition-transform duration-300">
-            <span className="text-[0.65rem] text-[#f5e6b8] font-extrabold tracking-widest uppercase">TRUSTED SHOPPING</span>
+            <span className="text-[0.65rem] text-[#f5e6b8] font-extrabold tracking-widest uppercase">{t("trustedShopping")}</span>
             <strong className="text-base font-extrabold flex items-center gap-1.5">
               4.9 ★★★★★
             </strong>
-            <span className="text-[0.72rem] text-slate-300">12k+ reviews</span>
+            <span className="text-[0.72rem] text-slate-300">{t("reviewsCount")}</span>
           </div>
         </div>
       </section>

@@ -102,3 +102,42 @@ html[data-theme="dark"] .profile-dropdown a:hover,
 html[data-theme="dark"] .profile-dropdown button:hover {
   background-color: #374151 !important;
 }
+
+/* Universal text visibility overrides for dark theme */
+html[data-theme="dark"] .text-\[\#050505\],
+html[data-theme="dark"] .text-\[\#10233b\],
+html[data-theme="dark"] .text-\[\#1e293b\],
+html[data-theme="dark"] .text-\[\#0f172a\],
+html[data-theme="dark"] .text-\[\#151515\],
+html[data-theme="dark"] .text-\[\#334155\],
+html[data-theme="dark"] .text-\[\#475569\],
+html[data-theme="dark"] .text-\[\#2f3640\],
+html[data-theme="dark"] .text-slate-900,
+html[data-theme="dark"] .text-slate-800,
+html[data-theme="dark"] .text-slate-700,
+html[data-theme="dark"] .text-slate-600 {
+  color: #f1f5f9 !important;
+}
+
+/* Muted or descriptive text overrides in dark theme */
+html[data-theme="dark"] .text-slate-500,
+html[data-theme="dark"] .text-\[\#5b687a\],
+html[data-theme="dark"] .text-\[\#64748b\] {
+  color: #94a3b8 !important;
+}
+
+/* Background overrides for dark theme to eliminate stark white panels */
+html[data-theme="dark"] .bg-white,
+html[data-theme="dark"] .bg-\[\#fafafa\],
+html[data-theme="dark"] .bg-\[\#f8fafc\],
+html[data-theme="dark"] .bg-\[\#f6f6f6\] {
+  background-color: #1f2937 !important;
+}
+
+/* Nested card headers/footers background contrast */
+html[data-theme="dark"] article header,
+html[data-theme="dark"] article footer {
+  background-color: #111827 !important;
+  border-color: #374151 !important;
+}
+
