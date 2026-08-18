@@ -115,20 +115,3 @@ export async function initDb() {
   }
 }
 
-let isInitialized = false;
-let initPromise: Promise<void> | null = null;
-
-export async function ensureDbInitialized() {
-  if (isInitialized) return;
-  if (!initPromise) {
-    initPromise = initDb().then(() => {
-      isInitialized = true;
-    }).catch(err => {
-      initPromise = null;
-      console.error("Failed to initialize database:", err);
-      throw err;
-    });
-  }
-  return initPromise;
-}
-
