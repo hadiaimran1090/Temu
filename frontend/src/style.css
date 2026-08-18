@@ -112,6 +112,9 @@ html[data-theme="dark"] .text-\[\#151515\],
 html[data-theme="dark"] .text-\[\#334155\],
 html[data-theme="dark"] .text-\[\#475569\],
 html[data-theme="dark"] .text-\[\#2f3640\],
+html[data-theme="dark"] .text-\[\#343434\],
+html[data-theme="dark"] .text-\[\#3b3b3b\],
+html[data-theme="dark"] .text-\[\#484848\],
 html[data-theme="dark"] .text-slate-900,
 html[data-theme="dark"] .text-slate-800,
 html[data-theme="dark"] .text-slate-700,
@@ -183,6 +186,16 @@ html[data-theme="dark"] .bg-gradient-to-tr.from-\[\#ffe7db\]\/45 {
   background: linear-gradient(to top right, #1f2937, #111827) !important;
   border-color: rgba(255, 255, 255, 0.05) !important;
 }
+
+/* Category menu border and hover overrides in dark theme */
+html[data-theme="dark"] .border-\[\#d9d9d9\],
+html[data-theme="dark"] .border-\[\#e5e7eb\] {
+  border-color: #374151 !important;
+}
+html[data-theme="dark"] .hover\:bg-\[\#f0f0f0\]:hover {
+  background-color: #374151 !important;
+}
+
 
 
 
