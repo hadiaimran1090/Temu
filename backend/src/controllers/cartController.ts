@@ -1,6 +1,6 @@
 import { Response } from "express";
-import { AuthRequest } from "../middleware/auth";
-import { query } from "../db";
+import { AuthRequest } from "../middleware/auth.js";
+import { query } from "../db.js";
 
 async function getUserCartItems(userId: number) {
   const result = await query(

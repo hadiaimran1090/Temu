@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { query } from "../db";
+import { query } from "../db.js";
 
 export async function getProducts(request: Request, response: Response) {
   try {

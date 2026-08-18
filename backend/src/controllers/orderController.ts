@@ -1,6 +1,6 @@
 import { Response } from "express";
-import { AuthRequest } from "../middleware/auth";
-import { query, pool } from "../db";
+import { AuthRequest } from "../middleware/auth.js";
+import { query, pool } from "../db.js";
 
 export async function placeOrder(req: AuthRequest, res: Response) {
   const user = req.user;
