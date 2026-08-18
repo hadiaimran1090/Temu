@@ -1,4 +1,4 @@
-import type { Product } from "../../../../shared/types/product";
+import type { Product } from "../../types/product";
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../../store";
 import { addToCart } from "../../store/slices/cartSlice";
