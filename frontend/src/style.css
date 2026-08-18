@@ -141,3 +141,33 @@ html[data-theme="dark"] article footer {
   border-color: #374151 !important;
 }
 
+/* Secondary button background override for readability in dark theme */
+html[data-theme="dark"] .bg-\[\#f0f4f8\] {
+  background-color: #1f2937 !important;
+  border-color: #374151 !important;
+}
+html[data-theme="dark"] .bg-\[\#f0f4f8\]:hover {
+  background-color: #374151 !important;
+}
+
+/* Hero section gradient override in dark theme */
+html[data-theme="dark"] section.bg-gradient-to-tr {
+  background: linear-gradient(to top right, #1f2937, #111827) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Image container and badges overrides in Hero section */
+html[data-theme="dark"] .from-\[\#ffe7db\]\/60 {
+  background: linear-gradient(to bottom right, rgba(31, 41, 55, 0.4), rgba(17, 24, 39, 0.4)) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+}
+html[data-theme="dark"] .bg-white\/90 {
+  background-color: rgba(31, 41, 55, 0.9) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+html[data-theme="dark"] .bg-orange-100 {
+  background-color: rgba(234, 88, 12, 0.15) !important;
+  color: #ff8c1a !important;
+}
+
+
