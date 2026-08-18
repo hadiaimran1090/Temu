@@ -13,10 +13,14 @@
     "dev:backend": "tsx watch backend/src/server.ts",
     "build": "npm run typecheck && vite build --config frontend/vite.config.ts",
     "preview": "vite preview --config frontend/vite.config.ts",
-    "typecheck": "tsc -p frontend/tsconfig.json --noEmit && tsc -p backend/tsconfig.json --noEmit"
+    "typecheck": "tsc -p frontend/tsconfig.json --noEmit && tsc -p backend/tsconfig.json --noEmit",
+    "start": "tsx backend/src/server.ts"
+  },
+  "dependencies": {
+    "tsx": "^4.23.12",
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "concurrently": "^9.2.4",
-    "typescript": "^5.9.3"
+    "concurrently": "^9.2.4"
   }
 }

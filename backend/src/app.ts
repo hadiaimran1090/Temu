@@ -7,7 +7,7 @@ import orderRoutes from "./routes/orderRoutes";
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors());
 app.use(express.json());
 
 app.get("/api/health", (_, response) => {
