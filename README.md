@@ -105,11 +105,6 @@ Built with dedication, Temu brings together powerful features like:
 
 ---
 
-## 🎬 Deployment
-
-This project contains pre-configured Vercel routing configurations. 
-Redirections and routing are handled via `vercel.json` rewrite patterns to prevent SPA 404 router errors when refreshing pages.
-
 - **Frontend Build Configuration:**
   - Build command: `npm run build`
   - Output directory: `dist`
@@ -120,7 +115,7 @@ Redirections and routing are handled via `vercel.json` rewrite patterns to preve
 
 ## 🎬 Demo
 
-[![App Demo](frontend/public/temu-favicon.svg)](https://temu-frontend-sage.vercel.app/)
+[![App Demo](frontend/public/products/temu.png)](https://temu-frontend-sage.vercel.app/)
 
 ---
 
