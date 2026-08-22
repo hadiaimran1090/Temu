@@ -146,7 +146,7 @@ const categoriesWithSubs: CategoryWithSub[] = [
       { name: "Matte Long-Lasting Liquid Lipstick", key: "sub_Lipstick", image: "/products/Matte Long-Lasting Liquid Lipstick.jpg", category: "Beauty & Personal Care" },
       { name: "Ionic Blow Dryer", key: "sub_HairDryer", image: "/products/Ionic Blow Dryer.jpg", category: "Beauty & Personal Care" },
       { name: "12pcs Professional Makeup Brush Set", key: "sub_BrushSet", image: "/products/12pcs Professional Makeup Brush Set.jpg", category: "Beauty & Personal Care" },
-      { name: "SPF 50+ Daily Sunscreen Gel", key: "sub_Sunscreen", image: "/products/SPF 50+ Daily Sunscreen Gel.jpg", category: "Beauty & Personal Care" },
+      { name: "SPF 50+ Daily Sunscreen Gel", key: "sub_Sunscreen", image: "/products/Gel.jpg", category: "Beauty & Personal Care" },
     ],
   },
   {
