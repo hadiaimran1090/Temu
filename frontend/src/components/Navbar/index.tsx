@@ -36,6 +36,24 @@ interface CategoryWithSub {
 
 const categoriesWithSubs: CategoryWithSub[] = [
   {
+    name: "All",
+    key: "cat_All",
+    subcategories: [
+      { name: "Casual Shirts", key: "sub_CasualShirts", image: "/products/menshirt.jpg", category: "Men's Clothing" },
+      { name: "Digital Air Fryer 5L", key: "sub_DigitalAirFryer", image: "/products/Digital Air Fryer 5L.jpg", category: "Home & Kitchen" },
+      { name: "Summer Dresses", key: "sub_SummerDresses", image: "/products/Women’s dress.jpg", category: "Women's Clothing" },
+      { name: "Running Sneakers", key: "sub_RunningSneakers", image: "/products/Running Sneakers.jpg", category: "Women's Shoes" },
+      { name: "Active Noise Cancelling Headphones", key: "sub_WirelessEarbuds", image: "/products/Active Noise Cancelling Headphones.jpg", category: "Accessories" },
+      { name: "1000 Piece Wooden Landscape Puzzle", key: "sub_WoodenPuzzle", image: "/products/1000 Piece Wooden Landscape Puzzle.jpg", category: "Toys & Games" },
+      { name: "Smart Watches", key: "sub_SmartWatches", image: "/products/smartwatch.jpg", category: "Accessories" },
+      { name: "Portable Blender", key: "sub_PortableBlender", image: "/products/Portable Blender.jpg", category: "Home & Kitchen" },
+      { name: "Fashion Handbags", key: "sub_FashionHandbags", image: "/products/handbag.jpg", category: "Women's Clothing" },
+      { name: "Leather Ankle Chelsea Boots", key: "sub_ChelseaBoots", image: "/products/Leather Ankle Chelsea Boots.jpg", category: "Women's Shoes" },
+      { name: "Adjustable Neoprene Dumbbell Set", key: "sub_Dumbbells", image: "/products/Adjustable Neoprene Dumbbell Set.jpg", category: "Sports & Outdoors" },
+      { name: "Hyaluronic Acid Face Cream", key: "sub_FaceCream", image: "/products/Hyaluronic Acid Face Cream.jpg", category: "Beauty & Personal Care" },
+    ],
+  },
+  {
     name: "Featured",
     key: "cat_Featured",
     subcategories: [
@@ -175,7 +193,7 @@ export function Navbar() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState("Featured");
+  const [activeCategory, setActiveCategory] = useState("All");
   
   const [search, setSearch] = useState("");
   const [searchParams] = useSearchParams();
@@ -528,7 +546,7 @@ export function Navbar() {
           </aside>
           
           {/* Right Subcategories Items Grid */}
-          <div className="grid grid-cols-[repeat(6,minmax(105px,1fr))] gap-x-[18px] gap-y-6 p-[30px] align-content-start max-[900px]:grid-cols-3 max-[900px]:p-[18px] max-[900px]:gap-[14px] max-[600px]:grid-cols-2 mega-items">
+          <div className="grid grid-cols-[repeat(6,minmax(105px,1fr))] gap-x-[18px] gap-y-6 p-[30px] align-content-start max-[900px]:grid-cols-3 max-[900px]:p-[18px] max-[900px]:gap-[14px] max-[600px]:grid-cols-2 mega-items max-h-[510px] overflow-y-auto">
             {categoriesWithSubs.find((cat) => cat.name === activeCategory)?.subcategories.map((sub) => (
               <button 
                 className="border-0 bg-transparent text-[#484848] cursor-pointer font-inherit text-[0.95rem] leading-[1.35] max-[900px]:text-[0.76rem] hover:text-[#ff5b2e]! hover:scale-105 transition-all duration-150" 
