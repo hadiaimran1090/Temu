@@ -10,6 +10,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (_, response) => {
+  response.json({
+    message: "Temu backend is running"
+  });
+});
+
 app.get("/api/support/whatsapp", (_, response) => {
   const phone = process.env.SUPPORT_WHATSAPP_NUMBER || "923001234567";
   const message = encodeURIComponent("Hello Temu Support, I need help with my order.");
