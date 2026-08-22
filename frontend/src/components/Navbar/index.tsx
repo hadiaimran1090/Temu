@@ -340,15 +340,15 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Desktop Header Layout */}
-      <div className="hidden min-[601px]:grid grid-cols-[auto_auto_1fr_auto] max-[990px]:grid-cols-[auto_auto_1fr] gap-[10px_18px] items-center p-[6px_28px] bg-gradient-to-r from-[#4ea5e6] to-[#62b4f0] text-white">
+      {/* Desktop/Tablet Header Layout */}
+      <div className="hidden min-[601px]:grid grid-cols-[auto_auto_1fr_auto] max-[990px]:grid-cols-[auto_auto_1fr] gap-[10px_18px] max-[900px]:gap-[10px_10px] items-center p-[6px_28px] max-[900px]:p-[6px_14px] bg-gradient-to-r from-[#4ea5e6] to-[#62b4f0] text-white">
         <NavLink className="w-[50px] h-[50px] rounded-[14px] bg-gradient-to-br from-[#ff8c1a] to-[#ff5f28] grid place-items-center font-black tracking-[0.08em] shadow-[0_12px_24px_rgba(255,111,31,0.35)] text-white no-underline max-[990px]:w-[46px] max-[990px]:h-[46px] max-[990px]:text-[0.7rem]" to="/">
           {t("brand")}
         </NavLink>
         <nav className="flex items-center flex-wrap gap-3 font-semibold max-[1100px]:justify-center">
-          <NavLink className="text-white no-underline text-[0.86rem] whitespace-nowrap active:underline active:text-[#fff3c4] [&.active]:text-[#fff3c4] [&.active]:underline [&.active]:underline-offset-[5px]" to="/products">{t("bestSelling")}</NavLink>
-          <NavLink className="text-white no-underline text-[0.86rem] whitespace-nowrap active:underline active:text-[#fff3c4] [&.active]:text-[#fff3c4] [&.active]:underline [&.active]:underline-offset-[5px]" to="/about">{t("about")}</NavLink>
-          <NavLink className="text-white no-underline text-[0.86rem] whitespace-nowrap active:underline active:text-[#fff3c4] [&.active]:text-[#fff3c4] [&.active]:underline [&.active]:underline-offset-[5px]" to="/products">{t("newIn")}</NavLink>
+          <NavLink className="text-white no-underline text-[0.86rem] whitespace-nowrap active:underline active:text-[#fff3c4] [&.active]:text-[#fff3c4] [&.active]:underline [&.active]:underline-offset-[5px] max-[900px]:hidden" to="/products">{t("bestSelling")}</NavLink>
+          <NavLink className="text-white no-underline text-[0.86rem] whitespace-nowrap active:underline active:text-[#fff3c4] [&.active]:text-[#fff3c4] [&.active]:underline [&.active]:underline-offset-[5px] max-[900px]:hidden" to="/about">{t("about")}</NavLink>
+          <NavLink className="text-white no-underline text-[0.86rem] whitespace-nowrap active:underline active:text-[#fff3c4] [&.active]:text-[#fff3c4] [&.active]:underline [&.active]:underline-offset-[5px] max-[900px]:hidden" to="/products">{t("newIn")}</NavLink>
           <button
             ref={categoryBtnRef}
             className="border border-transparent rounded-full bg-transparent text-inherit p-[9px_12px] cursor-pointer inline-flex gap-[5px] items-center hover:border-white transition-colors"
@@ -368,7 +368,7 @@ export function Navbar() {
             <FaMagnifyingGlass />
           </button>
         </form>
-        <div className="flex items-center gap-[18px] max-[990px]:col-start-3 max-[990px]:justify-self-end">
+        <div className="flex items-center gap-[18px] max-[900px]:gap-[12px] max-[990px]:col-start-3 max-[990px]:justify-self-end">
           <div className="relative inline-block">
             {token ? (
               <button
@@ -376,12 +376,12 @@ export function Navbar() {
                 className="border-0 bg-transparent text-white cursor-pointer text-[0.88rem] font-semibold flex items-center gap-1.5"
                 onClick={() => setProfileOpen(!profileOpen)}
               >
-                <FaRegUser /> {userEmail?.split("@")[0]}
+                <FaRegUser /> <span className="max-[900px]:hidden">{userEmail?.split("@")[0]}</span>
               </button>
             ) : (
               <NavLink className="border-0 bg-transparent text-white cursor-pointer text-[0.88rem] font-semibold flex items-center gap-1.5 no-underline" to="/login">
                 <FaRegUser />
-                {t("ordersAccount")}
+                <span className="max-[900px]:hidden">{t("ordersAccount")}</span>
               </NavLink>
             )}
             {profileOpen && (
@@ -397,13 +397,13 @@ export function Navbar() {
           </div>
           <NavLink className="inline-flex items-center gap-1.5 text-white no-underline text-[0.88rem] font-semibold" to="/support">
             <FaWhatsapp />
-            {t("support")}
+            <span className="max-[900px]:hidden">{t("support")}</span>
           </NavLink>
           <button className="border-0 bg-transparent text-white cursor-pointer text-base" onClick={() => dispatch(toggleTheme())}>
             {theme === "light" ? <FaMoon /> : <FaSun />}
           </button>
           <button className="inline-flex items-center gap-1.5 text-white bg-transparent border-0 p-0 cursor-pointer text-left font-inherit" type="button" onClick={handleLanguageToggle}>
-            <FaGlobe /> {language === "en" ? "English" : "اردو"}
+            <FaGlobe /> <span className="max-[900px]:hidden">{language === "en" ? "English" : "اردو"}</span>
           </button>
           <NavLink className="inline-flex items-center gap-2 text-[1.15rem] text-white no-underline relative" to="/cart">
             <FaCartShopping /> <b className="grid place-items-center min-w-[20px] h-[20px] px-1 rounded-full bg-[#ff5b2e] text-white text-[0.72rem] font-bold">{count}</b>
