@@ -495,12 +495,15 @@ export function Navbar() {
 
       {/* Mobile Drawer Slide-out Menu */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 min-[601px]:hidden flex">
+        <div className="fixed inset-0 z-50 min-[601px]:hidden">
           {/* Backdrop overlay */}
           <div className="fixed inset-0 bg-black/45 backdrop-blur-[2px]" onClick={() => setMobileMenuOpen(false)} />
           
           {/* Drawer container */}
-          <div ref={mobileMenuRef} className={`relative flex flex-col w-[280px] max-w-[80vw] h-full bg-white text-[#334155] shadow-2xl p-5 overflow-y-auto ltr:mr-auto rtl:ml-auto transition-all ${language === "ur" ? "drawer-slide-right" : "drawer-slide-left"}`}>
+          <div 
+            ref={mobileMenuRef} 
+            className={`fixed top-0 bottom-0 ${language === "ur" ? "right-0 drawer-slide-right" : "left-0 drawer-slide-left"} z-50 flex flex-col w-[280px] max-w-[80vw] h-full bg-white text-[#334155] shadow-2xl p-5 overflow-y-auto transition-all`}
+          >
             <div className="flex items-center justify-between pb-4 border-b border-[#e5e7eb] mb-4">
               <span className="font-bold text-[1.1rem] text-[#10233b]">{t("brand")} Menu</span>
               <button className="border-0 bg-transparent text-xl text-slate-500 cursor-pointer flex items-center justify-center p-1" onClick={() => setMobileMenuOpen(false)} aria-label="Close menu">
