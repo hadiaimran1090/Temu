@@ -13,6 +13,7 @@ import { NotFound } from "./pages/NotFound";
 import { ProductDetail } from "./pages/ProductDetail";
 import { Products } from "./pages/Products";
 import { Orders } from "./pages/Orders";
+import { Support } from "./pages/Support";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
             <Route path="products/:id" element={<ProductDetail />} />
             <Route path="about" element={<About />} />
             <Route path="cart" element={<Cart />} />
+            <Route path="support" element={<Support />} />
             <Route path="checkout" element={<ProtectedRoute />}>
               <Route index element={<Checkout />} />
             </Route>

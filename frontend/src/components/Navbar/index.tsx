@@ -395,10 +395,10 @@ export function Navbar() {
               </div>
             )}
           </div>
-          <button className="inline-flex items-center gap-1.5 text-white bg-transparent border-0 p-0 cursor-pointer text-left font-inherit" type="button">
+          <NavLink className="inline-flex items-center gap-1.5 text-white no-underline text-[0.88rem] font-semibold" to="/support">
             <FaWhatsapp />
             {t("support")}
-          </button>
+          </NavLink>
           <button className="border-0 bg-transparent text-white cursor-pointer text-base" onClick={() => dispatch(toggleTheme())}>
             {theme === "light" ? <FaMoon /> : <FaSun />}
           </button>
@@ -518,9 +518,9 @@ export function Navbar() {
               <button className="flex items-center gap-2.5 p-2.5 hover:bg-[#f0f0f0] rounded-lg text-slate-700 font-bold text-sm border-0 bg-transparent text-left cursor-pointer rtl:text-right w-full" onClick={() => { setMobileMenuOpen(false); handleLanguageToggle(); }}>
                 <FaGlobe /> {language === "en" ? "English" : "اردو"}
               </button>
-              <button className="flex items-center gap-2.5 p-2.5 hover:bg-[#f0f0f0] rounded-lg text-slate-700 font-bold text-sm border-0 bg-transparent text-left cursor-pointer rtl:text-right w-full">
+              <NavLink className="flex items-center gap-2.5 p-2.5 hover:bg-[#f0f0f0] rounded-lg text-slate-700 font-bold text-sm no-underline text-left rtl:text-right w-full" to="/support" onClick={() => setMobileMenuOpen(false)}>
                 <FaWhatsapp /> {t("support")}
-              </button>
+              </NavLink>
             </div>
           </div>
         </div>

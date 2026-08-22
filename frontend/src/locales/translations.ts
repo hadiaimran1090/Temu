@@ -192,6 +192,14 @@ export const translations = {
     link_Protection: "Temu purchase protection",
     link_Sitemap: "Sitemap",
     link_Partner: "Partner with Temu",
+    supportPageTitle: "Customer Support",
+    supportPageDesc: "We're here to help! Get in touch with us through WhatsApp or email.",
+    whatsappButton: "Chat on WhatsApp",
+    whatsappDesc: "Connect with our support team instantly on WhatsApp for quick resolutions.",
+    emailButton: "Email Support",
+    emailDesc: "Send us an email and we will get back to you within 24 hours.",
+    hoursTitle: "Business Hours",
+    hoursDesc: "Monday - Sunday: 9:00 AM - 9:00 PM",
   },
   ur: {
     // General / Layout
@@ -386,6 +394,14 @@ export const translations = {
     link_Protection: "ٹیمو کی خریداری کا تحفظ",
     link_Sitemap: "سائٹ میپ",
     link_Partner: "ٹیمو کے ساتھ شراکت داری",
+    supportPageTitle: "کسٹمر سپورٹ",
+    supportPageDesc: "ہم آپ کی مدد کے لیے حاضر ہیں! واٹس ایپ یا ای میل کے ذریعے ہم سے رابطہ کریں۔",
+    whatsappButton: "واٹس ایپ پر بات کریں",
+    whatsappDesc: "فوری حل کے لیے واٹس ایپ پر ہماری سپورٹ ٹیم سے رابطہ کریں۔",
+    emailButton: "ای میل سپورٹ",
+    emailDesc: "ہمیں ای میل بھیجیں اور ہم 24 گھنٹوں میں آپ سے رابطہ کریں گے۔",
+    hoursTitle: "کام کے اوقات",
+    hoursDesc: "پیر - اتوار: صبح 9:00 بجے سے رات 9:00 بجے تک",
   },
 };
 export type TranslationKey = keyof typeof translations.en;
