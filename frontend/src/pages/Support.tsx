@@ -1,30 +1,17 @@
 import { useState } from "react";
 import { FaWhatsapp, FaChevronDown, FaChevronUp, FaCircleQuestion } from "react-icons/fa6";
 import { useTranslation } from "../hooks/useTranslation";
+import { SUPPORT_WHATSAPP_NUMBER } from "../config";
 
 export function Support() {
   const { t } = useTranslation();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-  const handleWhatsappChat = async () => {
-    try {
-      const apiBase = import.meta.env.VITE_API_URL || "/api";
-      const configUrl = apiBase.startsWith("/") 
-        ? `${window.location.origin}${apiBase}/support/whatsapp-config` 
-        : `${apiBase}/support/whatsapp-config`;
-      
-      const response = await fetch(configUrl);
-      if (!response.ok) throw new Error("Failed to fetch WhatsApp config");
-      
-      const { phone, message } = await response.json();
-      
-      // Use native protocol scheme to prevent browser URL bar navigation
-      const nativeUrl = `whatsapp://send?phone=${phone}&text=${encodeURIComponent(message)}`;
-      window.location.href = nativeUrl;
-    } catch (err) {
-      // Fallback to default local config if fetch fails
-      window.location.href = `whatsapp://send?phone=923001234567&text=Hello%20Temu%20Support`;
-    }
+  const handleWhatsappChat = () => {
+    const defaultMsg = "Hello Temu Support, I need help with my order.";
+    // Use native protocol scheme to prevent browser URL bar navigation
+    const nativeUrl = `whatsapp://send?phone=${SUPPORT_WHATSAPP_NUMBER}&text=${encodeURIComponent(defaultMsg)}`;
+    window.location.href = nativeUrl;
   };
 
   const toggleFaq = (id: number) => {
