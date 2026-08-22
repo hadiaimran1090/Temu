@@ -623,7 +623,7 @@ export const products: Product[] = [
     title: "SPF 50+ Daily Sunscreen Gel",
     price: "Rs. 799",
     oldPrice: "Rs. 1,350",
-    image: "/products/SPF 50+ Daily Sunscreen Gel.jpg",
+    image: "/products/Gel.jpg",
     category: "Beauty & Personal Care",
     sold: "2.8K+ sold",
     badge: "Best-selling",
