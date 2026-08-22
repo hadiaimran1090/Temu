@@ -59,7 +59,7 @@ Built with dedication, Temu brings together powerful features like:
 
 ### 🛠️ Support & Configurations
 - Dedicated Customer Support page with native device app protocol triggers (`whatsapp://`)
-- Complete environment configuration for Support variables (`VITE_SUPPORT_WHATSAPP_NUMBER` & `VITE_SUPPORT_EMAIL`)
+- Complete environment configuration for the Support variable (`VITE_SUPPORT_WHATSAPP_NUMBER`)
 - Full FAQ interactive accordion toggles localized in both English & Urdu
 
 ---
