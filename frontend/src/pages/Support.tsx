@@ -9,9 +9,8 @@ export function Support() {
 
   const handleWhatsappChat = () => {
     const defaultMsg = "Hello Temu Support, I need help with my order.";
-    // Use native protocol scheme to prevent browser URL bar navigation
-    const nativeUrl = `whatsapp://send?phone=${SUPPORT_WHATSAPP_NUMBER}&text=${encodeURIComponent(defaultMsg)}`;
-    window.location.href = nativeUrl;
+    const whatsappUrl = `https://wa.me/${SUPPORT_WHATSAPP_NUMBER}?text=${encodeURIComponent(defaultMsg)}`;
+    window.location.href = whatsappUrl;
   };
 
   const toggleFaq = (id: number) => {
