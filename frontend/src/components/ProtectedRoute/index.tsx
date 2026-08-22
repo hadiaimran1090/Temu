@@ -1,8 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAppSelector } from "../../store";
+import { useAuth } from "../../context/AuthContext";
 
 export function ProtectedRoute() {
-  const token = useAppSelector((state) => state.auth.token);
+  const { token } = useAuth();
   return token ? (
     <Outlet />
   ) : (

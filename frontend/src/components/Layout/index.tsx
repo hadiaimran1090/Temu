@@ -3,12 +3,18 @@ import { Outlet, useLocation } from "react-router-dom";
 import { Navbar } from "../Navbar";
 import { Footer } from "../Footer";
 import { useTranslation } from "../../hooks/useTranslation";
-import { useAppSelector } from "../../store";
+import { useAppSelector, useAppDispatch } from "../../store";
+import { syncCart } from "../../store/slices/cartSlice";
 
 export function Layout() {
   const notice = useAppSelector((state) => state.notice.message);
   const { isRtl } = useTranslation();
   const { pathname } = useLocation();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(syncCart());
+  }, [dispatch]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });

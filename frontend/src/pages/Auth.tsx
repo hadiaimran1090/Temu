@@ -22,17 +22,28 @@ export function Auth({ register = false }: { register?: boolean }) {
     navigate("/");
   };
 
-  const getValidationSchema = () =>
-    Yup.object({
-      email: Yup.string()
-        .email(t("emailInvalid"))
-        .required(t("emailRequired")),
-      password: Yup.string()
-        .min(8, t("passwordTooShort"))
-        .matches(/[A-Z]/, t("passwordCapital"))
-        .matches(/[0-9]/, t("passwordNumber"))
-        .required(t("passwordRequired")),
-    });
+  const getValidationSchema = () => {
+    if (register) {
+      return Yup.object({
+        email: Yup.string()
+          .email(t("emailInvalid"))
+          .required(t("emailRequired")),
+        password: Yup.string()
+          .min(8, t("passwordTooShort"))
+          .matches(/[A-Z]/, t("passwordCapital"))
+          .matches(/[0-9]/, t("passwordNumber"))
+          .required(t("passwordRequired")),
+      });
+    } else {
+      return Yup.object({
+        email: Yup.string()
+          .email(t("emailInvalid"))
+          .required(t("emailRequired")),
+        password: Yup.string()
+          .required(t("passwordRequired")),
+      });
+    }
+  };
 
   return (
     <section className="min-h-[620px] grid grid-cols-2 max-w-[1050px] mx-auto my-[30px] overflow-hidden rounded-[22px] shadow-[0_16px_44px_rgba(15,23,42,0.16)] max-[900px]:grid-cols-1 max-[900px]:my-2.5 max-[900px]:min-h-[540px]">

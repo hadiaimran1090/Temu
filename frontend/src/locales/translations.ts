@@ -134,6 +134,24 @@ export const translations = {
     cat_OfficeSchoolSupplies: "Office & School Supplies",
     cat_All: "All",
 
+    // Subcategories
+    sub_SmartWatches: "Smart Watches",
+    sub_TravelWallets: "Travel Wallets",
+    sub_WirelessEarbuds: "Wireless Earbuds",
+    sub_KitchenOrganizers: "Kitchen Organizers",
+    sub_TaiChiGuides: "Tai Chi Guides",
+    sub_FocusLamps: "Focus Lamps",
+    sub_SummerDresses: "Summer Dresses",
+    sub_FashionHandbags: "Fashion Handbags",
+    sub_ElegantShoes: "Elegant Shoes",
+    sub_CasualShirts: "Casual Shirts",
+    sub_HairClipperSets: "Hair Clipper Sets",
+    sub_SportsWaterBottles: "Sports Water Bottles",
+    sub_SportsGear: "Sports Gear",
+    sub_Wallets: "Wallets",
+    sub_SkincareSerums: "Skincare Serums",
+    sub_BuildingToys: "Building Toys",
+
     // About Page details
     aboutHeroText: "SHOP SMARTER, LIVE BRIGHTER",
     aboutHeroTitle: "Big value. Small prices. Everyday joy.",
@@ -309,6 +327,24 @@ export const translations = {
     cat_CasesHolstersSleeves: "کیسز اور کور",
     cat_OfficeSchoolSupplies: "دفتر اور اسکول کا سامان",
     cat_All: "تمام",
+
+    // Subcategories
+    sub_SmartWatches: "اسمارٹ واچز",
+    sub_TravelWallets: "ٹریول والٹس",
+    sub_WirelessEarbuds: "وائرلیس ایئربڈز",
+    sub_KitchenOrganizers: "باورچی خانے کے آرگنائزرز",
+    sub_TaiChiGuides: "تائی چی گائیڈز",
+    sub_FocusLamps: "فوکس لیمپ",
+    sub_SummerDresses: "گرمیوں کے لباس",
+    sub_FashionHandbags: "فیشن ہینڈ بیگز",
+    sub_ElegantShoes: "خوبصورت جوتے",
+    sub_CasualShirts: "کیژول شرٹس",
+    sub_HairClipperSets: "ہیئر کلپر سیٹ",
+    sub_SportsWaterBottles: "اسپورٹس واٹر بوتلیں",
+    sub_SportsGear: "کھیلوں کا سامان",
+    sub_Wallets: "بٹوے",
+    sub_SkincareSerums: "جلد کی دیکھ بھال کے سیرم",
+    sub_BuildingToys: "کھلونے بلڈنگ بلاکس",
 
     // About Page details
     aboutHeroText: "ہوشیار خریداری کریں، روشن زندگی گزاریں",

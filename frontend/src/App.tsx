@@ -3,6 +3,7 @@ import { Layout } from "./components/Layout";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Provider } from "react-redux";
 import { store } from "./store";
+import { AuthProvider } from "./context/AuthContext";
 import { About } from "./pages/About";
 import { Auth } from "./pages/Auth";
 import { Cart } from "./pages/Cart";
@@ -16,9 +17,10 @@ import { Orders } from "./pages/Orders";
 export default function App() {
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route element={<Layout />}>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="products" element={<Products />} />
             <Route path="products/:id" element={<ProductDetail />} />
@@ -33,9 +35,10 @@ export default function App() {
             <Route path="login" element={<Auth />} />
             <Route path="register" element={<Auth register />} />
             <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </Provider>
   );
 }

@@ -8,29 +8,109 @@ import {
   FaSun,
   FaTruck,
   FaWhatsapp,
+  FaBars,
+  FaXmark,
 } from "react-icons/fa6";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { clearAuth } from "../../store/slices/authSlice";
 import { syncCart } from "../../store/slices/cartSlice";
 import { toggleTheme } from "../../store/slices/themeSlice";
 import { setLanguage } from "../../store/slices/languageSlice";
 import { useTranslation } from "../../hooks/useTranslation";
+import { useAuth } from "../../context/AuthContext";
+import { purify } from "../../utils/purify";
 
-const menu = [
-  { name: "Featured", image: "/products/wallet.jpg" },
-  { name: "Home & Kitchen", image: "/products/organizer.jpg" },
-  { name: "Women's Clothing", image: "/products/Women’s dress.jpg" },
-  { name: "Women's Shoes", image: "/products/shoes.jpg" },
-  { name: "Men's Clothing", image: "/products/menshirt.jpg" },
-  { name: "Men's Underwear & Sleepwear", image: "/products/hairclipper.jpg" },
-  { name: "Sports & Outdoors", image: "/products/Sports water bottle.jpg" },
-  { name: "Women's Jewelry", image: "/products/wallet.jpg" },
-  { name: "Beauty & Personal Care", image: "/products/Skincare serum.jpg" },
-  { name: "Toys & Games", image: "/products/Kids’ toy.jpg" },
-  { name: "Accessories", image: "/products/earbuds.jpg" },
-  { name: "Cases, Holsters & Sleeves", image: "/products/phone.jpg" },
+interface Subcategory {
+  name: string;
+  key: string;
+  image: string;
+  category: string;
+}
+
+interface CategoryWithSub {
+  name: string;
+  key: string;
+  subcategories: Subcategory[];
+}
+
+const categoriesWithSubs: CategoryWithSub[] = [
+  {
+    name: "Featured",
+    key: "cat_Featured",
+    subcategories: [
+      { name: "Smart Watches", key: "sub_SmartWatches", image: "/products/smartwatch.jpg", category: "Accessories" },
+      { name: "Travel Wallets", key: "sub_TravelWallets", image: "/products/wallet.jpg", category: "Accessories" },
+      { name: "Wireless Earbuds", key: "sub_WirelessEarbuds", image: "/products/earbuds.jpg", category: "Accessories" },
+    ],
+  },
+  {
+    name: "Home & Kitchen",
+    key: "cat_HomeKitchen",
+    subcategories: [
+      { name: "Kitchen Organizers", key: "sub_KitchenOrganizers", image: "/products/organizer.jpg", category: "Home & Kitchen" },
+      { name: "Tai Chi Guides", key: "sub_TaiChiGuides", image: "/products/chair.jpg", category: "Home & Kitchen" },
+      { name: "Focus Lamps", key: "sub_FocusLamps", image: "/products/lamp.jpg", category: "Home & Kitchen" },
+    ],
+  },
+  {
+    name: "Women's Clothing",
+    key: "cat_WomensClothing",
+    subcategories: [
+      { name: "Summer Dresses", key: "sub_SummerDresses", image: "/products/Women’s dress.jpg", category: "Women's Clothing" },
+      { name: "Fashion Handbags", key: "sub_FashionHandbags", image: "/products/handbag.jpg", category: "Women's Clothing" },
+    ],
+  },
+  {
+    name: "Women's Shoes",
+    key: "cat_WomensShoes",
+    subcategories: [
+      { name: "Elegant Shoes", key: "sub_ElegantShoes", image: "/products/shoes.jpg", category: "Women's Shoes" },
+    ],
+  },
+  {
+    name: "Men's Clothing",
+    key: "cat_MensClothing",
+    subcategories: [
+      { name: "Casual Shirts", key: "sub_CasualShirts", image: "/products/menshirt.jpg", category: "Men's Clothing" },
+    ],
+  },
+  {
+    name: "Men's Underwear & Sleepwear",
+    key: "cat_MensUnderwearSleepwear",
+    subcategories: [
+      { name: "Hair Clipper Sets", key: "sub_HairClipperSets", image: "/products/hairclipper.jpg", category: "Accessories" },
+    ],
+  },
+  {
+    name: "Sports & Outdoors",
+    key: "cat_SportsOutdoors",
+    subcategories: [
+      { name: "Sports Water Bottles", key: "sub_SportsWaterBottles", image: "/products/Sports water bottle.jpg", category: "Sports & Outdoors" },
+      { name: "Sports Gear", key: "sub_SportsGear", image: "/products/sports.jpg", category: "Sports & Outdoors" },
+    ],
+  },
+  {
+    name: "Women's Jewelry",
+    key: "cat_WomensJewelry",
+    subcategories: [
+      { name: "Wallets", key: "sub_Wallets", image: "/products/wallet.jpg", category: "Accessories" },
+    ],
+  },
+  {
+    name: "Beauty & Personal Care",
+    key: "cat_BeautyPersonalCare",
+    subcategories: [
+      { name: "Skincare Serums", key: "sub_SkincareSerums", image: "/products/Skincare serum.jpg", category: "Beauty & Personal Care" },
+    ],
+  },
+  {
+    name: "Toys & Games",
+    key: "cat_ToysGames",
+    subcategories: [
+      { name: "Building Toys", key: "sub_BuildingToys", image: "/products/Kids’ toy.jpg", category: "Toys & Games" },
+    ],
+  },
 ];
 
 const getCategoryKey = (category: string) => {
@@ -56,20 +136,118 @@ const getCategoryKey = (category: string) => {
 export function Navbar() {
   const cart = useAppSelector((state) => state.cart.items);
   const theme = useAppSelector((state) => state.theme.theme);
-  const token = useAppSelector((state) => state.auth.token);
-  const userEmail = useAppSelector((state) => state.auth.userEmail);
+  const { token, userEmail, logout } = useAuth();
   const dispatch = useAppDispatch();
   const { t, language } = useTranslation();
 
   const [profileOpen, setProfileOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState("Featured");
+  
   const [search, setSearch] = useState("");
+  const [searchParams] = useSearchParams();
+  const urlSearch = searchParams.get("search") ?? "";
+
   const navigate = useNavigate();
   const count = cart.reduce((total, item) => total + item.quantity, 0);
 
+  const categoryBtnRef = useRef<HTMLButtonElement>(null);
+  const categoryRef = useRef<HTMLDivElement>(null);
+  const profileBtnRef = useRef<HTMLButtonElement>(null);
+  const profileRef = useRef<HTMLDivElement>(null);
+  const mobileMenuBtnRef = useRef<HTMLButtonElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+
+  // Sync local search input with URL search param changes
+  useEffect(() => {
+    setSearch(urlSearch);
+  }, [urlSearch]);
+
+  // Debounced URL updates when typing
+  useEffect(() => {
+    if (search === urlSearch) return;
+
+    const sanitized = purify(search);
+
+    if (sanitized === "") {
+      const newParams = new URLSearchParams(window.location.search);
+      newParams.delete("search");
+      navigate(`/products?${newParams.toString()}`, { replace: true });
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      const newParams = new URLSearchParams(window.location.search);
+      newParams.set("search", sanitized);
+      navigate(`/products?${newParams.toString()}`, { replace: true });
+    }, 450);
+
+    return () => clearTimeout(timer);
+  }, [search, urlSearch, navigate]);
+
+  // Handle outside clicks and Escape key down to close overlays
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+      
+      if (
+        categoryOpen &&
+        categoryRef.current &&
+        !categoryRef.current.contains(target) &&
+        categoryBtnRef.current &&
+        !categoryBtnRef.current.contains(target)
+      ) {
+        setCategoryOpen(false);
+      }
+      
+      if (
+        profileOpen &&
+        profileRef.current &&
+        !profileRef.current.contains(target) &&
+        profileBtnRef.current &&
+        !profileBtnRef.current.contains(target)
+      ) {
+        setProfileOpen(false);
+      }
+
+      if (
+        mobileMenuOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(target) &&
+        mobileMenuBtnRef.current &&
+        !mobileMenuBtnRef.current.contains(target)
+      ) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setCategoryOpen(false);
+        setProfileOpen(false);
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [categoryOpen, profileOpen, mobileMenuOpen]);
+
   const submitSearch = (event: React.FormEvent) => {
     event.preventDefault();
-    navigate(`/products?search=${encodeURIComponent(search)}`);
+    const sanitized = purify(search);
+    const newParams = new URLSearchParams(window.location.search);
+    if (sanitized) {
+      newParams.set("search", sanitized);
+    } else {
+      newParams.delete("search");
+    }
+    navigate(`/products?${newParams.toString()}`);
   };
 
   const selectCategory = (category: string) => {
@@ -77,10 +255,16 @@ export function Navbar() {
     navigate(`/products?category=${encodeURIComponent(category)}`);
   };
 
+  const selectSubcategory = (category: string, searchVal: string) => {
+    setCategoryOpen(false);
+    navigate(`/products?category=${encodeURIComponent(category)}&search=${encodeURIComponent(searchVal)}`);
+  };
+
   const handleLogout = () => {
-    dispatch(clearAuth());
+    logout();
     dispatch(syncCart());
     setProfileOpen(false);
+    setMobileMenuOpen(false);
   };
 
   const handleLanguageToggle = () => {
@@ -88,8 +272,9 @@ export function Navbar() {
   };
 
   return (
-    <header className="fixed top-0 left-1/2 -translate-x-1/2 w-full z-40 transition-all duration-180 ease-in-out opacity-100 pointer-events-auto">
-      <div className="grid grid-cols-3 gap-[1px] bg-[#111] text-[#d1d5db] text-center font-semibold">
+    <header className="fixed top-0 left-0 w-full z-40 transition-all duration-180 ease-in-out opacity-100 pointer-events-auto">
+      {/* Top Banner Row (Hidden on mobile) */}
+      <div className="grid grid-cols-3 gap-[1px] bg-[#111] text-[#d1d5db] text-center font-semibold max-[720px]:hidden">
         <div className="bg-[#101010] p-[10px_14px] flex items-center justify-center gap-1.5 text-[0.88rem] max-[720px]:p-[7px_4px] max-[720px]:text-[0.68rem]">
           <FaTruck />
           <strong className="font-bold text-[0.88rem] max-[720px]:text-[0.7rem]">{t("freeShippingOrders")}</strong>
@@ -104,22 +289,25 @@ export function Navbar() {
           <span className="text-[#f5e6b8] block text-[0.8rem] max-[900px]:hidden">{t("trackOrdersTime")}</span>
         </div>
       </div>
-      <div className="grid grid-cols-[auto_auto_minmax(280px,1fr)_auto] gap-[18px] items-center p-[6px_28px] bg-gradient-to-r from-[#4ea5e6] to-[#62b4f0] text-white max-[1100px]:grid-cols-1 max-[720px]:grid-cols-[auto_1fr] max-[720px]:gap-2.5 max-[720px]:p-[7px_12px]">
+
+      {/* Desktop Header Layout */}
+      <div className="hidden min-[721px]:grid grid-cols-[auto_auto_minmax(280px,1fr)_auto] gap-[18px] items-center p-[6px_28px] bg-gradient-to-r from-[#4ea5e6] to-[#62b4f0] text-white">
         <NavLink className="w-[50px] h-[50px] rounded-[14px] bg-gradient-to-br from-[#ff8c1a] to-[#ff5f28] grid place-items-center font-black tracking-[0.08em] shadow-[0_12px_24px_rgba(255,111,31,0.35)] text-white no-underline max-[720px]:w-[46px] max-[720px]:h-[46px] max-[720px]:text-[0.7rem]" to="/">
           {t("brand")}
         </NavLink>
-        <nav className="flex items-center flex-wrap gap-3 font-semibold max-[1100px]:justify-center max-[720px]:order-3 max-[720px]:col-span-full max-[720px]:justify-start max-[720px]:gap-3 max-[720px]:overflow-x-auto max-[720px]:flex-nowrap max-[720px]:pb-[2px]">
-          <NavLink className="text-white no-underline text-[0.86rem] whitespace-nowrap active:underline active:text-[#fff3c4] [&.active]:text-[#fff3c4] [&.active]:underline [&.active]:underline-offset-[5px] max-[720px]:text-[0.72rem]" to="/products">{t("bestSelling")}</NavLink>
-          <NavLink className="text-white no-underline text-[0.86rem] whitespace-nowrap active:underline active:text-[#fff3c4] [&.active]:text-[#fff3c4] [&.active]:underline [&.active]:underline-offset-[5px] max-[720px]:text-[0.72rem]" to="/about">{t("about")}</NavLink>
-          <NavLink className="text-white no-underline text-[0.86rem] whitespace-nowrap active:underline active:text-[#fff3c4] [&.active]:text-[#fff3c4] [&.active]:underline [&.active]:underline-offset-[5px] max-[720px]:text-[0.72rem]" to="/products">{t("newIn")}</NavLink>
+        <nav className="flex items-center flex-wrap gap-3 font-semibold max-[1100px]:justify-center">
+          <NavLink className="text-white no-underline text-[0.86rem] whitespace-nowrap active:underline active:text-[#fff3c4] [&.active]:text-[#fff3c4] [&.active]:underline [&.active]:underline-offset-[5px]" to="/products">{t("bestSelling")}</NavLink>
+          <NavLink className="text-white no-underline text-[0.86rem] whitespace-nowrap active:underline active:text-[#fff3c4] [&.active]:text-[#fff3c4] [&.active]:underline [&.active]:underline-offset-[5px]" to="/about">{t("about")}</NavLink>
+          <NavLink className="text-white no-underline text-[0.86rem] whitespace-nowrap active:underline active:text-[#fff3c4] [&.active]:text-[#fff3c4] [&.active]:underline [&.active]:underline-offset-[5px]" to="/products">{t("newIn")}</NavLink>
           <button
+            ref={categoryBtnRef}
             className="border border-transparent rounded-full bg-transparent text-inherit p-[9px_12px] cursor-pointer inline-flex gap-[5px] items-center hover:border-white transition-colors"
             onClick={() => setCategoryOpen(!categoryOpen)}
           >
             {t("categories")} <FaChevronDown />
           </button>
         </nav>
-        <form className="relative max-w-[620px] flex items-center rounded-full bg-white shadow-[0_4px_18px_rgba(15,23,42,0.08)] overflow-hidden max-[720px]:order-4 max-[720px]:col-span-full max-[720px]:min-h-[36px]" onSubmit={submitSearch}>
+        <form className="relative max-w-[620px] flex items-center rounded-full bg-white shadow-[0_4px_18px_rgba(15,23,42,0.08)] overflow-hidden" onSubmit={submitSearch}>
           <input
             className="flex-1 border-0 p-[12px_24px] text-[0.94rem] text-[#1e293b] bg-transparent focus:outline-none"
             value={search}
@@ -130,10 +318,11 @@ export function Navbar() {
             <FaMagnifyingGlass />
           </button>
         </form>
-        <div className="flex items-center gap-[18px] max-[720px]:justify-end max-[720px]:gap-2.5">
-          <div className="relative inline-block max-[720px]:hidden">
+        <div className="flex items-center gap-[18px]">
+          <div className="relative inline-block">
             {token ? (
               <button
+                ref={profileBtnRef}
                 className="border-0 bg-transparent text-white cursor-pointer text-[0.88rem] font-semibold flex items-center gap-1.5"
                 onClick={() => setProfileOpen(!profileOpen)}
               >
@@ -146,7 +335,7 @@ export function Navbar() {
               </NavLink>
             )}
             {profileOpen && (
-              <div className="absolute top-[calc(100%+12px)] right-0 z-50 w-[220px] rounded-xl border border-[rgba(82,143,191,0.15)] bg-white shadow-[0_16px_36px_rgba(15,23,42,0.12)] p-[14px_16px] flex flex-col gap-2">
+              <div ref={profileRef} className="profile-dropdown absolute top-[calc(100%+12px)] right-0 z-50 w-[220px] rounded-xl border border-[rgba(82,143,191,0.15)] bg-white shadow-[0_16px_36px_rgba(15,23,42,0.12)] p-[14px_16px] flex flex-col gap-2">
                 <b className="text-[0.88rem] text-[#0f172a] break-all block mb-1 font-bold">{userEmail}</b>
                 <NavLink className="border-0 p-[8px_12px] rounded-lg no-underline text-[#334155] text-[0.86rem] font-semibold cursor-pointer transition-colors duration-180 text-left bg-transparent hover:bg-[#f1f5f9] hover:text-[#0f172a] rtl:text-right" to="/cart">{t("myCart")}</NavLink>
                 <NavLink className="border-0 p-[8px_12px] rounded-lg no-underline text-[#334155] text-[0.86rem] font-semibold cursor-pointer transition-colors duration-180 text-left bg-transparent hover:bg-[#f1f5f9] hover:text-[#0f172a] rtl:text-right" to="/orders">{t("myOrders")}</NavLink>
@@ -156,14 +345,14 @@ export function Navbar() {
               </div>
             )}
           </div>
-          <button className="inline-flex items-center gap-1.5 text-white bg-transparent border-0 p-0 cursor-pointer text-left font-inherit max-[720px]:p-[5px_8px] max-[720px]:text-[0.72rem] max-[720px]:gap-1 max-[720px]:rounded-md max-[720px]:border max-[720px]:border-white/30 max-[720px]:bg-white/10" type="button">
+          <button className="inline-flex items-center gap-1.5 text-white bg-transparent border-0 p-0 cursor-pointer text-left font-inherit" type="button">
             <FaWhatsapp />
             {t("support")}
           </button>
-          <button className="border-0 bg-transparent text-white cursor-pointer text-base max-[720px]:inline-flex max-[720px]:p-[5px_8px] max-[720px]:text-[0.72rem] max-[720px]:gap-1 max-[720px]:rounded-md max-[720px]:border max-[720px]:border-white/30 max-[720px]:bg-white/10" onClick={() => dispatch(toggleTheme())}>
+          <button className="border-0 bg-transparent text-white cursor-pointer text-base" onClick={() => dispatch(toggleTheme())}>
             {theme === "light" ? <FaMoon /> : <FaSun />}
           </button>
-          <button className="inline-flex items-center gap-1.5 text-white bg-transparent border-0 p-0 cursor-pointer text-left font-inherit max-[720px]:p-[5px_8px] max-[720px]:text-[0.72rem] max-[720px]:gap-1 max-[720px]:rounded-md max-[720px]:border max-[720px]:border-white/30 max-[720px]:bg-white/10" type="button" onClick={handleLanguageToggle}>
+          <button className="inline-flex items-center gap-1.5 text-white bg-transparent border-0 p-0 cursor-pointer text-left font-inherit" type="button" onClick={handleLanguageToggle}>
             <FaGlobe /> {language === "en" ? "English" : "اردو"}
           </button>
           <NavLink className="inline-flex items-center gap-2 text-[1.15rem] text-white no-underline relative" to="/cart">
@@ -171,31 +360,151 @@ export function Navbar() {
           </NavLink>
         </div>
       </div>
+
+      {/* Mobile Header Layout (Screen <= 720px) */}
+      <div className="min-[721px]:hidden flex flex-col gap-2 p-[8px_14px] bg-gradient-to-r from-[#4ea5e6] to-[#62b4f0] text-white shadow-md">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <button
+              ref={mobileMenuBtnRef}
+              className="text-white text-xl bg-transparent border-0 cursor-pointer flex items-center justify-center p-1"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              <FaBars />
+            </button>
+            <NavLink className="w-[42px] h-[42px] rounded-[12px] bg-gradient-to-br from-[#ff8c1a] to-[#ff5f28] grid place-items-center font-black tracking-[0.08em] shadow-[0_8px_16px_rgba(255,111,31,0.3)] text-white no-underline text-[0.8rem]" to="/">
+              {t("brand")}
+            </NavLink>
+          </div>
+          <div className="flex items-center gap-3.5">
+            <button className="border-0 bg-transparent text-white cursor-pointer text-lg flex items-center justify-center" onClick={() => dispatch(toggleTheme())}>
+              {theme === "light" ? <FaMoon /> : <FaSun />}
+            </button>
+            <NavLink className="inline-flex items-center gap-1 text-[1.1rem] text-white no-underline relative" to="/cart">
+              <FaCartShopping /> <b className="grid place-items-center min-w-[18px] h-[18px] px-1 rounded-full bg-[#ff5b2e] text-white text-[0.65rem] font-bold">{count}</b>
+            </NavLink>
+          </div>
+        </div>
+        
+        {/* Mobile Search Input */}
+        <form className="relative flex items-center rounded-full bg-white shadow-[0_2px_8px_rgba(15,23,42,0.06)] overflow-hidden min-h-[38px] w-full" onSubmit={submitSearch}>
+          <input
+            className="flex-1 border-0 p-[8px_16px] text-[0.88rem] text-[#1e293b] bg-transparent focus:outline-none"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder={t("searchPlaceholder")}
+          />
+          <button className="grid place-items-center w-8 h-8 mr-1 rtl:mr-0 rtl:ml-1 border-0 rounded-full bg-[#10233b] text-white cursor-pointer" aria-label="Search">
+            <FaMagnifyingGlass />
+          </button>
+        </form>
+      </div>
+
+      {/* Mobile Drawer Slide-out Menu */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 min-[721px]:hidden flex">
+          {/* Backdrop overlay */}
+          <div className="fixed inset-0 bg-black/45 backdrop-blur-[2px]" onClick={() => setMobileMenuOpen(false)} />
+          
+          {/* Drawer container */}
+          <div ref={mobileMenuRef} className="relative flex flex-col w-[280px] max-w-[80vw] h-full bg-white text-[#334155] shadow-2xl p-5 overflow-y-auto ltr:mr-auto rtl:ml-auto transition-all">
+            <div className="flex items-center justify-between pb-4 border-b border-[#e5e7eb] mb-4">
+              <span className="font-bold text-[1.1rem] text-[#10233b]">{t("brand")} Menu</span>
+              <button className="border-0 bg-transparent text-xl text-slate-500 cursor-pointer flex items-center justify-center p-1" onClick={() => setMobileMenuOpen(false)} aria-label="Close menu">
+                <FaXmark />
+              </button>
+            </div>
+            
+            {/* Account Info Profile Area */}
+            <div className="p-3.5 bg-[#fafafa] rounded-xl mb-4 flex flex-col gap-1 border border-[#e5e7eb]">
+              {token ? (
+                <>
+                  <span className="text-[0.7rem] uppercase tracking-wider text-slate-400 font-bold">Logged In As</span>
+                  <b className="text-[0.86rem] text-slate-800 break-all block mb-2">{userEmail}</b>
+                  <div className="flex flex-col gap-1.5">
+                    <NavLink className="p-2 hover:bg-slate-200/50 rounded-lg text-slate-700 font-semibold text-sm no-underline text-left rtl:text-right" to="/cart" onClick={() => setMobileMenuOpen(false)}>{t("myCart")}</NavLink>
+                    <NavLink className="p-2 hover:bg-slate-200/50 rounded-lg text-slate-700 font-semibold text-sm no-underline text-left rtl:text-right" to="/orders" onClick={() => setMobileMenuOpen(false)}>{t("myOrders")}</NavLink>
+                    <button className="p-2 hover:bg-slate-200/50 rounded-lg text-slate-700 font-semibold text-sm border-0 bg-transparent text-left cursor-pointer rtl:text-right w-full" onClick={handleLogout}>{t("logout")}</button>
+                  </div>
+                </>
+              ) : (
+                <NavLink className="flex items-center gap-2 p-2.5 bg-[#10233b] text-white rounded-xl no-underline text-center justify-center font-bold text-sm" to="/login" onClick={() => setMobileMenuOpen(false)}>
+                  <FaRegUser /> {t("ordersAccount")}
+                </NavLink>
+              )}
+            </div>
+
+            {/* Navigation links */}
+            <nav className="flex flex-col gap-1 border-b border-[#e5e7eb] pb-4 mb-4">
+              <span className="text-[0.7rem] uppercase tracking-wider text-slate-400 font-bold mb-1.5 px-2">Navigation</span>
+              <NavLink className="p-2.5 hover:bg-slate-50 rounded-lg text-slate-700 font-bold text-sm no-underline text-left rtl:text-right" to="/products" onClick={() => setMobileMenuOpen(false)}>{t("bestSelling")}</NavLink>
+              <NavLink className="p-2.5 hover:bg-slate-50 rounded-lg text-slate-700 font-bold text-sm no-underline text-left rtl:text-right" to="/about" onClick={() => setMobileMenuOpen(false)}>{t("about")}</NavLink>
+              <NavLink className="p-2.5 hover:bg-slate-50 rounded-lg text-slate-700 font-bold text-sm no-underline text-left rtl:text-right" to="/products" onClick={() => setMobileMenuOpen(false)}>{t("newIn")}</NavLink>
+            </nav>
+
+            {/* Categories list in mobile menu */}
+            <div className="flex flex-col gap-1 mb-4">
+              <span className="text-[0.7rem] uppercase tracking-wider text-slate-400 font-bold mb-1.5 px-2">Categories</span>
+              <div className="flex flex-col gap-0.5 max-h-[220px] overflow-y-auto pr-1">
+                {categoriesWithSubs.map((category) => (
+                  <button 
+                    key={category.name} 
+                    className="w-full text-left border-0 bg-transparent p-2 hover:bg-slate-50 rounded-lg text-slate-700 text-sm font-semibold cursor-pointer flex justify-between items-center rtl:text-right"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      selectCategory(category.name);
+                    }}
+                  >
+                    <span>{t(category.key as any)}</span>
+                    <span className="text-slate-300">›</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Language & Support */}
+            <div className="mt-auto border-t border-[#e5e7eb] pt-4 flex flex-col gap-2">
+              <button className="flex items-center gap-2.5 p-2.5 hover:bg-slate-50 rounded-lg text-slate-700 font-bold text-sm border-0 bg-transparent text-left cursor-pointer rtl:text-right w-full" onClick={() => { setMobileMenuOpen(false); handleLanguageToggle(); }}>
+                <FaGlobe /> {language === "en" ? "English" : "اردو"}
+              </button>
+              <button className="flex items-center gap-2.5 p-2.5 hover:bg-slate-50 rounded-lg text-slate-700 font-bold text-sm border-0 bg-transparent text-left cursor-pointer rtl:text-right w-full">
+                <FaWhatsapp /> {t("support")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Desktop Categories Mega-Menu Overlay */}
       {categoryOpen && (
-        <div className="absolute top-full left-0 right-0 z-[80] grid grid-cols-[290px_1fr] min-h-[510px] bg-white text-[#343434] border border-[#d9d9d9] shadow-[0_20px_35px_rgba(0,0,0,0.17)] max-[900px]:grid-cols-[170px_1fr] max-[900px]:min-h-[400px] max-[600px]:grid-cols-[130px_1fr]">
+        <div ref={categoryRef} className="mega-menu absolute top-full left-0 right-0 z-[80] grid grid-cols-[290px_1fr] min-h-[510px] bg-white text-[#343434] border border-[#d9d9d9] shadow-[0_20px_35px_rgba(0,0,0,0.17)] max-[900px]:grid-cols-[170px_1fr] max-[900px]:min-h-[400px] max-[600px]:grid-cols-[130px_1fr]">
+          {/* Left Main Categories List */}
           <aside className="py-2.5 border-r border-[#e5e7eb] bg-[#fafafa] overflow-y-auto rtl:border-r-0 rtl:border-l">
-            {[
-              "Featured",
-              "Home & Kitchen",
-              "Women's Clothing",
-              "Women's Shoes",
-              "Men's Clothing",
-              "Men's Underwear & Sleepwear",
-              "Sports & Outdoors",
-              "Women's Jewelry",
-              "Beauty & Personal Care",
-              "Toys & Games",
-            ].map((category) => (
-              <button className="w-full border-0 bg-transparent py-3 px-[30px] text-[#3b3b3b] text-left text-base font-semibold cursor-pointer hover:bg-[#f0f0f0] max-[900px]:p-[10px_14px] max-[900px]:text-[0.82rem] max-[600px]:text-[0.7rem] rtl:text-right" key={category} onClick={() => selectCategory(category)}>
-                {t(getCategoryKey(category))} ›
+            {categoriesWithSubs.map((category) => (
+              <button 
+                className={`w-full border-0 py-3 px-[30px] text-left text-base font-semibold cursor-pointer hover:bg-[#f0f0f0] max-[900px]:p-[10px_14px] max-[900px]:text-[0.82rem] max-[600px]:text-[0.7rem] rtl:text-right transition-colors duration-150 ${
+                  activeCategory === category.name ? "bg-[#f0f0f0]! text-[#ff5b2e]!" : "bg-transparent text-[#3b3b3b]"
+                }`} 
+                key={category.name} 
+                onMouseEnter={() => setActiveCategory(category.name)}
+                onClick={() => selectCategory(category.name)}
+              >
+                {t(category.key as any)} ›
               </button>
             ))}
           </aside>
-          <div className="grid grid-cols-[repeat(6,minmax(105px,1fr))] gap-x-[18px] gap-y-6 p-[30px] align-content-start max-[900px]:grid-cols-3 max-[900px]:p-[18px] max-[900px]:gap-[14px] max-[600px]:grid-cols-2">
-            {menu.map((item) => (
-              <button className="border-0 bg-transparent text-[#484848] cursor-pointer font-inherit text-[0.95rem] leading-[1.35] max-[900px]:text-[0.76rem]" key={item.name} onClick={() => selectCategory(item.name)}>
-                <img className="w-[104px] h-[104px] rounded-full object-cover block mx-auto mb-2.5 max-[900px]:w-[72px] max-[900px]:h-[72px] max-[600px]:w-[56px] max-[600px]:h-[56px]" src={item.image} alt="" />
-                <span className="block">{t(getCategoryKey(item.name))}</span>
+          
+          {/* Right Subcategories Items Grid */}
+          <div className="grid grid-cols-[repeat(6,minmax(105px,1fr))] gap-x-[18px] gap-y-6 p-[30px] align-content-start max-[900px]:grid-cols-3 max-[900px]:p-[18px] max-[900px]:gap-[14px] max-[600px]:grid-cols-2 mega-items">
+            {categoriesWithSubs.find((cat) => cat.name === activeCategory)?.subcategories.map((sub) => (
+              <button 
+                className="border-0 bg-transparent text-[#484848] cursor-pointer font-inherit text-[0.95rem] leading-[1.35] max-[900px]:text-[0.76rem] hover:text-[#ff5b2e]! hover:scale-105 transition-all duration-150" 
+                key={sub.name} 
+                onClick={() => selectSubcategory(sub.category, sub.name)}
+              >
+                <img className="w-[104px] h-[104px] rounded-full object-cover block mx-auto mb-2.5 max-[900px]:w-[72px] max-[900px]:h-[72px] max-[600px]:w-[56px] max-[600px]:h-[56px] shadow-sm border border-slate-100" src={sub.image} alt="" />
+                <span className="block">{t(sub.key as any)}</span>
               </button>
             ))}
           </div>

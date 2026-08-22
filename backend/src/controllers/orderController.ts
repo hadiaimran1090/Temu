@@ -15,6 +15,14 @@ export async function placeOrder(req: AuthRequest, res: Response) {
   const client = await pool.connect();
 
   try {
+    await client.query("BEGIN");
+
+    // Lock the cart to prevent concurrent checkouts for this user
+    await client.query(
+      "SELECT id FROM carts WHERE user_id = $1 FOR UPDATE",
+      [user.id]
+    );
+
     const cartResult = await client.query(
       `SELECT ci.product_id, ci.quantity, p.price 
        FROM cart_items ci
@@ -26,6 +34,7 @@ export async function placeOrder(req: AuthRequest, res: Response) {
 
     const cartItems = cartResult.rows;
     if (cartItems.length === 0) {
+      await client.query("ROLLBACK");
       return res.status(400).json({ message: "Your cart is empty" });
     }
 
@@ -34,8 +43,6 @@ export async function placeOrder(req: AuthRequest, res: Response) {
     for (const item of cartItems) {
       total += parsePrice(item.price) * item.quantity;
     }
-
-    await client.query("BEGIN");
 
     const orderInsertResult = await client.query(
       `INSERT INTO orders (user_id, name, email, phone, address, city, postal_code, total_price)

@@ -144,6 +144,7 @@ export function Checkout() {
             handleChange,
             handleBlur,
             handleSubmit,
+            isSubmitting,
           }) => (
             <form className="flex flex-col gap-4 mt-[18px]" onSubmit={handleSubmit} noValidate>
               {fields.map((field) => (
@@ -197,7 +198,7 @@ export function Checkout() {
               <button
                 className="inline-block no-underline border-0 rounded-full py-[13px] px-[20px] font-bold cursor-pointer transition-all duration-180 hover:-translate-y-[1px] text-white bg-gradient-to-br from-[#ff8c1a] to-[#ff6b2f] shadow-[0_12px_24px_rgba(255,111,31,0.3)] disabled:opacity-50 disabled:cursor-not-allowed text-center"
                 type="submit"
-                disabled={!cart.length}
+                disabled={!cart.length || isSubmitting}
               >
                 {t("submitOrder")} ({cart.length})
               </button>

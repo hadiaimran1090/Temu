@@ -35,9 +35,16 @@ export function Products() {
   const debounced = useDebounce(search);
   const apiCategory = category === "Featured" ? "All" : category;
 
+  const filters: { category?: string; search?: string } = {
+    category: apiCategory,
+  };
+  if (debounced) {
+    filters.search = debounced;
+  }
+
   const { data, loading, error } = useFetch(
     (signal) =>
-      fetchProducts({ category: apiCategory, search: debounced }, signal),
+      fetchProducts(filters, signal),
     [apiCategory, debounced],
   );
 
