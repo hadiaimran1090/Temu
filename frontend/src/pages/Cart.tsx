@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ConfirmModal } from "../components/ConfirmModal";
 import { useAppDispatch, useAppSelector } from "../store";
-import { removeFromCart } from "../store/slices/cartSlice";
+import { removeFromCart, updateCartItemQuantity } from "../store/slices/cartSlice";
 import { useTranslation } from "../hooks/useTranslation";
 
 const price = (value: string) => Number(value.replace(/[^\d]/g, ""));
@@ -64,9 +64,20 @@ export function Cart() {
                     <small className="text-[0.72rem] text-[#64748b] mt-0.5">{item.price} each</small>
                   )}
                 </div>
-                <span className="text-[0.82rem] font-bold text-[#334155] p-[6px_12px] border border-[#cfd4dc] rounded-md">
-                  {t("qty")} {item.quantity}
-                </span>
+                <select
+                  className="text-[0.82rem] font-bold text-[#334155] p-[6px_12px] border border-[#cfd4dc] rounded-md bg-white focus:outline-none cursor-pointer"
+                  value={item.quantity}
+                  onChange={(e) => {
+                    const newQty = Number(e.target.value);
+                    dispatch(updateCartItemQuantity({ productId: item.id, quantity: newQty }));
+                  }}
+                >
+                  {[...Array(99).keys()].map((n) => (
+                    <option key={n + 1} value={n + 1}>
+                      {t("qty")} {n + 1}
+                    </option>
+                  ))}
+                </select>
                 <button
                   className="border-0 bg-transparent text-[#b91c1c] text-[0.82rem] font-bold cursor-pointer"
                   onClick={() => setSelected(item.id)}

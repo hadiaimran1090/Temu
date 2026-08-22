@@ -144,3 +144,32 @@ export async function mergeCart(req: AuthRequest, res: Response) {
     return res.status(500).json({ message: "Internal server error" });
   }
 }
+
+export async function updateItem(req: AuthRequest, res: Response) {
+  const user = req.user;
+  if (!user) return res.status(401).json({ message: "Unauthorized" });
+
+  const { productId, quantity } = req.body;
+  if (!productId || typeof productId !== "number") {
+    return res.status(400).json({ message: "Valid productId is required" });
+  }
+
+  const qty = typeof quantity === "number" ? Math.max(1, Math.floor(quantity)) : 1;
+
+  try {
+    const cartId = await getOrCreateUserCartId(user.id);
+
+    await query(
+      `UPDATE cart_items
+       SET quantity = $3
+       WHERE cart_id = $1 AND product_id = $2`,
+      [cartId, productId, qty]
+    );
+
+    const items = await getUserCartItems(user.id);
+    return res.json(items);
+  } catch (error) {
+    console.error("updateItem error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}

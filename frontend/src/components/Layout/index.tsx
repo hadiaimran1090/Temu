@@ -22,7 +22,7 @@ export function Layout() {
 
   return (
     <div 
-      className="min-h-screen bg-white shadow-[0_24px_60px_rgba(15,23,42,0.08)] pt-[102px] max-[1100px]:pt-[136px] max-[900px]:pt-[182px] max-[720px]:pt-[215px]" 
+      className="min-h-screen bg-white shadow-[0_24px_60px_rgba(15,23,42,0.08)] pt-[102px] max-[990px]:pt-[150px] max-[600px]:pt-[110px]" 
       dir={isRtl ? "rtl" : "ltr"}
     >
       <Navbar />

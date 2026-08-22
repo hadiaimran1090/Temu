@@ -200,7 +200,7 @@ export function Checkout() {
                 type="submit"
                 disabled={!cart.length || isSubmitting}
               >
-                {t("submitOrder")} ({cart.length})
+                {t("submitOrder")}
               </button>
             </form>
           )}

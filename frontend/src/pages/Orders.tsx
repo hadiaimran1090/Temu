@@ -16,7 +16,7 @@ export function Orders() {
       .then(setOrders)
       .catch((err) => setError(err.response?.data?.message || t("loadingOrders")))
       .finally(() => setLoading(false));
-  }, [t]);
+  }, []);
 
   if (loading)
     return (

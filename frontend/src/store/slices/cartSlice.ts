@@ -5,6 +5,7 @@ import {
   fetchCart,
   addToCartApi,
   removeFromCartApi,
+  updateCartItemApi,
   clearCartApi,
   mergeCartApi,
 } from "../../services/api";
@@ -103,6 +104,31 @@ export const removeFromCart = createAsyncThunk(
   }
 );
 
+export const updateCartItemQuantity = createAsyncThunk(
+  "cart/updateCartItemQuantity",
+  async ({ productId, quantity }: { productId: number; quantity: number }, { getState }) => {
+    const qty = Math.max(1, Math.floor(quantity));
+    const state = getState() as { auth: { token: string | null }; cart: CartState };
+    
+    if (state.auth.token) {
+      try {
+        const updatedCart = await updateCartItemApi(productId, qty);
+        return { items: updatedCart, isDb: true };
+      } catch (err) {
+        console.error("Failed to update database cart item quantity:", err);
+        throw err;
+      }
+    } else {
+      const currentGuest = state.cart.guestItems;
+      const updated = currentGuest.map((item) =>
+        item.id === productId ? { ...item, quantity: qty } : item
+      );
+      window.localStorage.setItem("temu-cart-guest", JSON.stringify(updated));
+      return { items: updated, isDb: false };
+    }
+  }
+);
+
 export const clearCart = createAsyncThunk(
   "cart/clearCart",
   async (_, { getState }) => {
@@ -166,6 +192,12 @@ const cartSlice = createSlice({
         }
       })
       .addCase(removeFromCart.fulfilled, (state, action) => {
+        state.items = action.payload.items;
+        if (!action.payload.isDb) {
+          state.guestItems = action.payload.items;
+        }
+      })
+      .addCase(updateCartItemQuantity.fulfilled, (state, action) => {
         state.items = action.payload.items;
         if (!action.payload.isDb) {
           state.guestItems = action.payload.items;

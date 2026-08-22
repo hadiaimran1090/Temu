@@ -324,25 +324,25 @@ export function Navbar() {
   return (
     <header className="fixed top-0 left-0 w-full z-40 transition-all duration-180 ease-in-out opacity-100 pointer-events-auto">
       {/* Top Banner Row (Hidden on mobile) */}
-      <div className="grid grid-cols-3 gap-[1px] bg-[#111] text-[#d1d5db] text-center font-semibold max-[720px]:hidden">
-        <div className="bg-[#101010] p-[10px_14px] flex items-center justify-center gap-1.5 text-[0.88rem] max-[720px]:p-[7px_4px] max-[720px]:text-[0.68rem]">
+      <div className="grid grid-cols-3 gap-[1px] bg-[#111] text-[#d1d5db] text-center font-semibold max-[600px]:hidden">
+        <div className="bg-[#101010] p-[10px_14px] flex items-center justify-center gap-1.5 text-[0.88rem] max-[600px]:p-[7px_4px] max-[600px]:text-[0.68rem]">
           <FaTruck />
-          <strong className="font-bold text-[0.88rem] max-[720px]:text-[0.7rem]">{t("freeShippingOrders")}</strong>
+          <strong className="font-bold text-[0.88rem] max-[600px]:text-[0.7rem]">{t("freeShippingOrders")}</strong>
           <span className="text-[#f5e6b8] block text-[0.8rem] max-[900px]:hidden">{t("limitedTimeOffer")}</span>
         </div>
-        <div className="bg-[#101010] p-[10px_14px] flex items-center justify-center gap-1.5 text-[0.88rem] max-[720px]:p-[7px_4px] max-[720px]:text-[0.68rem]">
-          <strong className="font-bold text-[0.88rem] max-[720px]:text-[0.7rem]">{t("freeReturns")}</strong>
+        <div className="bg-[#101010] p-[10px_14px] flex items-center justify-center gap-1.5 text-[0.88rem] max-[600px]:p-[7px_4px] max-[600px]:text-[0.68rem]">
+          <strong className="font-bold text-[0.88rem] max-[600px]:text-[0.7rem]">{t("freeReturns")}</strong>
           <span className="text-[#f5e6b8] block text-[0.8rem] max-[900px]:hidden">{t("upTo90Days")}</span>
         </div>
-        <div className="bg-[#101010] p-[10px_14px] flex items-center justify-center gap-1.5 text-[0.88rem] max-[720px]:p-[7px_4px] max-[720px]:text-[0.68rem]">
-          <strong className="font-bold text-[0.88rem] max-[720px]:text-[0.7rem]">{t("getTemuApp")}</strong>
+        <div className="bg-[#101010] p-[10px_14px] flex items-center justify-center gap-1.5 text-[0.88rem] max-[600px]:p-[7px_4px] max-[600px]:text-[0.68rem]">
+          <strong className="font-bold text-[0.88rem] max-[600px]:text-[0.7rem]">{t("getTemuApp")}</strong>
           <span className="text-[#f5e6b8] block text-[0.8rem] max-[900px]:hidden">{t("trackOrdersTime")}</span>
         </div>
       </div>
 
       {/* Desktop Header Layout */}
-      <div className="hidden min-[721px]:grid grid-cols-[auto_auto_minmax(280px,1fr)_auto] gap-[18px] items-center p-[6px_28px] bg-gradient-to-r from-[#4ea5e6] to-[#62b4f0] text-white">
-        <NavLink className="w-[50px] h-[50px] rounded-[14px] bg-gradient-to-br from-[#ff8c1a] to-[#ff5f28] grid place-items-center font-black tracking-[0.08em] shadow-[0_12px_24px_rgba(255,111,31,0.35)] text-white no-underline max-[720px]:w-[46px] max-[720px]:h-[46px] max-[720px]:text-[0.7rem]" to="/">
+      <div className="hidden min-[601px]:grid grid-cols-[auto_auto_1fr_auto] max-[990px]:grid-cols-[auto_auto_1fr] gap-[10px_18px] items-center p-[6px_28px] bg-gradient-to-r from-[#4ea5e6] to-[#62b4f0] text-white">
+        <NavLink className="w-[50px] h-[50px] rounded-[14px] bg-gradient-to-br from-[#ff8c1a] to-[#ff5f28] grid place-items-center font-black tracking-[0.08em] shadow-[0_12px_24px_rgba(255,111,31,0.35)] text-white no-underline max-[990px]:w-[46px] max-[990px]:h-[46px] max-[990px]:text-[0.7rem]" to="/">
           {t("brand")}
         </NavLink>
         <nav className="flex items-center flex-wrap gap-3 font-semibold max-[1100px]:justify-center">
@@ -357,7 +357,7 @@ export function Navbar() {
             {t("categories")} <FaChevronDown />
           </button>
         </nav>
-        <form className="relative max-w-[620px] flex items-center rounded-full bg-white shadow-[0_4px_18px_rgba(15,23,42,0.08)] overflow-hidden" onSubmit={submitSearch}>
+        <form className="relative max-w-[620px] max-[990px]:max-w-none flex items-center rounded-full bg-white shadow-[0_4px_18px_rgba(15,23,42,0.08)] overflow-hidden max-[990px]:row-start-2 max-[990px]:col-span-full" onSubmit={submitSearch}>
           <input
             className="flex-1 border-0 p-[12px_24px] text-[0.94rem] text-[#1e293b] bg-transparent focus:outline-none"
             value={search}
@@ -368,7 +368,7 @@ export function Navbar() {
             <FaMagnifyingGlass />
           </button>
         </form>
-        <div className="flex items-center gap-[18px]">
+        <div className="flex items-center gap-[18px] max-[990px]:col-start-3 max-[990px]:justify-self-end">
           <div className="relative inline-block">
             {token ? (
               <button
@@ -411,8 +411,8 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Header Layout (Screen <= 720px) */}
-      <div className="min-[721px]:hidden flex flex-col gap-2 p-[8px_14px] bg-gradient-to-r from-[#4ea5e6] to-[#62b4f0] text-white shadow-md">
+      {/* Mobile Header Layout (Screen <= 600px) */}
+      <div className="min-[601px]:hidden flex flex-col gap-2 p-[8px_14px] bg-gradient-to-r from-[#4ea5e6] to-[#62b4f0] text-white shadow-md">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button
@@ -453,7 +453,7 @@ export function Navbar() {
 
       {/* Mobile Drawer Slide-out Menu */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 min-[721px]:hidden flex">
+        <div className="fixed inset-0 z-50 min-[601px]:hidden flex">
           {/* Backdrop overlay */}
           <div className="fixed inset-0 bg-black/45 backdrop-blur-[2px]" onClick={() => setMobileMenuOpen(false)} />
           
