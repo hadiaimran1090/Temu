@@ -408,7 +408,7 @@ export function Navbar() {
           <div className="fixed inset-0 bg-black/45 backdrop-blur-[2px]" onClick={() => setMobileMenuOpen(false)} />
           
           {/* Drawer container */}
-          <div ref={mobileMenuRef} className="relative flex flex-col w-[280px] max-w-[80vw] h-full bg-white text-[#334155] shadow-2xl p-5 overflow-y-auto ltr:mr-auto rtl:ml-auto transition-all">
+          <div ref={mobileMenuRef} className={`relative flex flex-col w-[280px] max-w-[80vw] h-full bg-white text-[#334155] shadow-2xl p-5 overflow-y-auto ltr:mr-auto rtl:ml-auto transition-all ${language === "ur" ? "drawer-slide-right" : "drawer-slide-left"}`}>
             <div className="flex items-center justify-between pb-4 border-b border-[#e5e7eb] mb-4">
               <span className="font-bold text-[1.1rem] text-[#10233b]">{t("brand")} Menu</span>
               <button className="border-0 bg-transparent text-xl text-slate-500 cursor-pointer flex items-center justify-center p-1" onClick={() => setMobileMenuOpen(false)} aria-label="Close menu">
@@ -423,9 +423,9 @@ export function Navbar() {
                   <span className="text-[0.7rem] uppercase tracking-wider text-slate-400 font-bold">Logged In As</span>
                   <b className="text-[0.86rem] text-slate-800 break-all block mb-2">{userEmail}</b>
                   <div className="flex flex-col gap-1.5">
-                    <NavLink className="p-2 hover:bg-slate-200/50 rounded-lg text-slate-700 font-semibold text-sm no-underline text-left rtl:text-right" to="/cart" onClick={() => setMobileMenuOpen(false)}>{t("myCart")}</NavLink>
-                    <NavLink className="p-2 hover:bg-slate-200/50 rounded-lg text-slate-700 font-semibold text-sm no-underline text-left rtl:text-right" to="/orders" onClick={() => setMobileMenuOpen(false)}>{t("myOrders")}</NavLink>
-                    <button className="p-2 hover:bg-slate-200/50 rounded-lg text-slate-700 font-semibold text-sm border-0 bg-transparent text-left cursor-pointer rtl:text-right w-full" onClick={handleLogout}>{t("logout")}</button>
+                    <NavLink className="p-2 hover:bg-[#f0f0f0] rounded-lg text-slate-700 font-semibold text-sm no-underline text-left rtl:text-right" to="/cart" onClick={() => setMobileMenuOpen(false)}>{t("myCart")}</NavLink>
+                    <NavLink className="p-2 hover:bg-[#f0f0f0] rounded-lg text-slate-700 font-semibold text-sm no-underline text-left rtl:text-right" to="/orders" onClick={() => setMobileMenuOpen(false)}>{t("myOrders")}</NavLink>
+                    <button className="p-2 hover:bg-[#f0f0f0] rounded-lg text-slate-700 font-semibold text-sm border-0 bg-transparent text-left cursor-pointer rtl:text-right w-full" onClick={handleLogout}>{t("logout")}</button>
                   </div>
                 </>
               ) : (
@@ -438,9 +438,9 @@ export function Navbar() {
             {/* Navigation links */}
             <nav className="flex flex-col gap-1 border-b border-[#e5e7eb] pb-4 mb-4">
               <span className="text-[0.7rem] uppercase tracking-wider text-slate-400 font-bold mb-1.5 px-2">Navigation</span>
-              <NavLink className="p-2.5 hover:bg-slate-50 rounded-lg text-slate-700 font-bold text-sm no-underline text-left rtl:text-right" to="/products" onClick={() => setMobileMenuOpen(false)}>{t("bestSelling")}</NavLink>
-              <NavLink className="p-2.5 hover:bg-slate-50 rounded-lg text-slate-700 font-bold text-sm no-underline text-left rtl:text-right" to="/about" onClick={() => setMobileMenuOpen(false)}>{t("about")}</NavLink>
-              <NavLink className="p-2.5 hover:bg-slate-50 rounded-lg text-slate-700 font-bold text-sm no-underline text-left rtl:text-right" to="/products" onClick={() => setMobileMenuOpen(false)}>{t("newIn")}</NavLink>
+              <NavLink className="p-2.5 hover:bg-[#f0f0f0] rounded-lg text-slate-700 font-bold text-sm no-underline text-left rtl:text-right" to="/products" onClick={() => setMobileMenuOpen(false)}>{t("bestSelling")}</NavLink>
+              <NavLink className="p-2.5 hover:bg-[#f0f0f0] rounded-lg text-slate-700 font-bold text-sm no-underline text-left rtl:text-right" to="/about" onClick={() => setMobileMenuOpen(false)}>{t("about")}</NavLink>
+              <NavLink className="p-2.5 hover:bg-[#f0f0f0] rounded-lg text-slate-700 font-bold text-sm no-underline text-left rtl:text-right" to="/products" onClick={() => setMobileMenuOpen(false)}>{t("newIn")}</NavLink>
             </nav>
 
             {/* Categories list in mobile menu */}
@@ -450,7 +450,7 @@ export function Navbar() {
                 {categoriesWithSubs.map((category) => (
                   <button 
                     key={category.name} 
-                    className="w-full text-left border-0 bg-transparent p-2 hover:bg-slate-50 rounded-lg text-slate-700 text-sm font-semibold cursor-pointer flex justify-between items-center rtl:text-right"
+                    className="w-full text-left border-0 bg-transparent p-2 hover:bg-[#f0f0f0] rounded-lg text-slate-700 text-sm font-semibold cursor-pointer flex justify-between items-center rtl:text-right"
                     onClick={() => {
                       setMobileMenuOpen(false);
                       selectCategory(category.name);
@@ -465,10 +465,10 @@ export function Navbar() {
 
             {/* Language & Support */}
             <div className="mt-auto border-t border-[#e5e7eb] pt-4 flex flex-col gap-2">
-              <button className="flex items-center gap-2.5 p-2.5 hover:bg-slate-50 rounded-lg text-slate-700 font-bold text-sm border-0 bg-transparent text-left cursor-pointer rtl:text-right w-full" onClick={() => { setMobileMenuOpen(false); handleLanguageToggle(); }}>
+              <button className="flex items-center gap-2.5 p-2.5 hover:bg-[#f0f0f0] rounded-lg text-slate-700 font-bold text-sm border-0 bg-transparent text-left cursor-pointer rtl:text-right w-full" onClick={() => { setMobileMenuOpen(false); handleLanguageToggle(); }}>
                 <FaGlobe /> {language === "en" ? "English" : "اردو"}
               </button>
-              <button className="flex items-center gap-2.5 p-2.5 hover:bg-slate-50 rounded-lg text-slate-700 font-bold text-sm border-0 bg-transparent text-left cursor-pointer rtl:text-right w-full">
+              <button className="flex items-center gap-2.5 p-2.5 hover:bg-[#f0f0f0] rounded-lg text-slate-700 font-bold text-sm border-0 bg-transparent text-left cursor-pointer rtl:text-right w-full">
                 <FaWhatsapp /> {t("support")}
               </button>
             </div>
