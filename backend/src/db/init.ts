@@ -84,34 +84,35 @@ export async function initDb() {
 
   console.log("Database tables created successfully.");
 
-  // Check if products exist, otherwise seed
-  const result = await query("SELECT COUNT(*) FROM products");
-  const count = parseInt(result.rows[0].count, 10);
-
-  if (count === 0) {
-    console.log("Seeding products...");
-    for (const product of products) {
-      await query(
-        `INSERT INTO products (id, title, price, old_price, image, category, sold, badge, palette)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-        [
-          product.id,
-          product.title,
-          product.price,
-          product.oldPrice,
-          product.image,
-          product.category,
-          product.sold,
-          product.badge,
-          product.palette,
-        ]
-      );
-    }
-    // Update the sequence for auto-increment IDs
-    await query("SELECT setval('products_id_seq', (SELECT MAX(id) FROM products))");
-    console.log(`Successfully seeded ${products.length} products.`);
-  } else {
-    console.log("Products table already seeded.");
+  console.log("Synchronizing products list with database...");
+  for (const product of products) {
+    await query(
+      `INSERT INTO products (id, title, price, old_price, image, category, sold, badge, palette)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+       ON CONFLICT (id) DO UPDATE SET
+         title = EXCLUDED.title,
+         price = EXCLUDED.price,
+         old_price = EXCLUDED.old_price,
+         image = EXCLUDED.image,
+         category = EXCLUDED.category,
+         sold = EXCLUDED.sold,
+         badge = EXCLUDED.badge,
+         palette = EXCLUDED.palette`,
+      [
+        product.id,
+        product.title,
+        product.price,
+        product.oldPrice,
+        product.image,
+        product.category,
+        product.sold,
+        product.badge,
+        product.palette,
+      ]
+    );
   }
+  // Update the sequence for auto-increment IDs
+  await query("SELECT setval('products_id_seq', (SELECT MAX(id) FROM products))");
+  console.log(`Successfully synchronized ${products.length} products.`);
 }
 

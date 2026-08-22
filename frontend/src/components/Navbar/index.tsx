@@ -42,6 +42,11 @@ const categoriesWithSubs: CategoryWithSub[] = [
       { name: "Smart Watches", key: "sub_SmartWatches", image: "/products/smartwatch.jpg", category: "Accessories" },
       { name: "Travel Wallets", key: "sub_TravelWallets", image: "/products/wallet.jpg", category: "Accessories" },
       { name: "Wireless Earbuds", key: "sub_WirelessEarbuds", image: "/products/earbuds.jpg", category: "Accessories" },
+      { name: "Luxury Perfume Spray", key: "sub_LuxuryPerfumeSpray", image: "/products/Luxuryperfume.jpg", category: "Accessories" },
+      { name: "Vintage Leather Backpack", key: "sub_VintageLeatherBackpack", image: "/products/Vintageleatherbag.jpg", category: "Accessories" },
+      { name: "Polarized Classic Sunglasses", key: "sub_PolarizedSunglasses", image: "/products/Polarized Classic Sunglasses.jpg", category: "Accessories" },
+      { name: "Active Noise Cancelling Headphones", key: "sub_WirelessEarbuds", image: "/products/Active Noise Cancelling Headphones.jpg", category: "Accessories" },
+      { name: "Self-Stirring Smart Mug", key: "sub_SelfStirringMug", image: "/products/Self-Stirring Smart Mug.jpg", category: "Accessories" },
     ],
   },
   {
@@ -51,6 +56,11 @@ const categoriesWithSubs: CategoryWithSub[] = [
       { name: "Kitchen Organizers", key: "sub_KitchenOrganizers", image: "/products/organizer.jpg", category: "Home & Kitchen" },
       { name: "Tai Chi Guides", key: "sub_TaiChiGuides", image: "/products/chair.jpg", category: "Home & Kitchen" },
       { name: "Focus Lamps", key: "sub_FocusLamps", image: "/products/lamp.jpg", category: "Home & Kitchen" },
+      { name: "Digital Air Fryer 5L", key: "sub_DigitalAirFryer", image: "/products/Digital Air Fryer 5L.jpg", category: "Home & Kitchen" },
+      { name: "Portable Blender", key: "sub_PortableBlender", image: "/products/Portable Blender.jpg", category: "Home & Kitchen" },
+      { name: "Soft Velvet Cushion Cover Pack", key: "sub_VelvetCushions", image: "/products/Soft Velvet Cushion Cover Pack.jpg", category: "Home & Kitchen" },
+      { name: "Silicone Spatula Set", key: "sub_SiliconeSpatulas", image: "/products/Silicone Spatula Set.jpg", category: "Home & Kitchen" },
+      { name: "3-Tier Floating Wall Shelf", key: "sub_FloatingShelf", image: "/products/Tier Floating Wall Shelf.jpg", category: "Home & Kitchen" },
     ],
   },
   {
@@ -59,6 +69,11 @@ const categoriesWithSubs: CategoryWithSub[] = [
     subcategories: [
       { name: "Summer Dresses", key: "sub_SummerDresses", image: "/products/Women’s dress.jpg", category: "Women's Clothing" },
       { name: "Fashion Handbags", key: "sub_FashionHandbags", image: "/products/handbag.jpg", category: "Women's Clothing" },
+      { name: "Winter Woolen Trench Coat", key: "sub_WinterCoat", image: "/products/Winter Woolen Trench Coat.jpg", category: "Women's Clothing" },
+      { name: "Premium Silk Pyjama Set", key: "sub_SilkPajamas", image: "/products/Premium Silk Pyjama Set.jpg", category: "Women's Clothing" },
+      { name: "High Waisted Wide Leg Jeans", key: "sub_WideLegJeans", image: "/products/High Waisted Wide Leg Jeans.jpg", category: "Women's Clothing" },
+      { name: "Pleated Floral A-Line Skirt", key: "sub_AlineSkirt", image: "/products/Pleated Floral A-Line Skirt.jpg", category: "Women's Clothing" },
+      { name: "Oversized Fleece Hoodie", key: "sub_FleeceHoodie", image: "/products/Oversized Fleece Hoodie.jpg", category: "Women's Clothing" },
     ],
   },
   {
@@ -66,6 +81,11 @@ const categoriesWithSubs: CategoryWithSub[] = [
     key: "cat_WomensShoes",
     subcategories: [
       { name: "Elegant Shoes", key: "sub_ElegantShoes", image: "/products/shoes.jpg", category: "Women's Shoes" },
+      { name: "Running Sneakers", key: "sub_RunningSneakers", image: "/products/Running Sneakers.jpg", category: "Women's Shoes" },
+      { name: "Pointed Toe Classic Flats", key: "sub_PointedFlats", image: "/products/Pointed Toe Classic Flats.jpg", category: "Women's Shoes" },
+      { name: "Leather Ankle Chelsea Boots", key: "sub_ChelseaBoots", image: "/products/Leather Ankle Chelsea Boots.jpg", category: "Women's Shoes" },
+      { name: "Strappy Stiletto Party Heels", key: "sub_StilettoHeels", image: "/products/Strappy Stiletto Party Heels.jpg", category: "Women's Shoes" },
+      { name: "Fluffy Warm Indoor Slippers", key: "sub_IndoorSlippers", image: "/products/Fluffy Warm Indoor Slippers.jpg", category: "Women's Shoes" },
     ],
   },
   {
@@ -73,13 +93,16 @@ const categoriesWithSubs: CategoryWithSub[] = [
     key: "cat_MensClothing",
     subcategories: [
       { name: "Casual Shirts", key: "sub_CasualShirts", image: "/products/menshirt.jpg", category: "Men's Clothing" },
-    ],
-  },
-  {
-    name: "Men's Underwear & Sleepwear",
-    key: "cat_MensUnderwearSleepwear",
-    subcategories: [
+      { name: "Casual Cotton Polo Shirt", key: "sub_CasualPolo", image: "/products/Casual Cotton Polo Shirt.jpg", category: "Men's Clothing" },
+      { name: "Classic Stretch Slim Denim Jeans", key: "sub_SlimDenimJeans", image: "/products/Classic Stretch Slim Denim Jeans.jpg", category: "Men's Clothing" },
+      { name: "Knitted Crewneck Winter Sweater", key: "sub_KnittedSweater", image: "/products/Knitted Crewneck Winter Sweater.jpg", category: "Men's Clothing" },
+      { name: "Slim Fit Men Blazer Jacket", key: "sub_BlazerJacket", image: "/products/Slim Fit Men Blazer Jacket.jpg", category: "Men's Clothing" },
+      { name: "Windproof Outdoor Bomber Jacket", key: "sub_BomberJacket", image: "/products/Windproof Outdoor Bomber Jacket.jpg", category: "Men's Clothing" },
       { name: "Hair Clipper Sets", key: "sub_HairClipperSets", image: "/products/hairclipper.jpg", category: "Accessories" },
+      { name: "Flannel Plaid Sleepwear", key: "sub_FlannelSleepwear", image: "/products/Flannel Plaid Sleepwear.jpg", category: "Men's Clothing" },
+      { name: "Luxury Plush Bathrobe", key: "sub_PlushBathrobe", image: "/products/Luxury Plush Bathrobe.jpg", category: "Men's Clothing" },
+      { name: "Athletic Cushioned Socks", key: "sub_AthleticSocks", image: "/products/Athletic Cushioned Crew Socks 5-Pack.jpg", category: "Men's Clothing" },
+      { name: "Dry-Fit Undershirt", key: "sub_DryFitUndershirt", image: "/products/Dry-Fit Compression Undershirt.jpg", category: "Men's Clothing" },
     ],
   },
   {
@@ -88,20 +111,24 @@ const categoriesWithSubs: CategoryWithSub[] = [
     subcategories: [
       { name: "Sports Water Bottles", key: "sub_SportsWaterBottles", image: "/products/Sports water bottle.jpg", category: "Sports & Outdoors" },
       { name: "Sports Gear", key: "sub_SportsGear", image: "/products/sports.jpg", category: "Sports & Outdoors" },
+      { name: "Eco-Friendly TPE Yoga Mat", key: "sub_YogaMat", image: "/products/Eco-Friendly TPE Yoga Mat.jpg", category: "Sports & Outdoors" },
+      { name: "Adjustable Neoprene Dumbbell Set", key: "sub_Dumbbells", image: "/products/Adjustable Neoprene Dumbbell Set.jpg", category: "Sports & Outdoors" },
+      { name: "Resistance Bands Set", key: "sub_ResistanceBands", image: "/products/Resistance Bands Set.jpg", category: "Sports & Outdoors" },
+      { name: "Waterproof 2-Person Camping Tent", key: "sub_CampingTent", image: "/products/Waterproof 2-Person Camping Tent.jpg", category: "Sports & Outdoors" },
+      { name: "Waterproof Hiking Backpack 40L", key: "sub_HikingBackpack", image: "/products/Waterproof Hiking Backpack 40L.jpg", category: "Sports & Outdoors" },
     ],
   },
-  {
-    name: "Women's Jewelry",
-    key: "cat_WomensJewelry",
-    subcategories: [
-      { name: "Wallets", key: "sub_Wallets", image: "/products/wallet.jpg", category: "Accessories" },
-    ],
-  },
+
   {
     name: "Beauty & Personal Care",
     key: "cat_BeautyPersonalCare",
     subcategories: [
       { name: "Skincare Serums", key: "sub_SkincareSerums", image: "/products/Skincare serum.jpg", category: "Beauty & Personal Care" },
+      { name: "Hyaluronic Acid Face Cream", key: "sub_FaceCream", image: "/products/Hyaluronic Acid Face Cream.jpg", category: "Beauty & Personal Care" },
+      { name: "Matte Long-Lasting Liquid Lipstick", key: "sub_Lipstick", image: "/products/Matte Long-Lasting Liquid Lipstick.jpg", category: "Beauty & Personal Care" },
+      { name: "Ionic Blow Dryer", key: "sub_HairDryer", image: "/products/Ionic Blow Dryer.jpg", category: "Beauty & Personal Care" },
+      { name: "12pcs Professional Makeup Brush Set", key: "sub_BrushSet", image: "/products/12pcs Professional Makeup Brush Set.jpg", category: "Beauty & Personal Care" },
+      { name: "SPF 50+ Daily Sunscreen Gel", key: "sub_Sunscreen", image: "/products/SPF 50+ Daily Sunscreen Gel.jpg", category: "Beauty & Personal Care" },
     ],
   },
   {
@@ -109,6 +136,11 @@ const categoriesWithSubs: CategoryWithSub[] = [
     key: "cat_ToysGames",
     subcategories: [
       { name: "Building Toys", key: "sub_BuildingToys", image: "/products/Kids’ toy.jpg", category: "Toys & Games" },
+      { name: "1000 Piece Wooden Landscape Puzzle", key: "sub_WoodenPuzzle", image: "/products/1000 Piece Wooden Landscape Puzzle.jpg", category: "Toys & Games" },
+      { name: "Remote Control High-Speed Racing Car", key: "sub_RacingCar", image: "/products/Remote Control High-Speed Racing Car.jpg", category: "Toys & Games" },
+      { name: "Cute Soft Animal Pillow Plush Toy", key: "sub_PlushToy", image: "/products/Cute Soft Animal Pillow Plush Toy.jpg", category: "Toys & Games" },
+      { name: "Classic Strategy Board Game", key: "sub_BoardGame", image: "/products/Classic Strategy Board Game.jpg", category: "Toys & Games" },
+      { name: "LCD Writing Tablet for Kids", key: "sub_WritingTablet", image: "/products/LCD Writing Tablet for Kids.jpg", category: "Toys & Games" },
     ],
   },
 ];
