@@ -10,6 +10,8 @@ import {
   FaWhatsapp,
   FaBars,
   FaXmark,
+  FaArrowRightFromBracket,
+  FaClockRotateLeft,
 } from "react-icons/fa6";
 import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
@@ -385,12 +387,52 @@ export function Navbar() {
               </NavLink>
             )}
             {profileOpen && (
-              <div ref={profileRef} className="profile-dropdown absolute top-[calc(100%+12px)] right-0 z-50 w-[220px] rounded-xl border border-[rgba(82,143,191,0.15)] bg-white shadow-[0_16px_36px_rgba(15,23,42,0.12)] p-[14px_16px] flex flex-col gap-2">
-                <b className="text-[0.88rem] text-[#0f172a] break-all block mb-1 font-bold">{userEmail}</b>
-                <NavLink className="border-0 p-[8px_12px] rounded-lg no-underline text-[#334155] text-[0.86rem] font-semibold cursor-pointer transition-colors duration-180 text-left bg-transparent hover:bg-[#f1f5f9] hover:text-[#0f172a] rtl:text-right" to="/cart">{t("myCart")}</NavLink>
-                <NavLink className="border-0 p-[8px_12px] rounded-lg no-underline text-[#334155] text-[0.86rem] font-semibold cursor-pointer transition-colors duration-180 text-left bg-transparent hover:bg-[#f1f5f9] hover:text-[#0f172a] rtl:text-right" to="/orders">{t("myOrders")}</NavLink>
-                <button className="border-0 p-[8px_12px] rounded-lg no-underline text-[#334155] text-[0.86rem] font-semibold cursor-pointer transition-colors duration-180 text-left bg-transparent hover:bg-[#f1f5f9] hover:text-[#0f172a] rtl:text-right" onClick={handleLogout}>
-                  {t("logout")}
+              <div 
+                ref={profileRef} 
+                className="profile-dropdown absolute top-[calc(100%+12px)] right-0 z-50 w-[240px] rounded-2xl border border-[rgba(82,143,191,0.18)] bg-white shadow-[0_16px_48px_rgba(15,23,42,0.12)] p-4 flex flex-col gap-1.5 transition-all duration-180 animate-fade-in text-[#1e293b]"
+              >
+                {/* User Info Header Card */}
+                <div className="flex items-center gap-3 pb-3 border-b border-slate-100 mb-1">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#4ea5e6] to-[#62b4f0] text-white flex items-center justify-center font-bold text-sm shadow-sm shrink-0">
+                    {userEmail ? userEmail[0].toUpperCase() : "U"}
+                  </div>
+                  <div className="flex flex-col min-w-0 text-left rtl:text-right">
+                    <span className="text-[0.72rem] text-slate-400 font-bold uppercase tracking-wider">{t("ordersAccount")}</span>
+                    <span className="text-[0.84rem] text-[#0f172a] font-bold truncate max-w-[150px]">{userEmail}</span>
+                  </div>
+                </div>
+
+                {/* Dropdown Items */}
+                <NavLink 
+                  className="group flex items-center justify-between border-0 p-[10px_12px] rounded-xl no-underline text-[#475569] text-[0.88rem] font-bold cursor-pointer transition-all duration-150 bg-transparent hover:bg-[#f1f5f9] hover:text-[#ff5b2e] text-left rtl:text-right" 
+                  to="/cart"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <FaCartShopping className="text-[1.05rem] text-slate-400 group-hover:text-[#ff5b2e] transition-colors" />
+                    <span>{t("myCart")}</span>
+                  </div>
+                  <span className="text-slate-300 group-hover:text-[#ff5b2e] group-hover:translate-x-0.5 transition-all duration-150 text-[0.8rem]">&rsaquo;</span>
+                </NavLink>
+
+                <NavLink 
+                  className="group flex items-center justify-between border-0 p-[10px_12px] rounded-xl no-underline text-[#475569] text-[0.88rem] font-bold cursor-pointer transition-all duration-150 bg-transparent hover:bg-[#f1f5f9] hover:text-[#ff5b2e] text-left rtl:text-right" 
+                  to="/orders"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <FaClockRotateLeft className="text-[1.05rem] text-slate-400 group-hover:text-[#ff5b2e] transition-colors" />
+                    <span>{t("myOrders")}</span>
+                  </div>
+                  <span className="text-slate-300 group-hover:text-[#ff5b2e] group-hover:translate-x-0.5 transition-all duration-150 text-[0.8rem]">&rsaquo;</span>
+                </NavLink>
+
+                <div className="h-[1px] bg-slate-100 my-1"></div>
+
+                <button 
+                  className="group flex items-center gap-2.5 border-0 p-[10px_12px] rounded-xl no-underline text-[#475569] text-[0.88rem] font-bold cursor-pointer transition-all duration-150 bg-transparent hover:bg-red-50 hover:text-red-600 text-left rtl:text-right w-full" 
+                  onClick={handleLogout}
+                >
+                  <FaArrowRightFromBracket className="text-[1.05rem] text-slate-400 group-hover:text-red-600 transition-colors" />
+                  <span>{t("logout")}</span>
                 </button>
               </div>
             )}
