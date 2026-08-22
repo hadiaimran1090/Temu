@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { FaWhatsapp, FaChevronDown, FaChevronUp, FaCircleQuestion } from "react-icons/fa6";
 import { useTranslation } from "../hooks/useTranslation";
-import { SUPPORT_WHATSAPP_NUMBER } from "../config";
 
 export function Support() {
   const { t } = useTranslation();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const handleWhatsappChat = () => {
-    // URL-encoded default message greeting
-    const defaultMsg = encodeURIComponent("Hello Temu Support, I need help with my order.");
-    const url = `https://wa.me/${SUPPORT_WHATSAPP_NUMBER}?text=${defaultMsg}`;
-    window.open(url, "_blank", "noopener,noreferrer");
+    const apiBase = import.meta.env.VITE_API_URL || "/api";
+    const redirectUrl = apiBase.startsWith("/") 
+      ? `${window.location.origin}${apiBase}/support/whatsapp` 
+      : `${apiBase}/support/whatsapp`;
+    window.open(redirectUrl, "_blank", "noopener,noreferrer");
   };
 
   const toggleFaq = (id: number) => {
