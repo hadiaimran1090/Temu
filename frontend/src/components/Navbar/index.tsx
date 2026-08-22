@@ -554,7 +554,9 @@ export function Navbar() {
                 onClick={() => selectSubcategory(sub.category, sub.name)}
               >
                 <img className="w-[104px] h-[104px] rounded-full object-cover block mx-auto mb-2.5 max-[900px]:w-[72px] max-[900px]:h-[72px] max-[600px]:w-[56px] max-[600px]:h-[56px] shadow-sm border border-slate-100" src={sub.image} alt="" />
-                <span className="block">{t(sub.key as any)}</span>
+                <span className="block">
+                  {t(sub.key as any) === sub.key ? sub.name : t(sub.key as any)}
+                </span>
               </button>
             ))}
           </div>
