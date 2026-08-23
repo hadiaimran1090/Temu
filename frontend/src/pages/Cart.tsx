@@ -72,7 +72,7 @@ export function Cart() {
                     dispatch(updateCartItemQuantity({ productId: item.id, quantity: newQty }));
                   }}
                 >
-                  {[...Array(99).keys()].map((n) => (
+                  {[...Array(5).keys()].map((n) => (
                     <option key={n + 1} value={n + 1}>
                       {t("qty")} {n + 1}
                     </option>
