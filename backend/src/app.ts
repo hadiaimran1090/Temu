@@ -1,3 +1,4 @@
+import "./config.js";
 import cors from "cors";
 import express from "express";
 import productRoutes from "./routes/productRoutes.js";
@@ -17,7 +18,8 @@ app.get("/", (_, response) => {
 });
 
 app.get("/api/support/whatsapp", (_, response) => {
-  const phone = process.env.SUPPORT_WHATSAPP_NUMBER || "923001234567";
+  const rawPhone = process.env.SUPPORT_WHATSAPP_NUMBER || "923001234567";
+  const phone = rawPhone.replace(/[^\d]/g, "");
   const message = encodeURIComponent("Hello Temu Support, I need help with my order.");
   response.redirect(`https://wa.me/${phone}?text=${message}`);
 });
