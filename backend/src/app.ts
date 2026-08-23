@@ -22,12 +22,6 @@ app.get("/api/support/whatsapp", (_, response) => {
   response.redirect(`https://wa.me/${phone}?text=${message}`);
 });
 
-app.get("/api/support/whatsapp-config", (_, response) => {
-  const phone = process.env.SUPPORT_WHATSAPP_NUMBER || "923001234567";
-  const message = "Hello Temu Support, I need help with my order.";
-  response.json({ phone, message });
-});
-
 app.get("/api/health", (_, response) => {
   response.json({ status: "ok" });
 });

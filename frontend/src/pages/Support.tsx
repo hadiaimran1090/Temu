@@ -1,16 +1,13 @@
 import { useState } from "react";
 import { FaWhatsapp, FaChevronDown, FaChevronUp, FaCircleQuestion } from "react-icons/fa6";
 import { useTranslation } from "../hooks/useTranslation";
-import { SUPPORT_WHATSAPP_NUMBER } from "../config";
-
 export function Support() {
   const { t } = useTranslation();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const handleWhatsappChat = () => {
-    const defaultMsg = "Hello Temu Support, I need help with my order.";
-    const whatsappUrl = `https://wa.me/${SUPPORT_WHATSAPP_NUMBER}?text=${encodeURIComponent(defaultMsg)}`;
-    window.location.href = whatsappUrl;
+    const apiUrl = import.meta.env.VITE_API_URL || "/api";
+    window.location.href = `${apiUrl}/support/whatsapp`;
   };
 
   const toggleFaq = (id: number) => {
