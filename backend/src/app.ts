@@ -12,7 +12,7 @@ app.use(express.json());
 
 app.get("/", (_, response) => {
   response.json({
-    message: "Temu backend is running"
+    message: "backend is running"
   });
 });
 
