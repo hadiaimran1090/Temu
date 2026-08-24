@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { CategoryFilter } from "../components/CategoryFilter";
 import { ProductSection } from "../components/ProductSection";
 import { useDebounce } from "../hooks/useDebounce";
@@ -24,6 +24,7 @@ export const categories = [
 
 export function Products() {
   const [params] = useSearchParams();
+  const navigate = useNavigate();
   const requestedCategory = params.get("category") ?? "All";
   const [category, setCategory] = useState(requestedCategory);
   // Search is plain text. React renders it safely in the input, while the URL
@@ -32,6 +33,18 @@ export function Products() {
   const { t } = useTranslation();
 
   useEffect(() => setCategory(requestedCategory), [requestedCategory]);
+
+  const selectCategory = (nextCategory: string) => {
+    setCategory(nextCategory);
+
+    // A category selection starts a new product filter, so it must not carry
+    // forward a previous text search.
+    const nextParams = new URLSearchParams(params);
+    nextParams.set("category", nextCategory);
+    nextParams.delete("search");
+    navigate(`/products?${nextParams.toString()}`);
+  };
+
   const debounced = useDebounce(search);
   const apiCategory = category === "Featured" ? "All" : category;
 
@@ -61,7 +74,7 @@ export function Products() {
       <CategoryFilter
         categories={categories}
         selectedCategory={category}
-        onSelectCategory={setCategory}
+        onSelectCategory={selectCategory}
       />
       <ProductSection products={data ?? []} loading={loading} error={error} />
     </>
