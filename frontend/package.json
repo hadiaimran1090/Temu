@@ -12,6 +12,7 @@
     "@reduxjs/toolkit": "^2.12.0",
     "@tailwindcss/vite": "^4.3.3",
     "axios": "^1.19.0",
+    "dompurify": "^3.4.14",
     "formik": "^2.4.9",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
@@ -22,6 +23,7 @@
     "yup": "^1.7.1"
   },
   "devDependencies": {
+    "@types/dompurify": "^3.0.5",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.0.5",
