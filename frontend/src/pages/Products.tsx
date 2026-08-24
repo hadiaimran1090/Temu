@@ -6,7 +6,6 @@ import { useDebounce } from "../hooks/useDebounce";
 import { useFetch } from "../hooks/useFetch";
 import { fetchProducts } from "../services/api";
 import { useTranslation } from "../hooks/useTranslation";
-import { purify } from "../utils/purify";
 
 export const categories = [
   "All",
@@ -27,7 +26,9 @@ export function Products() {
   const [params] = useSearchParams();
   const requestedCategory = params.get("category") ?? "All";
   const [category, setCategory] = useState(requestedCategory);
-  const search = purify(params.get("search") ?? "");
+  // Search is plain text. React renders it safely in the input, while the URL
+  // layer handles its own encoding/decoding.
+  const search = params.get("search") ?? "";
   const { t } = useTranslation();
 
   useEffect(() => setCategory(requestedCategory), [requestedCategory]);

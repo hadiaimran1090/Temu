@@ -21,7 +21,6 @@ import { toggleTheme } from "../../store/slices/themeSlice";
 import { setLanguage } from "../../store/slices/languageSlice";
 import { useTranslation } from "../../hooks/useTranslation";
 import { useAuth } from "../../context/AuthContext";
-import { purify } from "../../utils/purify";
 
 interface Subcategory {
   name: string;
@@ -220,18 +219,18 @@ export function Navbar() {
   useEffect(() => {
     if (search === urlSearch) return;
 
-    const sanitized = purify(search);
-
-    if (sanitized === "") {
+    if (search === "") {
       const newParams = new URLSearchParams(window.location.search);
       newParams.delete("search");
-      navigate(`/products?${newParams.toString()}`, { replace: true });
+      const query = newParams.toString();
+      navigate(query ? `/products?${query}` : "/products", { replace: true });
       return;
     }
 
     const timer = setTimeout(() => {
       const newParams = new URLSearchParams(window.location.search);
-      newParams.set("search", sanitized);
+      // URLSearchParams performs URL encoding; this remains a plain-text value.
+      newParams.set("search", search);
       navigate(`/products?${newParams.toString()}`, { replace: true });
     }, 450);
 
@@ -292,14 +291,14 @@ export function Navbar() {
 
   const submitSearch = (event: React.FormEvent) => {
     event.preventDefault();
-    const sanitized = purify(search);
     const newParams = new URLSearchParams(window.location.search);
-    if (sanitized) {
-      newParams.set("search", sanitized);
+    if (search) {
+      newParams.set("search", search);
     } else {
       newParams.delete("search");
     }
-    navigate(`/products?${newParams.toString()}`);
+    const query = newParams.toString();
+    navigate(query ? `/products?${query}` : "/products");
   };
 
   const selectCategory = (category: string) => {
