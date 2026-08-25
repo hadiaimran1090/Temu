@@ -94,7 +94,6 @@ Built with dedication, Temu brings together powerful features like:
 4. **Frontend Setup**
    ```bash
    cd ../frontend
-   # Configure your .env variables (VITE_API_URL, VITE_SUPPORT_WHATSAPP_NUMBER)
    npm install
    npm run dev
    ```

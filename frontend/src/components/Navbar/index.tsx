@@ -21,6 +21,7 @@ import { toggleTheme } from "../../store/slices/themeSlice";
 import { setLanguage } from "../../store/slices/languageSlice";
 import { useTranslation } from "../../hooks/useTranslation";
 import { useAuth } from "../../context/AuthContext";
+import sanitizeHtml from "../../utils/purify";
 
 interface Subcategory {
   name: string;
@@ -359,12 +360,12 @@ export function Navbar() {
           </button>
         </nav>
         <form className="relative max-w-[620px] max-[990px]:max-w-none flex items-center rounded-full bg-white shadow-[0_4px_18px_rgba(15,23,42,0.08)] overflow-hidden max-[990px]:row-start-2 max-[990px]:col-span-full" onSubmit={submitSearch}>
-          <input
-            className="flex-1 border-0 p-[12px_24px] text-[0.94rem] text-[#1e293b] bg-transparent focus:outline-none"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder={t("searchPlaceholder")}
-          />
+         <input
+  className="flex-1 border-0 p-[12px_24px] text-[0.94rem] text-[#1e293b] bg-transparent focus:outline-none"
+  value={search}
+  onChange={(event) => setSearch(sanitizeHtml(event.target.value))}
+  placeholder={t("searchPlaceholder")}
+/>
           <button className="grid place-items-center w-11 h-11 mr-1 rtl:mr-0 rtl:ml-1 border-0 rounded-full bg-[#10233b] text-white cursor-pointer" aria-label="Search">
             <FaMagnifyingGlass />
           </button>
@@ -481,11 +482,11 @@ export function Navbar() {
         {/* Mobile Search Input */}
         <form className="relative flex items-center rounded-full bg-white shadow-[0_2px_8px_rgba(15,23,42,0.06)] overflow-hidden min-h-[38px] w-full" onSubmit={submitSearch}>
           <input
-            className="flex-1 border-0 p-[8px_16px] text-[0.88rem] text-[#1e293b] bg-transparent focus:outline-none"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder={t("searchPlaceholder")}
-          />
+  className="flex-1 border-0 p-[8px_16px] text-[0.88rem] text-[#1e293b] bg-transparent focus:outline-none"
+  value={search}
+  onChange={(event) => setSearch(sanitizeHtml(event.target.value))}
+  placeholder={t("searchPlaceholder")}
+/>
           <button className="grid place-items-center w-8 h-8 mr-1 rtl:mr-0 rtl:ml-1 border-0 rounded-full bg-[#10233b] text-white cursor-pointer" aria-label="Search">
             <FaMagnifyingGlass />
           </button>
