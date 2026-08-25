@@ -23,14 +23,10 @@ app.get("/api/support/whatsapp", (_, response) => {
     return response.redirect(supportLink.trim());
   }
 
-  const rawPhone = process.env.SUPPORT_WHATSAPP_NUMBER || "";
-  if (rawPhone && rawPhone.trim()) {
-    const phone = rawPhone.replace(/[^\d]/g, "");
-    const message = encodeURIComponent("Hello Temu Support, I need help with my order.");
-    return response.redirect(`https://wa.me/${phone}?text=${message}`);
-  }
-
-  return response.redirect("https://wa.link/");
+  const rawPhone = process.env.SUPPORT_WHATSAPP_NUMBER || "923276210812";
+  const phone = rawPhone.replace(/[^\d]/g, "");
+  const message = encodeURIComponent("Hello Temu Support, I need help with my order.");
+  return response.redirect(`https://wa.me/${phone}?text=${message}`);
 });
 
 app.get("/api/health", (_, response) => {
