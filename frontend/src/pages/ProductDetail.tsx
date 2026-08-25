@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useAppDispatch } from "../store";
+import { useAppDispatch, useAppSelector } from "../store";
 import { addToCart } from "../store/slices/cartSlice";
 import { useTranslation } from "../hooks/useTranslation";
 import { useFetch } from "../hooks/useFetch";
@@ -9,6 +9,7 @@ import { fetchProduct } from "../services/api";
 export function ProductDetail() {
   const { id = "" } = useParams();
   const dispatch = useAppDispatch();
+  const cartItems = useAppSelector((state) => state.cart.items);
   const { t } = useTranslation();
   const [quantity, setQuantity] = useState(1);
 
@@ -17,6 +18,8 @@ export function ProductDetail() {
     loading,
     error,
   } = useFetch((signal) => fetchProduct(id, signal), [id]);
+
+  const isInCart = product ? cartItems.some((item) => item.id === product.id) : false;
 
   if (loading) return <p>{t("loadingProduct")}</p>;
   if (error || !product) return <p>{t("productNotFound")}</p>;
@@ -56,6 +59,7 @@ export function ProductDetail() {
             className="border border-[#cfd4dc] rounded-md p-1 bg-white text-sm"
             value={quantity}
             onChange={(event) => setQuantity(Number(event.target.value))}
+            disabled={isInCart}
           >
             <option value={1}>1</option>
             <option value={2}>2</option>
@@ -65,10 +69,15 @@ export function ProductDetail() {
           </select>
         </label>
         <button
-          className="w-full border-0 rounded-full p-[14px_20px] font-bold cursor-pointer text-white bg-gradient-to-br from-[#ff8c1a] to-[#ff5f28] shadow-[0_12px_28px_rgba(255,111,31,0.35)] text-[1.05rem] transition-all duration-180 hover:-translate-y-[1px]"
-          onClick={() => dispatch(addToCart({ product, quantity }))}
+          className={`w-full border-0 rounded-full p-[14px_20px] font-bold text-[1.05rem] transition-all duration-180 ${
+            isInCart
+              ? "bg-[#e2e8f0] text-[#64748b] cursor-not-allowed shadow-none"
+              : "cursor-pointer text-white bg-gradient-to-br from-[#ff8c1a] to-[#ff5f28] shadow-[0_12px_28px_rgba(255,111,31,0.35)] hover:-translate-y-[1px]"
+          }`}
+          disabled={isInCart}
+          onClick={() => !isInCart && dispatch(addToCart({ product, quantity }))}
         >
-          {t("addToCart")}
+          {isInCart ? t("alreadyInCart") : t("addToCart")}
         </button>
         <div className="p-[18px] rounded-xl bg-[#fafafa] border border-[#eceef1] flex flex-col gap-2.5 text-[0.86rem]">
           <b className="text-[#0f172a] font-bold">🚚 {t("deliveryInfo")}</b>

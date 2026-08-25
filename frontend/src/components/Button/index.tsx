@@ -13,10 +13,15 @@ export function Button({
   variant = "primary",
   type = "button",
   className = "",
+  disabled,
   ...buttonProps
 }: ButtonProps) {
   const baseClasses =
-    "inline-block no-underline border-0 rounded-full py-[13px] px-[20px] font-bold cursor-pointer transition-all duration-180 hover:-translate-y-[1px]";
+    "inline-block no-underline border-0 rounded-full py-[13px] px-[20px] font-bold transition-all duration-180";
+
+  const cursorClasses = disabled
+    ? "cursor-not-allowed opacity-75 bg-[#e2e8f0] text-[#64748b] border-[#cbd5e1] shadow-none"
+    : "cursor-pointer hover:-translate-y-[1px]";
 
   const variantClasses = {
     primary:
@@ -29,11 +34,13 @@ export function Button({
 
   return (
     <button
-      className={`${baseClasses} ${variantClasses[variant]} ${className}`}
+      className={`${baseClasses} ${disabled ? cursorClasses : `${variantClasses[variant]} cursor-pointer hover:-translate-y-[1px]`} ${className}`}
       type={type}
+      disabled={disabled}
       {...buttonProps}
     >
       {label}
     </button>
   );
 }
+

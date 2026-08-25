@@ -1,6 +1,6 @@
 import type { Product } from "../../types/product";
 import { Link } from "react-router-dom";
-import { useAppDispatch } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store";
 import { addToCart } from "../../store/slices/cartSlice";
 import { useTranslation } from "../../hooks/useTranslation";
 import { Button } from "../Button";
@@ -28,7 +28,10 @@ const getCategoryKey = (category: string) => {
 export function Card(product: Product) {
   const { id, title, price, oldPrice, sold, badge, palette, image, category } = product;
   const dispatch = useAppDispatch();
+  const cartItems = useAppSelector((state) => state.cart.items);
   const { t } = useTranslation();
+
+  const isInCart = cartItems.some((item) => item.id === id);
 
   return (
     <article className={`group flex flex-col min-w-0 rounded-[14px] border border-[#eceef1] bg-white overflow-hidden shadow-[0_8px_22px_rgba(15,23,42,0.07)] transition-all duration-180 hover:-translate-y-[5px] hover:border-[#ff5b2e]/35 hover:shadow-[0_18px_32px_rgba(15,23,42,0.14)] product-card-${palette}`}>
@@ -46,9 +49,10 @@ export function Card(product: Product) {
         <div className="flex items-center justify-between gap-[8px] mt-auto">
           <p className="m-0 text-[#5b687a] text-[0.78rem]">{sold}</p>
           <Button
-            label={t("addToCart")}
+            label={isInCart ? t("alreadyInCart") : t("addToCart")}
             variant="secondary"
-            onClick={() => dispatch(addToCart({ product, quantity: 1 }))}
+            disabled={isInCart}
+            onClick={() => !isInCart && dispatch(addToCart({ product, quantity: 1 }))}
           />
         </div>
       </div>
