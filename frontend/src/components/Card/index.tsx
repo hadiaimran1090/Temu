@@ -1,5 +1,5 @@
 import type { Product } from "../../types/product";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { addToCart } from "../../store/slices/cartSlice";
 import { useTranslation } from "../../hooks/useTranslation";
@@ -28,6 +28,7 @@ const getCategoryKey = (category: string) => {
 export function Card(product: Product) {
   const { id, title, price, oldPrice, sold, badge, palette, image, category } = product;
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const cartItems = useAppSelector((state) => state.cart.items);
   const { t } = useTranslation();
 
@@ -49,13 +50,19 @@ export function Card(product: Product) {
         <div className="flex items-center justify-between gap-[8px] mt-auto">
           <p className="m-0 text-[#5b687a] text-[0.78rem]">{sold}</p>
           <Button
-            label={isInCart ? t("alreadyInCart") : t("addToCart")}
-            variant="secondary"
-            disabled={isInCart}
-            onClick={() => !isInCart && dispatch(addToCart({ product, quantity: 1 }))}
+            label={isInCart ? t("goToCart") : t("addToCart")}
+            variant={isInCart ? "primary" : "secondary"}
+            onClick={() => {
+              if (isInCart) {
+                navigate("/cart");
+              } else {
+                dispatch(addToCart({ product, quantity: 1 }));
+              }
+            }}
           />
         </div>
       </div>
     </article>
   );
 }
+

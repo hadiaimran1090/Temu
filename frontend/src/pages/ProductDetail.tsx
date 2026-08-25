@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store";
 import { addToCart } from "../store/slices/cartSlice";
 import { useTranslation } from "../hooks/useTranslation";
@@ -9,6 +9,7 @@ import { fetchProduct } from "../services/api";
 export function ProductDetail() {
   const { id = "" } = useParams();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const cartItems = useAppSelector((state) => state.cart.items);
   const { t } = useTranslation();
   const [quantity, setQuantity] = useState(1);
@@ -69,15 +70,20 @@ export function ProductDetail() {
           </select>
         </label>
         <button
-          className={`w-full border-0 rounded-full p-[14px_20px] font-bold text-[1.05rem] transition-all duration-180 ${
+          className={`w-full border-0 rounded-full p-[14px_20px] font-bold text-[1.05rem] transition-all duration-180 cursor-pointer text-white shadow-[0_12px_28px_rgba(255,111,31,0.35)] hover:-translate-y-[1px] ${
             isInCart
-              ? "bg-[#e2e8f0] text-[#64748b] cursor-not-allowed shadow-none"
-              : "cursor-pointer text-white bg-gradient-to-br from-[#ff8c1a] to-[#ff5f28] shadow-[0_12px_28px_rgba(255,111,31,0.35)] hover:-translate-y-[1px]"
+              ? "bg-gradient-to-br from-[#16a34a] to-[#15803d]"
+              : "bg-gradient-to-br from-[#ff8c1a] to-[#ff5f28]"
           }`}
-          disabled={isInCart}
-          onClick={() => !isInCart && dispatch(addToCart({ product, quantity }))}
+          onClick={() => {
+            if (isInCart) {
+              navigate("/cart");
+            } else {
+              dispatch(addToCart({ product, quantity }));
+            }
+          }}
         >
-          {isInCart ? t("alreadyInCart") : t("addToCart")}
+          {isInCart ? t("goToCart") : t("addToCart")}
         </button>
         <div className="p-[18px] rounded-xl bg-[#fafafa] border border-[#eceef1] flex flex-col gap-2.5 text-[0.86rem]">
           <b className="text-[#0f172a] font-bold">🚚 {t("deliveryInfo")}</b>
