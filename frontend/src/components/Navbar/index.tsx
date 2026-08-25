@@ -195,6 +195,7 @@ export function Navbar() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileExpandedCat, setMobileExpandedCat] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState("All");
   
   const [search, setSearch] = useState("");
@@ -495,77 +496,208 @@ export function Navbar() {
 
       {/* Mobile Drawer Slide-out Menu */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 min-[601px]:hidden">
+        <div className="fixed inset-0 z-[100] min-[601px]:hidden">
           {/* Backdrop overlay */}
-          <div className="fixed inset-0 bg-black/45 backdrop-blur-[2px]" onClick={() => setMobileMenuOpen(false)} />
+          <div 
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity duration-300 animate-fade-in" 
+            onClick={() => setMobileMenuOpen(false)} 
+          />
           
           {/* Drawer container */}
           <div 
             ref={mobileMenuRef} 
-            className={`fixed top-0 bottom-0 ${language === "ur" ? "right-0 drawer-slide-right" : "left-0 drawer-slide-left"} z-50 flex flex-col w-[280px] max-w-[80vw] h-full bg-white text-[#334155] shadow-2xl p-5 overflow-y-auto transition-all`}
+            className={`fixed top-0 bottom-0 ${language === "ur" ? "right-0 drawer-slide-right" : "left-0 drawer-slide-left"} z-[101] flex flex-col w-[320px] max-w-[85vw] h-full bg-white dark:bg-[#111827] text-[#334155] dark:text-slate-200 shadow-2xl overflow-y-auto transition-all`}
           >
-            <div className="flex items-center justify-between pb-4 border-b border-[#e5e7eb] mb-4">
-              <span className="font-bold text-[1.1rem] text-[#10233b]">{t("brand")} Menu</span>
-              <button className="border-0 bg-transparent text-xl text-slate-500 cursor-pointer flex items-center justify-center p-1" onClick={() => setMobileMenuOpen(false)} aria-label="Close menu">
-                <FaXmark />
-              </button>
-            </div>
-            
-            {/* Account Info Profile Area */}
-            <div className="p-3.5 bg-[#fafafa] rounded-xl mb-4 flex flex-col gap-1 border border-[#e5e7eb]">
-              {token ? (
-                <>
-                  <span className="text-[0.7rem] uppercase tracking-wider text-slate-400 font-bold">Logged In As</span>
-                  <b className="text-[0.86rem] text-slate-800 break-all block mb-2">{userEmail}</b>
-                  <div className="flex flex-col gap-1.5">
-                    <NavLink className="p-2 hover:bg-[#f0f0f0] rounded-lg text-slate-700 font-semibold text-sm no-underline text-left rtl:text-right" to="/cart" onClick={() => setMobileMenuOpen(false)}>{t("myCart")}</NavLink>
-                    <NavLink className="p-2 hover:bg-[#f0f0f0] rounded-lg text-slate-700 font-semibold text-sm no-underline text-left rtl:text-right" to="/orders" onClick={() => setMobileMenuOpen(false)}>{t("myOrders")}</NavLink>
-                    <button className="p-2 hover:bg-[#f0f0f0] rounded-lg text-slate-700 font-semibold text-sm border-0 bg-transparent text-left cursor-pointer rtl:text-right w-full" onClick={handleLogout}>{t("logout")}</button>
-                  </div>
-                </>
-              ) : (
-                <NavLink className="flex items-center gap-2 p-2.5 bg-[#10233b] text-white rounded-xl no-underline text-center justify-center font-bold text-sm" to="/login" onClick={() => setMobileMenuOpen(false)}>
-                  <FaRegUser /> {t("ordersAccount")}
-                </NavLink>
-              )}
-            </div>
-
-            {/* Navigation links */}
-            <nav className="flex flex-col gap-1 border-b border-[#e5e7eb] pb-4 mb-4">
-              <span className="text-[0.7rem] uppercase tracking-wider text-slate-400 font-bold mb-1.5 px-2">Navigation</span>
-              <NavLink className="p-2.5 hover:bg-[#f0f0f0] rounded-lg text-slate-700 font-bold text-sm no-underline text-left rtl:text-right" to="/products" onClick={() => setMobileMenuOpen(false)}>{t("bestSelling")}</NavLink>
-              <NavLink className="p-2.5 hover:bg-[#f0f0f0] rounded-lg text-slate-700 font-bold text-sm no-underline text-left rtl:text-right" to="/about" onClick={() => setMobileMenuOpen(false)}>{t("about")}</NavLink>
-              <NavLink className="p-2.5 hover:bg-[#f0f0f0] rounded-lg text-slate-700 font-bold text-sm no-underline text-left rtl:text-right" to="/products" onClick={() => setMobileMenuOpen(false)}>{t("newIn")}</NavLink>
-            </nav>
-
-            {/* Categories list in mobile menu */}
-            <div className="flex flex-col gap-1 mb-4">
-              <span className="text-[0.7rem] uppercase tracking-wider text-slate-400 font-bold mb-1.5 px-2">Categories</span>
-              <div className="flex flex-col gap-0.5 max-h-[220px] overflow-y-auto pr-1">
-                {categoriesWithSubs.map((category) => (
-                  <button 
-                    key={category.name} 
-                    className="w-full text-left border-0 bg-transparent p-2 hover:bg-[#f0f0f0] rounded-lg text-slate-700 text-sm font-semibold cursor-pointer flex justify-between items-center rtl:text-right"
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      selectCategory(category.name);
-                    }}
-                  >
-                    <span>{t(category.key as any)}</span>
-                    <span className="text-slate-300">›</span>
-                  </button>
-                ))}
+            {/* Attractive Header Card */}
+            <div className="p-4 bg-gradient-to-br from-[#ff562b] via-[#ff7a00] to-[#ff9417] text-white flex items-center justify-between shadow-md">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-white/25 backdrop-blur-md flex items-center justify-center text-white font-black text-sm border border-white/40 shadow-xs">
+                  {t("brand")[0]}
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-black text-lg tracking-wide text-white leading-tight">{t("brand")}</span>
+                  <span className="text-[0.68rem] text-white/80 font-bold uppercase tracking-widest">Navigation Menu</span>
+                </div>
               </div>
+              <button 
+                className="w-8 h-8 rounded-full bg-white/25 hover:bg-white/40 text-white flex items-center justify-center transition-colors border border-white/30 cursor-pointer" 
+                onClick={() => setMobileMenuOpen(false)} 
+                aria-label="Close menu"
+              >
+                <FaXmark className="text-base" />
+              </button>
             </div>
 
-            {/* Language & Support */}
-            <div className="mt-auto border-t border-[#e5e7eb] pt-4 flex flex-col gap-2">
-              <button className="flex items-center gap-2.5 p-2.5 hover:bg-[#f0f0f0] rounded-lg text-slate-700 font-bold text-sm border-0 bg-transparent text-left cursor-pointer rtl:text-right w-full" onClick={() => { setMobileMenuOpen(false); handleLanguageToggle(); }}>
-                <FaGlobe /> {language === "en" ? "English" : "اردو"}
-              </button>
-              <NavLink className="flex items-center gap-2.5 p-2.5 hover:bg-[#f0f0f0] rounded-lg text-slate-700 font-bold text-sm no-underline text-left rtl:text-right w-full" to="/support" onClick={() => setMobileMenuOpen(false)}>
-                <FaWhatsapp /> {t("support")}
-              </NavLink>
+            <div className="p-4 flex flex-col gap-4 flex-1">
+              {/* Account Info Card */}
+              <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-50 to-orange-50/60 dark:from-slate-800/80 dark:to-slate-800/40 border border-slate-200/80 dark:border-slate-700/60 shadow-xs">
+                {token ? (
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#ff5b2e] to-[#ff8c1a] text-white font-black text-base flex items-center justify-center shadow-xs shrink-0">
+                        {userEmail ? userEmail[0].toUpperCase() : "U"}
+                      </div>
+                      <div className="flex flex-col min-w-0">
+                        <span className="text-[0.68rem] text-slate-400 dark:text-slate-400 font-extrabold uppercase tracking-wider">{t("ordersAccount")}</span>
+                        <strong className="text-sm font-bold text-slate-800 dark:text-white truncate max-w-[170px]">{userEmail}</strong>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-slate-200/60 dark:border-slate-700/60">
+                      <NavLink 
+                        className="flex items-center justify-center gap-1.5 p-2 rounded-xl bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs no-underline shadow-xs hover:text-[#ff5b2e]" 
+                        to="/orders" 
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        <FaClockRotateLeft className="text-xs text-[#ff5b2e]" /> {t("myOrders")}
+                      </NavLink>
+                      <button 
+                        className="flex items-center justify-center gap-1.5 p-2 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 font-bold text-xs border-0 cursor-pointer hover:bg-red-100" 
+                        onClick={handleLogout}
+                      >
+                        <FaArrowRightFromBracket className="text-xs" /> {t("logout")}
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-2.5 text-center">
+                    <span className="text-[0.68rem] font-extrabold text-orange-600 dark:text-orange-400 tracking-wider uppercase">Welcome to Temu</span>
+                    <p className="m-0 text-xs font-semibold text-slate-600 dark:text-slate-300 leading-snug">{t("authPromoSub")}</p>
+                    <NavLink 
+                      className="inline-flex items-center justify-center gap-2 p-2.5 bg-gradient-to-r from-[#ff8c1a] to-[#ff5b2e] text-white rounded-xl no-underline font-extrabold text-xs shadow-md shadow-orange-500/25 active:scale-95 transition-transform mt-0.5" 
+                      to="/login" 
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <FaRegUser /> {t("ordersAccount")}
+                    </NavLink>
+                  </div>
+                )}
+              </div>
+
+              {/* Navigation Section */}
+              <div className="flex flex-col gap-1.5">
+                <span className="text-[0.68rem] uppercase tracking-widest text-slate-400 dark:text-slate-500 font-extrabold px-1">Navigation</span>
+                <div className="flex flex-col gap-1.5">
+                  <NavLink 
+                    className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 text-slate-700 dark:text-slate-200 text-xs font-bold no-underline hover:border-orange-400/50 hover:bg-orange-50/40 transition-all" 
+                    to="/products" 
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-7 h-7 rounded-lg bg-orange-100 dark:bg-orange-950/50 text-[#ff5b2e] flex items-center justify-center shrink-0">
+                        <FaCartShopping className="text-xs" />
+                      </div>
+                      <span>{t("bestSelling")}</span>
+                    </div>
+                    <span className="text-slate-400 text-xs">›</span>
+                  </NavLink>
+
+                  <NavLink 
+                    className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 text-slate-700 dark:text-slate-200 text-xs font-bold no-underline hover:border-orange-400/50 hover:bg-orange-50/40 transition-all" 
+                    to="/about" 
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-7 h-7 rounded-lg bg-blue-100 dark:bg-blue-950/50 text-[#4ea5e6] flex items-center justify-center shrink-0">
+                        <FaGlobe className="text-xs" />
+                      </div>
+                      <span>{t("about")}</span>
+                    </div>
+                    <span className="text-slate-400 text-xs">›</span>
+                  </NavLink>
+
+                  <NavLink 
+                    className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 text-slate-700 dark:text-slate-200 text-xs font-bold no-underline hover:border-orange-400/50 hover:bg-orange-50/40 transition-all" 
+                    to="/products" 
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-7 h-7 rounded-lg bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 flex items-center justify-center shrink-0">
+                        <FaTruck className="text-xs" />
+                      </div>
+                      <span>{t("newIn")}</span>
+                    </div>
+                    <span className="text-slate-400 text-xs">›</span>
+                  </NavLink>
+                </div>
+              </div>
+
+              {/* Accordion Categories */}
+              <div className="flex flex-col gap-1.5 mt-1">
+                <span className="text-[0.68rem] uppercase tracking-widest text-slate-400 dark:text-slate-500 font-extrabold px-1">{t("categories")}</span>
+                <div className="flex flex-col gap-1.5">
+                  {categoriesWithSubs.map((category) => {
+                    const isExpanded = mobileExpandedCat === category.name;
+                    return (
+                      <div key={category.name} className="flex flex-col rounded-xl border border-slate-200/70 dark:border-slate-800 overflow-hidden bg-slate-50/70 dark:bg-slate-800/40">
+                        <button 
+                          type="button"
+                          className="w-full text-left p-3 text-slate-800 dark:text-slate-200 text-xs font-bold cursor-pointer flex justify-between items-center bg-transparent border-0 rtl:text-right hover:bg-orange-50 dark:hover:bg-slate-800 transition-colors"
+                          onClick={() => {
+                            if (isExpanded) {
+                              setMobileExpandedCat(null);
+                            } else {
+                              setMobileExpandedCat(category.name);
+                            }
+                          }}
+                        >
+                          <span className="flex items-center gap-2.5">
+                            <span className="w-2 h-2 rounded-full bg-[#ff5b2e] shadow-xs" />
+                            {t(category.key as any)}
+                          </span>
+                          <FaChevronDown className={`text-[0.7rem] text-slate-400 transition-transform duration-200 ${isExpanded ? "rotate-180 text-[#ff5b2e]" : ""}`} />
+                        </button>
+                        
+                        {isExpanded && (
+                          <div className="p-2.5 pt-1.5 bg-white dark:bg-slate-900 grid grid-cols-2 gap-1.5 border-t border-slate-100 dark:border-slate-800 animate-fade-in">
+                            <button
+                              type="button"
+                              className="col-span-full text-left p-2 rounded-lg bg-orange-50 dark:bg-orange-950/30 text-[#ff5b2e] text-[0.72rem] font-extrabold border-0 cursor-pointer hover:bg-orange-100/70 transition-colors"
+                              onClick={() => {
+                                setMobileMenuOpen(false);
+                                selectCategory(category.name);
+                              }}
+                            >
+                              Explore All {t(category.key as any)} →
+                            </button>
+                            {category.subcategories.map((sub) => (
+                              <button
+                                key={sub.name}
+                                type="button"
+                                className="flex items-center gap-1.5 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-[0.72rem] font-semibold border-0 bg-transparent text-left cursor-pointer truncate transition-colors"
+                                onClick={() => {
+                                  setMobileMenuOpen(false);
+                                  selectSubcategory(sub.category, sub.name);
+                                }}
+                              >
+                                <img className="w-5 h-5 rounded-md object-cover shrink-0 border border-slate-200/50" src={sub.image} alt="" />
+                                <span className="truncate">{t(sub.key as any) === sub.key ? sub.name : t(sub.key as any)}</span>
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Footer Actions: Language & Support */}
+              <div className="mt-auto pt-3 border-t border-slate-200 dark:border-slate-800 grid grid-cols-2 gap-2">
+                <button 
+                  type="button"
+                  className="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold border-0 cursor-pointer hover:bg-slate-200 transition-colors" 
+                  onClick={() => { setMobileMenuOpen(false); handleLanguageToggle(); }}
+                >
+                  <FaGlobe className="text-[#4ea5e6]" /> {language === "en" ? "English" : "اردو"}
+                </button>
+                <NavLink 
+                  className="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 text-xs font-bold no-underline hover:bg-emerald-100 transition-colors" 
+                  to="/support" 
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <FaWhatsapp className="text-base text-emerald-500" /> {t("support")}
+                </NavLink>
+              </div>
             </div>
           </div>
         </div>
