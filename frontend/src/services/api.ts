@@ -43,6 +43,12 @@ export async function registerUser(credentials: any) {
   return data;
 }
 
+export async function checkEmailApi(email: string) {
+  const { data } = await api.get<{ exists: boolean }>("/auth/check-email", { params: { email } });
+  return data;
+}
+
+
 export async function fetchCart() {
   const { data } = await api.get<CartItem[]>("/cart");
   return data;

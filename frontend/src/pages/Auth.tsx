@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../store";
 import { setAuth } from "../store/slices/authSlice";
 import { mergeGuestCart, syncCart } from "../store/slices/cartSlice";
 import { useTranslation } from "../hooks/useTranslation";
-import { loginUser, registerUser } from "../services/api";
+import { loginUser, registerUser, checkEmailApi } from "../services/api";
 
 export function Auth({ register = false }: { register?: boolean }) {
   const token = useAppSelector((state) => state.auth.token);
@@ -97,6 +97,7 @@ export function Auth({ register = false }: { register?: boolean }) {
             handleChange,
             handleBlur,
             handleSubmit,
+            setFieldError,
             isSubmitting,
           }) => (
             <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
@@ -108,8 +109,21 @@ export function Auth({ register = false }: { register?: boolean }) {
                   type="email"
                   value={values.email}
                   onChange={handleChange}
-                  onBlur={handleBlur}
-                  placeholder="you@example.com"
+                  onBlur={async (e) => {
+                    handleBlur(e);
+                    const emailVal = e.target.value.trim();
+                    if (register && emailVal && !errors.email) {
+                      try {
+                        const res = await checkEmailApi(emailVal);
+                        if (res.exists) {
+                          setFieldError("email", t("emailExists"));
+                        }
+                      } catch (err) {
+                        console.error("Check email failed:", err);
+                      }
+                    }
+                  }}
+                  placeholder={t("enterEmail")}
                 />
                 {touched.email && errors.email && (
                   <small className="text-[#b91c1c] text-xs font-semibold mt-1">{errors.email}</small>
@@ -124,7 +138,7 @@ export function Auth({ register = false }: { register?: boolean }) {
                   value={values.password}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  placeholder={t("passwordTooShort")}
+                  placeholder={t("enterPassword")}
                 />
                 {touched.password && errors.password && (
                   <small className="text-[#b91c1c] text-xs font-semibold mt-1">{errors.password}</small>

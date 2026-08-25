@@ -68,3 +68,20 @@ export async function login(req: Request, res: Response) {
     return res.status(500).json({ message: "Internal server error" });
   }
 }
+
+export async function checkEmail(req: Request, res: Response) {
+  const { email } = req.query;
+
+  if (!email || typeof email !== "string") {
+    return res.status(400).json({ message: "Email parameter is required" });
+  }
+
+  try {
+    const userCheck = await query("SELECT id FROM users WHERE email = $1", [email.toLowerCase().trim()]);
+    return res.json({ exists: userCheck.rows.length > 0 });
+  } catch (error) {
+    console.error("checkEmail error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
