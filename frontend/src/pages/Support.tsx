@@ -86,7 +86,7 @@ export function Support() {
               >
                 <button
                   onClick={() => toggleFaq(faq.id)}
-                  className="w-full text-left rtl:text-right border-0 bg-transparent p-4 md:p-5 flex justify-between items-center cursor-pointer font-bold text-sm md:text-base text-[#10233b] dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800 dark:hover:text-white transition-colors"
+                  className="w-full text-left rtl:text-right border-0 bg-transparent dark:bg-slate-800 p-4 md:p-5 flex justify-between items-center cursor-pointer font-bold text-sm md:text-base text-[#10233b] dark:text-white hover:bg-slate-50 dark:hover:!bg-slate-800 dark:hover:!text-white transition-colors"
                 >
                   <span className="pr-4">{faq.q}</span>
                   {isOpen ? <FaChevronUp className="text-slate-400 shrink-0" /> : <FaChevronDown className="text-slate-400 shrink-0" />}
