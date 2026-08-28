@@ -196,6 +196,22 @@ html[data-theme="dark"] .hover\:bg-\[\#f0f0f0\]:hover {
   background-color: #374151 !important;
 }
 
+/* Universal dark theme hover state overrides for buttons and cards */
+html[data-theme="dark"] .hover\:bg-slate-50:hover,
+html[data-theme="dark"] .hover\:bg-slate-100:hover,
+html[data-theme="dark"] .hover\:bg-slate-200:hover,
+html[data-theme="dark"] .hover\:bg-\[\#f1f5f9\]:hover {
+  background-color: #374151 !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="dark"] .hover\:bg-slate-50:hover *,
+html[data-theme="dark"] .hover\:bg-slate-100:hover *,
+html[data-theme="dark"] .hover\:bg-slate-200:hover *,
+html[data-theme="dark"] .hover\:bg-\[\#f1f5f9\]:hover * {
+  color: #ffffff !important;
+}
+
 /* Collapsible drawer slide-in animations */
 @keyframes slideInLeft {
   from {
