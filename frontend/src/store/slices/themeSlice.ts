@@ -8,7 +8,11 @@ const getInitialTheme = (): "light" | "dark" => {
   try {
     const saved = window.localStorage.getItem("temu-theme");
     const parsed = saved ? JSON.parse(saved) : "light";
-    return parsed === "dark" ? "dark" : "light";
+    const initialTheme = parsed === "dark" ? "dark" : "light";
+    if (typeof document !== "undefined") {
+      document.documentElement.dataset.theme = initialTheme;
+    }
+    return initialTheme;
   } catch {
     return "light";
   }

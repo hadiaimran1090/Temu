@@ -12,9 +12,15 @@ export function Layout() {
   const { pathname } = useLocation();
   const dispatch = useAppDispatch();
 
+  const theme = useAppSelector((state) => state.theme.theme);
+
   useEffect(() => {
     dispatch(syncCart());
   }, [dispatch]);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
